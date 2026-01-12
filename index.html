@@ -21,6 +21,7 @@
         * {
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -65,7 +66,6 @@
             transition: transform 0.2s;
         }
         
-        /* 課程列表卡片特效 */
         .lesson-card {
             cursor: pointer;
             border-left: 6px solid var(--color-chic-blue);
@@ -152,7 +152,7 @@
         .vocab-header {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
+            align-items: center; /* 改為置中對齊以便放置喇叭 */
             width: 100%;
             margin-bottom: 8px;
         }
@@ -160,7 +160,26 @@
             font-weight: bold; 
             color: var(--color-chic-blue); 
             font-size: 1.2rem; 
+            cursor: pointer; /* 讓使用者知道可以點 */
+            display: flex;
+            align-items: center;
         }
+        .vocab-en:active {
+            opacity: 0.6;
+        }
+        .speaker-icon {
+            font-size: 1rem;
+            margin-left: 8px;
+            background-color: #eee;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+        }
+
         .vocab-zh { 
             color: var(--color-deep-brown); 
             font-size: 1rem; 
@@ -175,12 +194,12 @@
             border-radius: 8px;
             border-left: 3px solid var(--color-cream);
             line-height: 1.4;
+            cursor: pointer;
         }
 
         /* 測驗區塊樣式 */
         .quiz-box { text-align: center; padding: 40px 20px; position: relative; }
         
-        /* 測驗頂部資訊列 */
         .quiz-header {
             display: flex;
             justify-content: space-between;
@@ -204,7 +223,17 @@
             color: var(--color-primary-red); 
             font-weight: bold; 
             word-wrap: break-word;
+            cursor: pointer; /* 暗示可點擊 */
         }
+        .quiz-question:active { transform: scale(0.98); opacity: 0.8; }
+        
+        .quiz-hint {
+            font-size: 0.8rem;
+            color: #bbb;
+            margin-top: -20px;
+            margin-bottom: 20px;
+        }
+
         .quiz-input {
             width: 100%; padding: 15px; font-size: 1.2rem;
             border: 2px solid #ddd; border-radius: var(--radius);
@@ -218,22 +247,9 @@
         .feedback.correct { color: var(--color-chic-blue); }
         .feedback.wrong { color: var(--color-burnt-orange); }
 
-        /* 結果頁面樣式 */
-        .result-box {
-            text-align: center;
-            padding: 40px 20px;
-        }
-        .result-score {
-            font-size: 4rem;
-            font-weight: 800;
-            color: var(--color-chic-blue);
-            margin: 20px 0;
-        }
-        .result-msg {
-            font-size: 1.2rem;
-            color: var(--color-deep-brown);
-            margin-bottom: 30px;
-        }
+        .result-box { text-align: center; padding: 40px 20px; }
+        .result-score { font-size: 4rem; font-weight: 800; color: var(--color-chic-blue); margin: 20px 0; }
+        .result-msg { font-size: 1.2rem; color: var(--color-deep-brown); margin-bottom: 30px; }
 
         .section-header {
             font-size: 1.2rem;
@@ -243,11 +259,7 @@
             border-left: 4px solid var(--color-primary-red);
             padding-left: 10px;
         }
-        .lesson-meta {
-            font-size: 0.9rem;
-            color: #888;
-            margin-top: 5px;
-        }
+        .lesson-meta { font-size: 0.9rem; color: #888; margin-top: 5px; }
 
     </style>
 </head>
@@ -285,7 +297,8 @@
         <div id="p-article" class="page">
             <div class="card">
                 <span class="date-tag" id="artDate"></span>
-                <div class="article-title" id="artTitle"></div>
+                <div class="article-title" id="artTitle" onclick="speak(this.innerText)"></div>
+                <div style="font-size:0.8rem; color:#aaa; margin-top:-15px; margin-bottom:20px;">(點擊標題可朗讀)</div>
                 <div class="english-text" id="artContent"></div>
                 <div style="border-top: 2px dashed #ddd; padding-top: 20px; margin-top: 20px;">
                     <div style="font-weight: bold; color: var(--color-chic-blue); margin-bottom: 15px;">💬 Discussion Questions</div>
@@ -299,6 +312,7 @@
         <div id="p-vocab" class="page">
             <div class="card">
                 <h3 style="color: var(--color-burnt-orange); border-bottom: 2px solid var(--color-cream); padding-bottom: 10px;">Keywords & Examples</h3>
+                <p style="font-size: 0.85rem; color:#999;">💡 點擊英文單字或喇叭圖示可發音</p>
                 <div id="vocabList"></div>
             </div>
             <button class="btn btn-back" onclick="backToDashboard()">回課程選單</button>
@@ -307,7 +321,6 @@
         <!-- 5. 測驗頁面 (Quiz) -->
         <div id="p-quiz" class="page">
             <div class="card quiz-box">
-                <!-- 頂部資訊列：題號與分數 -->
                 <div class="quiz-header">
                     <span id="quiz-progress">Q: 1/10</span>
                     <span id="quiz-score-display" class="quiz-score-badge">Score: 0</span>
@@ -317,7 +330,8 @@
                     <span id="quizType">測驗模式</span>
                 </div>
                 
-                <div class="quiz-question" id="q-word"></div>
+                <div class="quiz-question" id="q-word" onclick="speakCurrentQuizWord()"></div>
+                <div id="quiz-hint-text" class="quiz-hint"></div>
                 
                 <input type="text" id="q-input" class="quiz-input" placeholder="輸入答案..." autocomplete="off">
                 
@@ -328,7 +342,7 @@
             <button class="btn btn-back" onclick="backToDashboard()">放棄測驗</button>
         </div>
 
-        <!-- 6. 測驗結果頁面 (Result) -->
+        <!-- 6. 結果頁面 -->
         <div id="p-result" class="page">
             <div class="card result-box">
                 <div style="font-size: 1.2rem; color: #888;">Final Score</div>
@@ -344,6 +358,31 @@
     </div>
 
     <script>
+        /* --- 語音發音功能 (Web Speech API) --- */
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                // 取消目前正在播放的聲音
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US'; // 設定為美式英語
+                utterance.rate = 0.9;     // 語速稍慢一點點，更清楚
+                utterance.pitch = 1;
+
+                // 嘗試使用裝置上的 Google 語音 (如果是 Android/Chrome)
+                const voices = window.speechSynthesis.getVoices();
+                // 優先尋找 Google US English，若無則使用系統預設
+                const googleVoice = voices.find(v => v.name.includes('Google') && v.lang.includes('en-US'));
+                if (googleVoice) {
+                    utterance.voice = googleVoice;
+                }
+
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("抱歉，您的瀏覽器不支援發音功能。");
+            }
+        }
+
         /* --- 資料設定區 --- */
         const lessons = [
             {
@@ -356,13 +395,12 @@ When I finally reach the counter, the barista greets me with a tired but friendl
 
 Then comes the payment. I ask, "Do you take contactless?" She points to the card reader, and I tap my card. It beeps instantly to confirm the transaction. She asks if I want a receipt printed, but I tell her, "No need, thanks! Have a good one." Finally, I head over to the crowded pickup counter. I find a small napkin and a stirrer at the condiment station while I wait for the barista to call my name. Once I grab my cup, I’m finally ready to start my day with my caffeine fix.`,
                 questions: [
-                    "Have you ever had the experience where someone tried to cut in line in front of you? How did you handle it?",
+                    "Have you ever had the experience where someone tried to cut in line in front of you?",
                     "Do you usually need a caffeine fix to feel awake, or are you naturally energetic?",
                     "Are you 'picky' about your order at a cafe, or do you take whatever is on the menu?",
                     "Do you find it easy to strike up small talk with strangers?",
                     "Do you prefer to tap your card for contactless transaction or use cash?"
                 ],
-                // 30 組單字，共計 55 個英文字
                 vocab: [
                     { en: "thick", zh: "很濃、很厚", ex: "The fog was so thick I couldn't see the road." },
                     { en: "aroma", zh: "香氣", ex: "The aroma of fresh coffee filled the kitchen." },
@@ -466,13 +504,19 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
             const vContainer = document.getElementById('vocabList');
             vContainer.innerHTML = '';
             currentLesson.vocab.forEach(item => {
+                // 處理單字中的單引號，避免 onclick 錯誤
+                const cleanWord = item.en.replace(/'/g, "\\'");
+                
                 vContainer.innerHTML += `
                     <div class="vocab-item">
                         <div class="vocab-header">
-                            <span class="vocab-en">${item.en}</span>
+                            <span class="vocab-en" onclick="speak('${cleanWord}')">
+                                ${item.en} 
+                                <span class="speaker-icon">🔊</span>
+                            </span>
                             <span class="vocab-zh">${item.zh}</span>
                         </div>
-                        <div class="vocab-ex">Ex: ${item.ex}</div>
+                        <div class="vocab-ex" onclick="speak('${item.ex.replace(/'/g, "\\'")}')">Ex: ${item.ex}</div>
                     </div>
                 `;
             });
@@ -490,7 +534,7 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
         function goToLessonList() { showPage('p-lesson-list'); }
         function backToDashboard() { showPage('p-dashboard'); }
 
-        /* --- 測驗系統邏輯 (含計分) --- */
+        /* --- 測驗系統邏輯 --- */
         let currentQuizMode = ''; 
         let currentTargetWord = null;
         let quizScore = 0;
@@ -504,6 +548,15 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
             
             document.getElementById('quizType').innerText = mode === 'en-zh' ? '請翻譯成中文' : 'Translate to English';
             
+            // 設定提示文字
+            const hintEl = document.getElementById('quiz-hint-text');
+            if (mode === 'en-zh') {
+                hintEl.innerText = "💡 點擊單字可聽發音";
+                hintEl.style.display = 'block';
+            } else {
+                hintEl.style.display = 'none'; // 中翻英不給聽，不然就洩題了
+            }
+
             showPage('p-quiz');
             updateQuizHeader();
             nextQuestion();
@@ -512,6 +565,13 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
         function updateQuizHeader() {
             document.getElementById('quiz-progress').innerText = `Q: ${quizQuestionCount + 1}/${QUESTIONS_PER_ROUND}`;
             document.getElementById('quiz-score-display').innerText = `Score: ${quizScore}`;
+        }
+
+        function speakCurrentQuizWord() {
+            // 只有在英翻中模式下，才允許發音
+            if (currentQuizMode === 'en-zh' && currentTargetWord) {
+                speak(currentTargetWord.en);
+            }
         }
 
         function nextQuestion() {
@@ -528,6 +588,8 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
             
             if (currentQuizMode === 'en-zh') {
                 document.getElementById('q-word').innerText = currentTargetWord.en;
+                // 自動發音一次 (可選，這裡先不自動，讓用戶點擊)
+                // speak(currentTargetWord.en); 
             } else {
                 document.getElementById('q-word').innerText = currentTargetWord.zh;
             }
@@ -558,6 +620,11 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
             } else {
                 feedbackEl.innerText = `❌ 答案是: ${currentQuizMode === 'en-zh' ? currentTargetWord.zh : currentTargetWord.en}`;
                 feedbackEl.className = "feedback wrong";
+            }
+            
+            // 如果答錯了，在中翻英模式下，這時可以發音正確答案
+            if (currentQuizMode === 'zh-en') {
+                speak(currentTargetWord.en);
             }
             
             submitBtn.style.display = 'none';
