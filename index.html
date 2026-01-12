@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>English Learning App</title>
+    <title>English & French Learning App</title>
     <style>
         /* --- 介面風格設計 (CSS) - Lady B 復古配色版 --- */
         :root {
@@ -152,27 +152,27 @@
         .vocab-header {
             display: flex;
             justify-content: space-between;
-            align-items: center; /* 改為置中對齊以便放置喇叭 */
+            align-items: center;
             width: 100%;
             margin-bottom: 8px;
         }
+        
         .vocab-en { 
             font-weight: bold; 
             color: var(--color-chic-blue); 
             font-size: 1.2rem; 
-            cursor: pointer; /* 讓使用者知道可以點 */
+            cursor: pointer;
             display: flex;
             align-items: center;
         }
-        .vocab-en:active {
-            opacity: 0.6;
-        }
+        .vocab-en:active { opacity: 0.6; }
+        
         .speaker-icon {
-            font-size: 1rem;
+            font-size: 0.9rem;
             margin-left: 8px;
             background-color: #eee;
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -185,6 +185,20 @@
             font-size: 1rem; 
             font-weight: bold;
         }
+        
+        /* 法文標籤樣式 */
+        .vocab-fr-row {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            color: var(--color-primary-red); 
+            font-size: 1rem; 
+            font-weight: bold;
+            font-style: italic;
+            cursor: pointer;
+        }
+        .vocab-fr-row:active { opacity: 0.6; }
+
         .vocab-ex {
             font-size: 0.95rem;
             color: #666;
@@ -195,6 +209,21 @@
             border-left: 3px solid var(--color-cream);
             line-height: 1.4;
             cursor: pointer;
+            margin-top: 8px;
+        }
+        
+        /* 法文例句樣式 */
+        .vocab-ex-fr {
+            font-size: 0.95rem;
+            color: #7D2027; /* 酒紅 */
+            font-style: italic;
+            background-color: #FFF5F5; /* 淡紅背景 */
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 3px solid var(--color-primary-red);
+            line-height: 1.4;
+            cursor: pointer;
+            margin-top: 8px;
         }
 
         /* 測驗區塊樣式 */
@@ -223,7 +252,7 @@
             color: var(--color-primary-red); 
             font-weight: bold; 
             word-wrap: break-word;
-            cursor: pointer; /* 暗示可點擊 */
+            cursor: pointer;
         }
         .quiz-question:active { transform: scale(0.98); opacity: 0.8; }
         
@@ -286,9 +315,14 @@
             </div>
 
             <button class="btn" onclick="showPage('p-article')">1. 📖 閱讀文章 (Article)</button>
-            <button class="btn" onclick="showPage('p-vocab')">2. 📝 單字學習 (Vocab)</button>
-            <button class="btn btn-outline" onclick="startQuiz('en-zh')">3. 🧠 測驗：英翻中</button>
-            <button class="btn btn-outline" onclick="startQuiz('zh-en')">4. 🗣️ 測驗：中翻英</button>
+            <button class="btn" onclick="showPage('p-vocab')">2. 📝 單字表 (英-中)</button>
+            <button class="btn" style="background-color: var(--color-primary-red);" onclick="showPage('p-vocab-fr')">3. 🇫🇷 法文單字表 (英-法)</button>
+            
+            <div style="margin: 20px 0; border-top: 1px solid #ddd;"></div>
+            
+            <button class="btn btn-outline" onclick="startQuiz('en-zh')">4. 🧠 測驗：英翻中</button>
+            <button class="btn btn-outline" onclick="startQuiz('zh-en')">5. 🗣️ 測驗：中翻英</button>
+            <button class="btn btn-outline" onclick="startQuiz('en-fr')">6. 🇫🇷 測驗：英翻法</button>
             
             <button class="btn btn-back" onclick="goToLessonList()">← 回課程列表</button>
         </div>
@@ -297,7 +331,7 @@
         <div id="p-article" class="page">
             <div class="card">
                 <span class="date-tag" id="artDate"></span>
-                <div class="article-title" id="artTitle" onclick="speak(this.innerText)"></div>
+                <div class="article-title" id="artTitle" onclick="speak(this.innerText, 'en-US')"></div>
                 <div style="font-size:0.8rem; color:#aaa; margin-top:-15px; margin-bottom:20px;">(點擊標題可朗讀)</div>
                 <div class="english-text" id="artContent"></div>
                 <div style="border-top: 2px dashed #ddd; padding-top: 20px; margin-top: 20px;">
@@ -308,17 +342,27 @@
             <button class="btn btn-back" onclick="backToDashboard()">回課程選單</button>
         </div>
 
-        <!-- 4. 單字頁面 -->
+        <!-- 4. 單字頁面 (英-中) -->
         <div id="p-vocab" class="page">
             <div class="card">
-                <h3 style="color: var(--color-burnt-orange); border-bottom: 2px solid var(--color-cream); padding-bottom: 10px;">Keywords & Examples</h3>
-                <p style="font-size: 0.85rem; color:#999;">💡 點擊英文單字或喇叭圖示可發音</p>
+                <h3 style="color: var(--color-burnt-orange); border-bottom: 2px solid var(--color-cream); padding-bottom: 10px;">Vocabulary (En-Zh)</h3>
+                <p style="font-size: 0.85rem; color:#999;">💡 點擊英文單字可聽發音</p>
                 <div id="vocabList"></div>
             </div>
             <button class="btn btn-back" onclick="backToDashboard()">回課程選單</button>
         </div>
 
-        <!-- 5. 測驗頁面 (Quiz) -->
+        <!-- 5. 法文單字頁面 (英-法) -->
+        <div id="p-vocab-fr" class="page">
+            <div class="card">
+                <h3 style="color: var(--color-primary-red); border-bottom: 2px solid var(--color-cream); padding-bottom: 10px;">Vocabulaire (En-Fr)</h3>
+                <p style="font-size: 0.85rem; color:#999;">💡 點擊單字或句子可聽發音</p>
+                <div id="vocabListFr"></div>
+            </div>
+            <button class="btn btn-back" onclick="backToDashboard()">回課程選單</button>
+        </div>
+
+        <!-- 6. 測驗頁面 (Quiz) -->
         <div id="p-quiz" class="page">
             <div class="card quiz-box">
                 <div class="quiz-header">
@@ -342,7 +386,7 @@
             <button class="btn btn-back" onclick="backToDashboard()">放棄測驗</button>
         </div>
 
-        <!-- 6. 結果頁面 -->
+        <!-- 7. 結果頁面 -->
         <div id="p-result" class="page">
             <div class="card result-box">
                 <div style="font-size: 1.2rem; color: #888;">Final Score</div>
@@ -358,32 +402,31 @@
     </div>
 
     <script>
-        /* --- 語音發音功能 (Web Speech API) --- */
-        function speak(text) {
+        /* --- 語音發音功能 --- */
+        function speak(text, lang = 'en-US') {
             if ('speechSynthesis' in window) {
-                // 取消目前正在播放的聲音
                 window.speechSynthesis.cancel();
-                
                 const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'en-US'; // 設定為美式英語
-                utterance.rate = 0.9;     // 語速稍慢一點點，更清楚
-                utterance.pitch = 1;
-
-                // 嘗試使用裝置上的 Google 語音 (如果是 Android/Chrome)
+                utterance.lang = lang; 
+                utterance.rate = 0.9;     
+                
                 const voices = window.speechSynthesis.getVoices();
-                // 優先尋找 Google US English，若無則使用系統預設
-                const googleVoice = voices.find(v => v.name.includes('Google') && v.lang.includes('en-US'));
-                if (googleVoice) {
-                    utterance.voice = googleVoice;
+                let targetVoice = null;
+                if (lang === 'en-US') {
+                    targetVoice = voices.find(v => v.name.includes('Google') && v.lang.includes('en-US'));
+                } else if (lang === 'fr-FR') {
+                    targetVoice = voices.find(v => v.name.includes('Google') && v.lang.includes('fr'));
+                    if (!targetVoice) targetVoice = voices.find(v => v.lang.includes('fr'));
                 }
+                if (targetVoice) utterance.voice = targetVoice;
 
                 window.speechSynthesis.speak(utterance);
             } else {
-                alert("抱歉，您的瀏覽器不支援發音功能。");
+                console.log("Speech API not supported");
             }
         }
 
-        /* --- 資料設定區 --- */
+        /* --- 資料設定區 (包含法文單字與例句) --- */
         const lessons = [
             {
                 id: 1,
@@ -402,36 +445,36 @@ Then comes the payment. I ask, "Do you take contactless?" She points to the card
                     "Do you prefer to tap your card for contactless transaction or use cash?"
                 ],
                 vocab: [
-                    { en: "thick", zh: "很濃、很厚", ex: "The fog was so thick I couldn't see the road." },
-                    { en: "aroma", zh: "香氣", ex: "The aroma of fresh coffee filled the kitchen." },
-                    { en: "roasted beans", zh: "烘焙過的咖啡豆", ex: "They use locally roasted beans here." },
-                    { en: "steaming milk", zh: "熱呼呼冒煙的牛奶", ex: "He poured steaming milk into the cup." },
-                    { en: "strike up", zh: "主動聊起來", ex: "I tried to strike up a conversation with her." },
-                    { en: "cut in line", zh: "插隊", ex: "It is rude to cut in line." },
-                    { en: "calmly", zh: "很冷靜地", ex: "She spoke calmly despite the chaos." },
-                    { en: "nod", zh: "點點頭", ex: "He gave a nod of agreement." },
-                    { en: "the line starts back there", zh: "隊伍在後面那邊喔", ex: "Excuse me, the line starts back there." },
-                    { en: "mumbles", zh: "小聲嘟囔", ex: "He mumbles when he is nervous." },
-                    { en: "queue", zh: "排隊的人龍", ex: "There was a long queue for the tickets." },
-                    { en: "barista", zh: "咖啡師", ex: "The barista made a beautiful latte art." },
-                    { en: "greets", zh: "打招呼", ex: "The dog greets me at the door every day." },
-                    { en: "place my order", zh: "點餐", ex: "I am ready to place my order now." },
-                    { en: "extra hot", zh: "特別燙", ex: "Can I have my tea extra hot?" },
-                    { en: "hold the foam", zh: "不要奶泡", ex: "I'll have a latte, hold the foam." },
-                    { en: "pastries", zh: "甜點/糕點", ex: "They sell fresh pastries every morning." },
-                    { en: "display case", zh: "展示櫃", ex: "Look at the cakes in the display case." },
-                    { en: "ultimately", zh: "最後還是", ex: "Ultimately, the decision is yours." },
-                    { en: "decline", zh: "婉拒", ex: "I have to decline your invitation." },
-                    { en: "contactless", zh: "非接觸式", ex: "Do you accept contactless payment?" },
-                    { en: "tap my card", zh: "感應付款", ex: "Just tap your card on the machine." },
-                    { en: "transaction", zh: "交易", ex: "The transaction was successful." },
-                    { en: "over to the crowded", zh: "走向擁擠的...", ex: "He walked over to the crowded bar." },
-                    { en: "pickup counter", zh: "取餐櫃檯", ex: "Please wait at the pickup counter." },
-                    { en: "napkin", zh: "紙巾", ex: "May I have a napkin, please?" },
-                    { en: "stirrer", zh: "攪拌棒", ex: "Use a stirrer to mix your sugar." },
-                    { en: "condiment station", zh: "自助調味區", ex: "You can find sugar at the condiment station." },
-                    { en: "grab my cup", zh: "拿起我的咖啡", ex: "I grabbed my cup and left quickly." },
-                    { en: "caffeine fix", zh: "今日咖啡續命成功", ex: "I really need my afternoon caffeine fix." }
+                    { en: "thick", zh: "很濃、很厚", fr: "épais", ex: "The fog was so thick I couldn't see the road.", fr_ex: "Le brouillard était si épais que je ne voyais pas la route." },
+                    { en: "aroma", zh: "香氣", fr: "arôme", ex: "The aroma of fresh coffee filled the kitchen.", fr_ex: "L'arôme du café frais remplissait la cuisine." },
+                    { en: "roasted beans", zh: "烘焙過的咖啡豆", fr: "grains torréfiés", ex: "They use locally roasted beans here.", fr_ex: "Ils utilisent des grains torréfiés localement." },
+                    { en: "steaming milk", zh: "熱呼呼冒煙的牛奶", fr: "lait fumant", ex: "He poured steaming milk into the cup.", fr_ex: "Il a versé du lait fumant dans la tasse." },
+                    { en: "strike up", zh: "主動聊起來", fr: "entamer", ex: "I tried to strike up a conversation with her.", fr_ex: "J'ai essayé d'entamer une conversation avec elle." },
+                    { en: "cut in line", zh: "插隊", fr: "doubler dans la file", ex: "It is rude to cut in line.", fr_ex: "Il est impoli de doubler dans la file." },
+                    { en: "calmly", zh: "很冷靜地", fr: "calmement", ex: "She spoke calmly despite the chaos.", fr_ex: "Elle a parlé calmement malgré le chaos." },
+                    { en: "nod", zh: "點點頭", fr: "hocher la tête", ex: "He gave a nod of agreement.", fr_ex: "Il a hoché la tête en signe d'accord." },
+                    { en: "the line starts back there", zh: "隊伍在後面那邊喔", fr: "la queue commence là-bas", ex: "Excuse me, the line starts back there.", fr_ex: "Excusez-moi, la queue commence là-bas." },
+                    { en: "mumbles", zh: "小聲嘟囔", fr: "marmonne", ex: "He mumbles when he is nervous.", fr_ex: "Il marmonne quand il est nerveux." },
+                    { en: "queue", zh: "排隊的人龍", fr: "file d'attente", ex: "There was a long queue for the tickets.", fr_ex: "Il y avait une longue file d'attente pour les billets." },
+                    { en: "barista", zh: "咖啡師", fr: "barista", ex: "The barista made a beautiful latte art.", fr_ex: "Le barista a fait un beau dessin sur mon latte." },
+                    { en: "greets", zh: "打招呼", fr: "salue", ex: "The dog greets me at the door every day.", fr_ex: "Le chien me salue à la porte chaque jour." },
+                    { en: "place my order", zh: "點餐", fr: "passer ma commande", ex: "I am ready to place my order now.", fr_ex: "Je suis prêt à passer ma commande maintenant." },
+                    { en: "extra hot", zh: "特別燙", fr: "très chaud", ex: "Can I have my tea extra hot?", fr_ex: "Puis-je avoir mon thé très chaud ?" },
+                    { en: "hold the foam", zh: "不要奶泡", fr: "sans mousse", ex: "I'll have a latte, hold the foam.", fr_ex: "Je prendrai un latte, sans mousse." },
+                    { en: "pastries", zh: "甜點/糕點", fr: "pâtisseries", ex: "They sell fresh pastries every morning.", fr_ex: "Ils vendent des pâtisseries fraîches tous les matins." },
+                    { en: "display case", zh: "展示櫃", fr: "vitrine", ex: "Look at the cakes in the display case.", fr_ex: "Regardez les gâteaux dans la vitrine." },
+                    { en: "ultimately", zh: "最後還是", fr: "finalement", ex: "Ultimately, the decision is yours.", fr_ex: "Finalement, la décision vous appartient." },
+                    { en: "decline", zh: "婉拒", fr: "refuser", ex: "I have to decline your invitation.", fr_ex: "Je dois refuser votre invitation." },
+                    { en: "contactless", zh: "非接觸式", fr: "sans contact", ex: "Do you accept contactless payment?", fr_ex: "Acceptez-vous le paiement sans contact ?" },
+                    { en: "tap my card", zh: "感應付款", fr: "poser ma carte", ex: "Just tap your card on the machine.", fr_ex: "Posez simplement votre carte sur la machine." },
+                    { en: "transaction", zh: "交易", fr: "transaction", ex: "The transaction was successful.", fr_ex: "La transaction a été réussie." },
+                    { en: "over to the crowded", zh: "走向擁擠的...", fr: "vers la foule", ex: "He walked over to the crowded bar.", fr_ex: "Il s'est dirigé vers le bar bondé." },
+                    { en: "pickup counter", zh: "取餐櫃檯", fr: "comptoir de retrait", ex: "Please wait at the pickup counter.", fr_ex: "Veuillez attendre au comptoir de retrait." },
+                    { en: "napkin", zh: "紙巾", fr: "serviette", ex: "May I have a napkin, please?", fr_ex: "Puis-je avoir une serviette, s'il vous plaît ?" },
+                    { en: "stirrer", zh: "攪拌棒", fr: "touillette", ex: "Use a stirrer to mix your sugar.", fr_ex: "Utilisez une touillette pour mélanger votre sucre." },
+                    { en: "condiment station", zh: "自助調味區", fr: "station de condiments", ex: "You can find sugar at the condiment station.", fr_ex: "Vous trouverez du sucre à la station de condiments." },
+                    { en: "grab my cup", zh: "拿起我的咖啡", fr: "prendre ma tasse", ex: "I grabbed my cup and left quickly.", fr_ex: "J'ai pris ma tasse et je suis parti rapidement." },
+                    { en: "caffeine fix", zh: "今日咖啡續命成功", fr: "dose de caféine", ex: "I really need my afternoon caffeine fix.", fr_ex: "J'ai vraiment besoin de ma dose de caféine de l'après-midi." }
                 ]
             },
             {
@@ -454,14 +497,14 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
                     "What is your favorite 'guilty pleasure' snack?"
                 ],
                 vocab: [
-                    { en: "a madhouse", zh: "亂哄哄的地方", ex: "The shopping mall was a madhouse on Christmas Eve." },
-                    { en: "to do laps", zh: "繞圈子", ex: "We had to do laps around the block to find parking." },
-                    { en: "steering a boat", zh: "像在開船一樣難操控", ex: "Pushing this heavy cart feels like steering a boat." },
-                    { en: "freezing your toes off", zh: "凍到腳趾掉下來", ex: "It's freezing your toes off in this cold room!" },
-                    { en: "a bottleneck", zh: "瓶頸、擁擠堵塞處", ex: "The construction caused a huge bottleneck on the highway." },
-                    { en: "to get rear-ended", zh: "被追撞", ex: "I got rear-ended at the stop light yesterday." },
-                    { en: "impulse buy", zh: "衝動購物", ex: "Those candy bars at the checkout are a classic impulse buy." },
-                    { en: "to pass up", zh: "錯過、放過機會", ex: "This deal is too good to pass up." }
+                    { en: "a madhouse", zh: "亂哄哄的地方", fr: "une maison de fous", ex: "The shopping mall was a madhouse on Christmas Eve.", fr_ex: "Le centre commercial était une maison de fous la veille de Noël." },
+                    { en: "to do laps", zh: "繞圈子", fr: "faire des tours", ex: "We had to do laps around the block to find parking.", fr_ex: "Nous avons dû faire des tours du pâté de maisons pour trouver une place." },
+                    { en: "steering a boat", zh: "像在開船一樣難操控", fr: "manœuvrer un bateau", ex: "Pushing this heavy cart feels like steering a boat.", fr_ex: "Pousser ce chariot lourd donne l'impression de manœuvrer un bateau." },
+                    { en: "freezing your toes off", zh: "凍到腳趾掉下來", fr: "se geler les orteils", ex: "It's freezing your toes off in this cold room!", fr_ex: "On se gèle les orteils dans cette chambre froide !" },
+                    { en: "a bottleneck", zh: "瓶頸、擁擠堵塞處", fr: "un goulot d'étranglement", ex: "The construction caused a huge bottleneck on the highway.", fr_ex: "Les travaux ont causé un énorme goulot d'étranglement sur l'autoroute." },
+                    { en: "to get rear-ended", zh: "被追撞", fr: "se faire rentrer dedans", ex: "I got rear-ended at the stop light yesterday.", fr_ex: "Je me suis fait rentrer dedans au feu rouge hier." },
+                    { en: "impulse buy", zh: "衝動購物", fr: "achat impulsif", ex: "Those candy bars at the checkout are a classic impulse buy.", fr_ex: "Ces barres chocolatées à la caisse sont un achat impulsif classique." },
+                    { en: "to pass up", zh: "錯過、放過機會", fr: "laisser passer", ex: "This deal is too good to pass up.", fr_ex: "Cette offre est trop belle pour la laisser passer." }
                 ]
             }
         ];
@@ -501,25 +544,52 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
                 qContainer.innerHTML += `<div style="margin-bottom:10px; padding-left:10px; border-left:3px solid var(--color-burnt-orange); color:#555;">${q}</div>`;
             });
 
+            // 渲染一般單字表 (En-Zh)
             const vContainer = document.getElementById('vocabList');
             vContainer.innerHTML = '';
             currentLesson.vocab.forEach(item => {
-                // 處理單字中的單引號，避免 onclick 錯誤
-                const cleanWord = item.en.replace(/'/g, "\\'");
+                const cleanEn = item.en.replace(/'/g, "\\'");
+                const cleanEx = item.ex.replace(/'/g, "\\'");
                 
                 vContainer.innerHTML += `
                     <div class="vocab-item">
                         <div class="vocab-header">
-                            <span class="vocab-en" onclick="speak('${cleanWord}')">
+                            <span class="vocab-en" onclick="speak('${cleanEn}', 'en-US')">
                                 ${item.en} 
                                 <span class="speaker-icon">🔊</span>
                             </span>
                             <span class="vocab-zh">${item.zh}</span>
                         </div>
-                        <div class="vocab-ex" onclick="speak('${item.ex.replace(/'/g, "\\'")}')">Ex: ${item.ex}</div>
+                        <div class="vocab-ex" onclick="speak('${cleanEx}', 'en-US')">Ex: ${item.ex}</div>
                     </div>
                 `;
             });
+
+            // 渲染法文單字表 (En-Fr)
+            const vFrContainer = document.getElementById('vocabListFr');
+            vFrContainer.innerHTML = '';
+            currentLesson.vocab.forEach(item => {
+                const cleanEn = item.en.replace(/'/g, "\\'");
+                const cleanFr = item.fr.replace(/'/g, "\\'");
+                const cleanFrEx = item.fr_ex ? item.fr_ex.replace(/'/g, "\\'") : "";
+                
+                vFrContainer.innerHTML += `
+                    <div class="vocab-item">
+                        <div class="vocab-header">
+                            <span class="vocab-en" onclick="speak('${cleanEn}', 'en-US')">
+                                ${item.en} 
+                                <span class="speaker-icon">🔊</span>
+                            </span>
+                        </div>
+                        <div class="vocab-fr-row" onclick="speak('${cleanFr}', 'fr-FR')">
+                            🇫🇷 ${item.fr}
+                            <span class="speaker-icon" style="background-color: #fee; margin-left: 10px;">🔊</span>
+                        </div>
+                        ${cleanFrEx ? `<div class="vocab-ex-fr" onclick="speak('${cleanFrEx}', 'fr-FR')">Ex: ${item.fr_ex}</div>` : ''}
+                    </div>
+                `;
+            });
+
             showPage('p-dashboard');
         }
 
@@ -546,15 +616,19 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
             quizScore = 0;
             quizQuestionCount = 0;
             
-            document.getElementById('quizType').innerText = mode === 'en-zh' ? '請翻譯成中文' : 'Translate to English';
+            let title = '';
+            if(mode === 'en-zh') title = '請翻譯成中文';
+            else if(mode === 'zh-en') title = 'Translate to English';
+            else if(mode === 'en-fr') title = 'Traduisez en Français (翻譯成法文)';
             
-            // 設定提示文字
+            document.getElementById('quizType').innerText = title;
+            
             const hintEl = document.getElementById('quiz-hint-text');
-            if (mode === 'en-zh') {
+            if (mode === 'en-zh' || mode === 'en-fr') {
                 hintEl.innerText = "💡 點擊單字可聽發音";
                 hintEl.style.display = 'block';
             } else {
-                hintEl.style.display = 'none'; // 中翻英不給聽，不然就洩題了
+                hintEl.style.display = 'none';
             }
 
             showPage('p-quiz');
@@ -568,9 +642,8 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
         }
 
         function speakCurrentQuizWord() {
-            // 只有在英翻中模式下，才允許發音
-            if (currentQuizMode === 'en-zh' && currentTargetWord) {
-                speak(currentTargetWord.en);
+            if ((currentQuizMode === 'en-zh' || currentQuizMode === 'en-fr') && currentTargetWord) {
+                speak(currentTargetWord.en, 'en-US');
             }
         }
 
@@ -586,10 +659,8 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
             const randomIndex = Math.floor(Math.random() * currentLesson.vocab.length);
             currentTargetWord = currentLesson.vocab[randomIndex];
             
-            if (currentQuizMode === 'en-zh') {
+            if (currentQuizMode === 'en-zh' || currentQuizMode === 'en-fr') {
                 document.getElementById('q-word').innerText = currentTargetWord.en;
-                // 自動發音一次 (可選，這裡先不自動，讓用戶點擊)
-                // speak(currentTargetWord.en); 
             } else {
                 document.getElementById('q-word').innerText = currentTargetWord.zh;
             }
@@ -602,13 +673,21 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
             const submitBtn = document.getElementById('btn-submit');
             
             let isCorrect = false;
+            let correctAnswer = '';
 
             if (currentQuizMode === 'en-zh') {
-                if ((currentTargetWord.zh.includes(inputVal) && inputVal.length > 1) || inputVal === currentTargetWord.zh) {
+                correctAnswer = currentTargetWord.zh;
+                if ((correctAnswer.includes(inputVal) && inputVal.length > 1) || inputVal === correctAnswer) {
                     isCorrect = true;
                 }
-            } else {
-                if (inputVal === currentTargetWord.en.toLowerCase()) {
+            } else if (currentQuizMode === 'zh-en') {
+                correctAnswer = currentTargetWord.en;
+                if (inputVal === correctAnswer.toLowerCase()) {
+                    isCorrect = true;
+                }
+            } else if (currentQuizMode === 'en-fr') {
+                correctAnswer = currentTargetWord.fr;
+                if (inputVal === correctAnswer.toLowerCase()) {
                     isCorrect = true;
                 }
             }
@@ -618,13 +697,13 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
                 feedbackEl.className = "feedback correct";
                 quizScore++;
             } else {
-                feedbackEl.innerText = `❌ 答案是: ${currentQuizMode === 'en-zh' ? currentTargetWord.zh : currentTargetWord.en}`;
+                feedbackEl.innerText = `❌ 答案是: ${correctAnswer}`;
                 feedbackEl.className = "feedback wrong";
             }
             
-            // 如果答錯了，在中翻英模式下，這時可以發音正確答案
-            if (currentQuizMode === 'zh-en') {
-                speak(currentTargetWord.en);
+            if (!isCorrect) {
+                if (currentQuizMode === 'zh-en') speak(currentTargetWord.en, 'en-US');
+                if (currentQuizMode === 'en-fr') speak(currentTargetWord.fr, 'fr-FR');
             }
             
             submitBtn.style.display = 'none';
