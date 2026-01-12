@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>English Learning App</title>
+    <style>
+        /* --- 介面風格設計 (CSS) - Lady B 復古配色版 --- */
+        :root {
+            --color-primary-red: #7D2027;   /* 酒紅 */
+            --color-chic-blue: #5FA8C2;     /* 復古藍 */
+            --color-burnt-orange: #CF5527;  /* 焦糖橘 */
+            --color-deep-brown: #673C34;    /* 深棕 */
+            --color-cream: #FAE3B1;         /* 奶油黃 */
+            
+            --color-bg: #FDFBF6;            /* 極淡米色背景 */
+            --color-card-bg: #FFFFFF;       /* 卡片白 */
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-deep-brown);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 頂部導航列 */
+        header {
+            background-color: var(--color-primary-red);
+            color: #FFFFFF;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(125, 32, 39, 0.3);
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .container {
+            padding: 20px;
+            flex: 1;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .card {
+            background: var(--color-card-bg);
+            padding: 24px;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 15px rgba(103, 60, 52, 0.08);
+            margin-bottom: 20px;
+            line-height: 1.8;
+            border: 1px solid rgba(0,0,0,0.03);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        
+        /* 課程列表卡片特效 */
+        .lesson-card {
+            cursor: pointer;
+            border-left: 6px solid var(--color-chic-blue);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .lesson-card:active {
+            transform: scale(0.98);
+            background-color: #f9f9f9;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 按鈕樣式 */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 12px;
+            background-color: var(--color-chic-blue);
+            color: #FFFFFF;
+            text-align: center;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+        .btn:active { transform: scale(0.98); }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--color-chic-blue);
+            color: var(--color-chic-blue);
+        }
+
+        .btn-back {
+            background-color: #EFEFEF;
+            color: var(--color-deep-brown);
+            margin-top: 30px;
+        }
+
+        /* 文字樣式 */
+        .date-tag {
+            font-size: 0.85rem;
+            color: #998731;
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .article-title {
+            color: var(--color-burnt-orange);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+            line-height: 1.3;
+        }
+        .english-text {
+            font-size: 1.1rem;
+            text-align: justify;
+            margin-bottom: 30px;
+            color: #4a3b38;
+        }
+
+        /* 單字列表樣式 (含例句) */
+        .vocab-item {
+            padding: 16px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .vocab-item:last-child { border-bottom: none; }
+        
+        .vocab-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            width: 100%;
+            margin-bottom: 8px;
+        }
+        .vocab-en { 
+            font-weight: bold; 
+            color: var(--color-chic-blue); 
+            font-size: 1.2rem; 
+        }
+        .vocab-zh { 
+            color: var(--color-deep-brown); 
+            font-size: 1rem; 
+            font-weight: bold;
+        }
+        /* 例句樣式 */
+        .vocab-ex {
+            font-size: 0.95rem;
+            color: #666;
+            font-style: italic;
+            background-color: #FAFAFA;
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 3px solid var(--color-cream);
+            line-height: 1.4;
+        }
+
+        /* 測驗樣式 */
+        .quiz-box { text-align: center; padding: 40px 20px; }
+        .quiz-question { 
+            font-size: 1.8rem; 
+            margin-bottom: 25px; 
+            color: var(--color-primary-red); 
+            font-weight: bold; 
+            word-wrap: break-word;
+        }
+        .quiz-input {
+            width: 100%; padding: 15px; font-size: 1.2rem;
+            border: 2px solid #ddd; border-radius: var(--radius);
+            margin-bottom: 15px; text-align: center;
+            color: var(--color-deep-brown);
+            background-color: #FAFAFA;
+        }
+        .quiz-input:focus { outline: none; border-color: var(--color-chic-blue); background-color: #FFF; }
+        .feedback { margin-top: 15px; font-weight: bold; min-height: 1.5em; }
+        .feedback.correct { color: var(--color-chic-blue); }
+        .feedback.wrong { color: var(--color-burnt-orange); }
+
+        /* 歡迎與課程選擇標題 */
+        .section-header {
+            font-size: 1.2rem;
+            color: var(--color-deep-brown);
+            margin-bottom: 15px;
+            font-weight: bold;
+            border-left: 4px solid var(--color-primary-red);
+            padding-left: 10px;
+        }
+        .lesson-meta {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 5px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 點擊 Header 回到最上層課程列表 -->
+    <header onclick="goToLessonList()">
+        ENGLISH CLASS ☕
+    </header>
+
+    <div class="container">
+        
+        <!-- 1. 課程列表頁面 (Home) -->
+        <div id="p-lesson-list" class="page active">
+            <div class="section-header">Select a Lesson</div>
+            <div id="lessonContainer">
+                <!-- Javascript 會自動產生課程卡片 -->
+            </div>
+        </div>
+
+        <!-- 2. 課程選單頁面 (Dashboard) -->
+        <div id="p-dashboard" class="page">
+            <div class="card" style="text-align: center; background-color: var(--color-cream);">
+                <div class="date-tag" id="dashDate" style="color: var(--color-deep-brown);">Date</div>
+                <h2 id="dashTitle" style="color: var(--color-primary-red); margin: 10px 0;">Title</h2>
+                <p id="dashCount" style="color: var(--color-deep-brown); opacity: 0.7;">Vocabulary Count</p>
+            </div>
+
+            <button class="btn" onclick="showPage('p-article')">1. 📖 閱讀文章 (Article)</button>
+            <button class="btn" onclick="showPage('p-vocab')">2. 📝 單字學習 (Vocab)</button>
+            <button class="btn btn-outline" onclick="startQuiz('en-zh')">3. 🧠 測驗：英翻中</button>
+            <button class="btn btn-outline" onclick="startQuiz('zh-en')">4. 🗣️ 測驗：中翻英</button>
+            
+            <button class="btn btn-back" onclick="goToLessonList()">← Back to Lesson List</button>
+        </div>
+
+        <!-- 3. 文章頁面 -->
+        <div id="p-article" class="page">
+            <div class="card">
+                <span class="date-tag" id="artDate"></span>
+                <div class="article-title" id="artTitle"></div>
+                <div class="english-text" id="artContent"></div>
+                
+                <div style="border-top: 2px dashed #ddd; padding-top: 20px; margin-top: 20px;">
+                    <div style="font-weight: bold; color: var(--color-chic-blue); margin-bottom: 15px;">💬 Discussion Questions</div>
+                    <div id="artQuestions"></div>
+                </div>
+            </div>
+            <button class="btn btn-back" onclick="backToDashboard()">回課程選單</button>
+        </div>
+
+        <!-- 4. 單字頁面 -->
+        <div id="p-vocab" class="page">
+            <div class="card">
+                <h3 style="color: var(--color-burnt-orange); border-bottom: 2px solid var(--color-cream); padding-bottom: 10px;">Keywords & Examples</h3>
+                <div id="vocabList"></div>
+            </div>
+            <button class="btn btn-back" onclick="backToDashboard()">回課程選單</button>
+        </div>
+
+        <!-- 5. 測驗頁面 -->
+        <div id="p-quiz" class="page">
+            <div class="card quiz-box">
+                <div style="font-size: 0.9rem; color:#999; margin-bottom: 10px;">
+                    <span id="quizType">測驗模式</span>
+                </div>
+                <div class="quiz-question" id="q-word"></div>
+                <input type="text" id="q-input" class="quiz-input" placeholder="輸入答案..." autocomplete="off">
+                <button class="btn" onclick="checkAnswer()">送出答案 (Check)</button>
+                <div id="q-feedback" class="feedback"></div>
+                <button class="btn btn-outline" style="margin-top:10px; display:none;" id="btn-next" onclick="nextQuestion()">下一題 (Next)</button>
+            </div>
+            <button class="btn btn-back" onclick="backToDashboard()">放棄測驗</button>
+        </div>
+
+    </div>
+
+    <script>
+        /* --- 資料設定區：包含所有課程內容、單字與例句 --- */
+        const lessons = [
+            {
+                id: 1,
+                date: "2026.01.12",
+                title: "The Morning Cafe",
+                content: `The cafe is absolutely packed this morning, and the air is thick with the rich aroma of freshly roasted beans and steaming milk. While standing in line, I strike up some small talk with the person behind me to pass the time, saying, "The line is moving pretty slowly today, isn't it? I guess everyone needs their Monday morning pick-me-up." They nod in agreement while checking their watch. Suddenly, a man in a suit tries to cut in line right in front of me. I keep my cool, catch his eye, and calmly say, "Excuse me, the line starts back there." He looks embarrassed, mumbles an apology, and heads to the back of the queue.
+
+When I finally reach the counter, the barista greets me with a tired but friendly smile and asks, "What can I get for you?" I place my order clearly: "Can I get a large decaf latte, extra hot, with oat milk? And please hold the foam." The barista notes it down on a cup and asks if I'd like to try any of their freshly baked pastries. I take a quick look at the display case—the croissants look tempting—but I ultimately decline, saying, "I'm good, thanks."
+
+Then comes the payment. I ask, "Do you take contactless?" She points to the card reader, and I tap my card. It beeps instantly to confirm the transaction. She asks if I want a receipt printed, but I tell her, "No need, thanks! Have a good one." Finally, I head over to the crowded pickup counter. I find a small napkin and a stirrer at the condiment station while I wait for the barista to call my name. Once I grab my cup, I’m finally ready to start my day with my caffeine fix.`,
+                questions: [
+                    "Have you ever had the experience where someone tried to cut in line in front of you? How did you handle it?",
+                    "Do you usually need a caffeine fix to feel awake, or are you naturally energetic?",
+                    "Are you 'picky' about your order at a cafe, or do you take whatever is on the menu?",
+                    "Do you find it easy to strike up small talk with strangers?",
+                    "Do you prefer to tap your card for contactless transaction or use cash?"
+                ],
+                // 1/12 單字 (包含例句)
+                vocab: [
+                    { en: "thick", zh: "很濃、很厚", ex: "The fog was so thick I couldn't see the road." },
+                    { en: "aroma", zh: "香氣", ex: "The aroma of fresh coffee filled the kitchen." },
+                    { en: "roasted beans", zh: "烘焙過的咖啡豆", ex: "They use locally roasted beans here." },
+                    { en: "steaming milk", zh: "熱呼呼冒煙的牛奶", ex: "He poured steaming milk into the cup." },
+                    { en: "strike up", zh: "主動聊起來", ex: "I tried to strike up a conversation with her." },
+                    { en: "cut in line", zh: "插隊", ex: "It is rude to cut in line." },
+                    { en: "calmly", zh: "很冷靜地", ex: "She spoke calmly despite the chaos." },
+                    { en: "nod", zh: "點點頭", ex: "He gave a nod of agreement." },
+                    { en: "the line starts back there", zh: "隊伍在後面那邊喔", ex: "Excuse me, the line starts back there." },
+                    { en: "mumbles", zh: "小聲嘟囔", ex: "He mumbles when he is nervous." },
+                    { en: "queue", zh: "排隊的人龍", ex: "There was a long queue for the tickets." },
+                    { en: "barista", zh: "咖啡師", ex: "The barista made a heart on my latte." },
+                    { en: "greets", zh: "打招呼", ex: "The dog greets me at the door every day." },
+                    { en: "place my order", zh: "點餐", ex: "I am ready to place my order now." },
+                    { en: "extra hot", zh: "特別燙", ex: "Can I have my tea extra hot?" },
+                    { en: "hold the foam", zh: "不要奶泡", ex: "I'll have a latte, hold the foam." },
+                    { en: "pastries", zh: "甜點/糕點", ex: "They sell fresh pastries every morning." },
+                    { en: "display case", zh: "展示櫃", ex: "Look at the cakes in the display case." },
+                    { en: "ultimately", zh: "最後還是", ex: "Ultimately, the decision is yours." },
+                    { en: "decline", zh: "婉拒", ex: "I have to decline your invitation." },
+                    { en: "contactless", zh: "非接觸式", ex: "Do you accept contactless payment?" },
+                    { en: "tap my card", zh: "感應付款", ex: "Just tap your card on the machine." },
+                    { en: "transaction", zh: "交易完成", ex: "The transaction was successful." },
+                    { en: "over to the crowded", zh: "走到擁擠的地方", ex: "He walked over to the crowded bar." },
+                    { en: "pickup counter", zh: "取餐櫃檯", ex: "Please wait at the pickup counter." },
+                    { en: "napkin", zh: "紙巾", ex: "May I have a napkin, please?" },
+                    { en: "stirrer", zh: "攪拌棒", ex: "Use a stirrer to mix your sugar." },
+                    { en: "condiment station", zh: "調味品站", ex: "You can find sugar at the condiment station." },
+                    { en: "grab my cup", zh: "拿起我的咖啡", ex: "I grabbed my cup and left quickly." },
+                    { en: "caffeine fix", zh: "今日咖啡續命成功", ex: "I really need my afternoon caffeine fix." }
+                ]
+            },
+            {
+                id: 2,
+                date: "2026.01.16",
+                title: "The Weekend Costco Hustle",
+                content: `If you're brave enough to tackle Costco on a Saturday, you’d better have a game plan. I pulled into the lot at 10:00 AM, and it was already a madhouse. After doing three laps just to find a parking spot, I finally made it inside. I showed my membership card to the greeter and grabbed a cart—which, as always, felt like steering a small boat.
+
+The weekend energy at Costco is on another level. It’s not just shopping; it’s an event. I started in the produce cold room—that giant walk-in fridge where you freezing your toes off just to get a massive bag of organic kale. From there, I headed to the meat department. Since I was hosting a BBQ later, I picked up a "family-sized" pack of steaks.
+
+The real challenge on weekends is navigating the sample stations. Every corner had a long line of people waiting for a tiny square of pizza or a toothpick with a piece of sausage. It’s a total bottleneck, and you have to be careful not to get rear-ended by another giant cart while you're distracted by the snacks!
+
+I tried to stick to my shopping list, but I got distracted in the "Middle Aisle"—the place where Costco puts all the random stuff like kayaks, air fryers, and giant outdoor umbrellas. I ended up impulse buying a set of high-quality mixing bowls because the markdown price was just too good to pass up.
+
+By the time I hit the checkout line, it was backed up halfway to the back of the store. Luckily, the staff were hustling, and the line moved fast. I didn't bother with bags because Costco doesn't have them; I just grabbed a couple of sturdy discarded boxes from the pile near the registers. I finished the trip with the ultimate reward: a $1.50 hot dog and soda combo. It’s the only thing in the world that hasn't gone up in price!`,
+                questions: [
+                    "When you go shopping, do you prefer to go during the busy weekend or do you try to avoid the crowds at all costs?",
+                    "When you are in the 'Middle Aisle,' are you easily distracted by random items or are you a disciplined shopper?",
+                    "Do you think waiting in a long line for a 'tiny square of pizza' is worth it?",
+                    "What is your favorite 'guilty pleasure' snack or reward after a long day of running errands?"
+                ],
+                // 1/16 單字 (包含例句)
+                vocab: [
+                    { en: "a madhouse", zh: "亂哄哄的地方", ex: "The shopping mall was a madhouse on Christmas Eve." },
+                    { en: "to do laps", zh: "繞圈子", ex: "We had to do laps around the block to find parking." },
+                    { en: "steering a boat", zh: "像在開船一樣難操控", ex: "Pushing this heavy cart feels like steering a boat." },
+                    { en: "freezing your toes off", zh: "凍到腳趾掉下來", ex: "It's freezing your toes off in this cold room!" },
+                    { en: "a bottleneck", zh: "瓶頸、擁擠堵塞處", ex: "The construction caused a huge bottleneck on the highway." },
+                    { en: "to get rear-ended", zh: "被追撞", ex: "I got rear-ended at the stop light yesterday." },
+                    { en: "impulse buy", zh: "衝動購物", ex: "Those candy bars at the checkout are a classic impulse buy." },
+                    { en: "to pass up", zh: "錯過、放過機會", ex: "This deal is too good to pass up." }
+                ]
+            }
+        ];
+
+        /* --- 系統邏輯 --- */
+        let currentLesson = null; // 儲存當前選擇的課程物件
+
+        // 1. 初始化：產生課程列表
+        function initApp() {
+            const listContainer = document.getElementById('lessonContainer');
+            listContainer.innerHTML = ''; // 清空
+            
+            lessons.forEach((lesson, index) => {
+                listContainer.innerHTML += `
+                    <div class="card lesson-card" onclick="selectLesson(${index})">
+                        <span class="date-tag">${lesson.date}</span>
+                        <div style="font-size:1.3rem; font-weight:bold; color:var(--color-primary-red); margin: 5px 0;">${lesson.title}</div>
+                        <div class="lesson-meta">${lesson.vocab.length} Words</div>
+                    </div>
+                `;
+            });
+        }
+
+        // 2. 選擇課程：載入該課程的資料
+        function selectLesson(index) {
+            currentLesson = lessons[index];
+            
+            // 更新選單標題資訊
+            document.getElementById('dashDate').innerText = currentLesson.date;
+            document.getElementById('dashTitle').innerText = currentLesson.title;
+            document.getElementById('dashCount').innerText = `${currentLesson.vocab.length} Key Vocabulary Words`;
+
+            // 更新文章內容
+            document.getElementById('artDate').innerText = currentLesson.date;
+            document.getElementById('artTitle').innerText = currentLesson.title;
+            document.getElementById('artContent').innerHTML = currentLesson.content.replace(/\n\n/g, '<br><br>');
+            
+            // 更新討論問題
+            const qContainer = document.getElementById('artQuestions');
+            qContainer.innerHTML = '';
+            currentLesson.questions.forEach(q => {
+                qContainer.innerHTML += `<div style="margin-bottom:10px; padding-left:10px; border-left:3px solid var(--color-burnt-orange); color:#555;">${q}</div>`;
+            });
+
+            // 更新單字列表 (含例句)
+            const vContainer = document.getElementById('vocabList');
+            vContainer.innerHTML = '';
+            currentLesson.vocab.forEach(item => {
+                vContainer.innerHTML += `
+                    <div class="vocab-item">
+                        <div class="vocab-header">
+                            <span class="vocab-en">${item.en}</span>
+                            <span class="vocab-zh">${item.zh}</span>
+                        </div>
+                        <div class="vocab-ex">Ex: ${item.ex}</div>
+                    </div>
+                `;
+            });
+
+            showPage('p-dashboard');
+        }
+
+        /* --- 頁面導航功能 --- */
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0, 0); 
+            if(pageId === 'p-dashboard') resetQuizUI();
+        }
+
+        function goToLessonList() {
+            showPage('p-lesson-list');
+        }
+
+        function backToDashboard() {
+            showPage('p-dashboard');
+        }
+
+        /* --- 測驗系統邏輯 (針對當前課程) --- */
+        let currentQuizMode = ''; 
+        let currentTargetWord = null;
+
+        function startQuiz(mode) {
+            currentQuizMode = mode;
+            document.getElementById('quizType').innerText = mode === 'en-zh' ? '請翻譯成中文' : 'Translate to English';
+            showPage('p-quiz');
+            nextQuestion();
+        }
+
+        function nextQuestion() {
+            resetQuizUI();
+            // 只從當前課程 (currentLesson) 的單字中抽取
+            const randomIndex = Math.floor(Math.random() * currentLesson.vocab.length);
+            currentTargetWord = currentLesson.vocab[randomIndex];
+            
+            if (currentQuizMode === 'en-zh') {
+                document.getElementById('q-word').innerText = currentTargetWord.en;
+            } else {
+                document.getElementById('q-word').innerText = currentTargetWord.zh;
+            }
+        }
+
+        function checkAnswer() {
+            const inputVal = document.getElementById('q-input').value.trim().toLowerCase();
+            const feedbackEl = document.getElementById('q-feedback');
+            const nextBtn = document.getElementById('btn-next');
+            
+            let isCorrect = false;
+
+            if (currentQuizMode === 'en-zh') {
+                // 中文檢查：模糊比對
+                if ((currentTargetWord.zh.includes(inputVal) && inputVal.length > 1) || inputVal === currentTargetWord.zh) {
+                    isCorrect = true;
+                }
+            } else {
+                // 英文檢查：精確比對
+                if (inputVal === currentTargetWord.en.toLowerCase()) {
+                    isCorrect = true;
+                }
+            }
+
+            if (isCorrect) {
+                feedbackEl.innerText = "🎉 Correct! 答對了！";
+                feedbackEl.className = "feedback correct";
+            } else {
+                feedbackEl.innerText = `❌ 答案是: ${currentQuizMode === 'en-zh' ? currentTargetWord.zh : currentTargetWord.en}`;
+                feedbackEl.className = "feedback wrong";
+            }
+            nextBtn.style.display = "block";
+        }
+
+        function resetQuizUI() {
+            document.getElementById('q-input').value = '';
+            document.getElementById('q-feedback').innerText = '';
+            document.getElementById('btn-next').style.display = 'none';
+        }
+
+        // 程式啟動時，初始化課程列表
+        initApp();
+
+    </script>
+</body>
+</html>
