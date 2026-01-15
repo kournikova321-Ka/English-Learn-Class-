@@ -212,7 +212,6 @@
             margin-top: 8px;
         }
         
-        /* 法文例句樣式 */
         .vocab-ex-fr {
             font-size: 0.95rem;
             color: #7D2027; /* 酒紅 */
@@ -426,7 +425,7 @@
             }
         }
 
-        /* --- 資料設定區 (包含法文單字與例句) --- */
+        /* --- 資料設定區 --- */
         const lessons = [
             {
                 id: 1,
@@ -497,14 +496,30 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
                     "What is your favorite 'guilty pleasure' snack?"
                 ],
                 vocab: [
-                    { en: "a madhouse", zh: "亂哄哄的地方", fr: "une maison de fous", ex: "The shopping mall was a madhouse on Christmas Eve.", fr_ex: "Le centre commercial était une maison de fous la veille de Noël." },
-                    { en: "to do laps", zh: "繞圈子", fr: "faire des tours", ex: "We had to do laps around the block to find parking.", fr_ex: "Nous avons dû faire des tours du pâté de maisons pour trouver une place." },
-                    { en: "steering a boat", zh: "像在開船一樣難操控", fr: "manœuvrer un bateau", ex: "Pushing this heavy cart feels like steering a boat.", fr_ex: "Pousser ce chariot lourd donne l'impression de manœuvrer un bateau." },
-                    { en: "freezing your toes off", zh: "凍到腳趾掉下來", fr: "se geler les orteils", ex: "It's freezing your toes off in this cold room!", fr_ex: "On se gèle les orteils dans cette chambre froide !" },
-                    { en: "a bottleneck", zh: "瓶頸、擁擠堵塞處", fr: "un goulot d'étranglement", ex: "The construction caused a huge bottleneck on the highway.", fr_ex: "Les travaux ont causé un énorme goulot d'étranglement sur l'autoroute." },
-                    { en: "to get rear-ended", zh: "被追撞", fr: "se faire rentrer dedans", ex: "I got rear-ended at the stop light yesterday.", fr_ex: "Je me suis fait rentrer dedans au feu rouge hier." },
-                    { en: "impulse buy", zh: "衝動購物", fr: "achat impulsif", ex: "Those candy bars at the checkout are a classic impulse buy.", fr_ex: "Ces barres chocolatées à la caisse sont un achat impulsif classique." },
-                    { en: "to pass up", zh: "錯過、放過機會", fr: "laisser passer", ex: "This deal is too good to pass up.", fr_ex: "Cette offre est trop belle pour la laisser passer." }
+                    { en: "tackle", zh: "處理／解決", fr: "s'attaquer à", ex: "If you're brave enough to tackle Costco on a Saturday...", fr_ex: "Si vous êtes assez courageux pour vous attaquer à Costco un samedi..." },
+                    { en: "pulled into", zh: "被捲入／被拉進 (駛入)", fr: "entré dans", ex: "I pulled into the lot at 10:00 AM.", fr_ex: "Je suis entré dans le parking à 10h00." },
+                    { en: "madhouse", zh: "瘋狂混亂的地方", fr: "maison de fous", ex: "The store was a total madhouse.", fr_ex: "Le magasin était une maison de fous totale." },
+                    { en: "laps", zh: "圈數／來回", fr: "tours", ex: "I did three laps to find a parking spot.", fr_ex: "J'ai fait trois tours pour trouver une place de parking." },
+                    { en: "steering a small boat", zh: "駕駛一艘小船", fr: "manœuvrer un petit bateau", ex: "The cart felt like steering a small boat.", fr_ex: "Le chariot donnait l'impression de manœuvrer un petit bateau." },
+                    { en: "produce cold room", zh: "蔬果冷藏室", fr: "chambre froide des produits frais", ex: "I started in the produce cold room.", fr_ex: "J'ai commencé dans la chambre froide des produits frais." },
+                    { en: "freezing your toes off", zh: "冷到腳趾快沒知覺", fr: "se geler les orteils", ex: "You are freezing your toes off in there.", fr_ex: "On se gèle les orteils là-dedans." },
+                    { en: "massive bag", zh: "超大一袋", fr: "sac énorme", ex: "I grabbed a massive bag of kale.", fr_ex: "J'ai pris un sac énorme de chou frisé." },
+                    { en: "kale", zh: "羽衣甘藍", fr: "chou frisé", ex: "Organic kale is healthy.", fr_ex: "Le chou frisé biologique est sain." },
+                    { en: "hosting a BBQ", zh: "舉辦烤肉派對", fr: "organiser un barbecue", ex: "I was hosting a BBQ later that day.", fr_ex: "J'organisais un barbecue plus tard ce jour-là." },
+                    { en: "navigating", zh: "穿梭／應付", fr: "naviguer", ex: "Navigating the sample stations is hard.", fr_ex: "Naviguer entre les stations de dégustation est difficile." },
+                    { en: "bottleneck", zh: "瓶頸／壅塞點", fr: "goulot d'étranglement", ex: "It creates a total bottleneck.", fr_ex: "Cela crée un goulot d'étranglement total." },
+                    { en: "rear-ended", zh: "被追撞", fr: "percuté par l'arrière", ex: "Don't get rear-ended by another cart!", fr_ex: "Ne vous faites pas percuter par l'arrière par un autre chariot !" },
+                    { en: "distracted", zh: "分心", fr: "distrait", ex: "I was distracted by the snacks.", fr_ex: "J'étais distrait par les collations." },
+                    { en: "Middle Aisle", zh: "中間走道", fr: "allée centrale", ex: "Costco puts random stuff in the Middle Aisle.", fr_ex: "Costco met des choses aléatoires dans l'allée centrale." },
+                    { en: "kayaks", zh: "獨木舟", fr: "kayaks", ex: "They even sell kayaks.", fr_ex: "Ils vendent même des kayaks." },
+                    { en: "air fryers", zh: "氣炸鍋", fr: "friteuses à air", ex: "Air fryers are on sale.", fr_ex: "Les friteuses à air sont en solde." },
+                    { en: "impulse buying", zh: "衝動購物", fr: "achat impulsif", ex: "I ended up impulse buying a bowl set.", fr_ex: "J'ai fini par faire un achat impulsif d'un ensemble de bols." },
+                    { en: "markdown price", zh: "降價／折扣價", fr: "prix démarqué", ex: "The markdown price was too good.", fr_ex: "Le prix démarqué était trop beau." },
+                    { en: "good to pass up", zh: "好到讓人無法錯過", fr: "trop beau pour laisser passer", ex: "The deal was too good to pass up.", fr_ex: "L'offre était trop belle pour la laisser passer." },
+                    { en: "checkout line", zh: "結帳隊伍", fr: "file d'attente à la caisse", ex: "The checkout line was backed up.", fr_ex: "La file d'attente à la caisse était bloquée." },
+                    { en: "hustling", zh: "忙碌奔波", fr: "s'activer", ex: "The staff were hustling to help customers.", fr_ex: "Le personnel s'activait pour aider les clients." },
+                    { en: "discarded boxes", zh: "被丟棄的紙箱", fr: "boîtes jetées", ex: "I grabbed some sturdy discarded boxes.", fr_ex: "J'ai pris quelques boîtes jetées solides." },
+                    { en: "pile near the registers", zh: "收銀台附近的一堆(東西)", fr: "pile près des caisses", ex: "The boxes are in a pile near the registers.", fr_ex: "Les boîtes sont dans une pile près des caisses." }
                 ]
             }
         ];
@@ -687,6 +702,7 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
                 }
             } else if (currentQuizMode === 'en-fr') {
                 correctAnswer = currentTargetWord.fr;
+                // 法文比對，忽略大小寫
                 if (inputVal === correctAnswer.toLowerCase()) {
                     isCorrect = true;
                 }
@@ -701,6 +717,7 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
                 feedbackEl.className = "feedback wrong";
             }
             
+            // 答錯時，自動唸出正確答案
             if (!isCorrect) {
                 if (currentQuizMode === 'zh-en') speak(currentTargetWord.en, 'en-US');
                 if (currentQuizMode === 'en-fr') speak(currentTargetWord.fr, 'fr-FR');
