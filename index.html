@@ -117,6 +117,24 @@
             color: var(--color-deep-brown);
             margin-top: 30px;
         }
+        
+        /* 文章播放按鈕 */
+        .btn-audio {
+            background-color: var(--color-primary-red);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .btn-audio:active { transform: scale(0.95); }
 
         /* 文字樣式 */
         .date-tag {
@@ -131,7 +149,7 @@
         .article-title {
             color: var(--color-burnt-orange);
             font-size: 1.5rem;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             font-weight: 800;
             line-height: 1.3;
         }
@@ -141,6 +159,28 @@
             margin-bottom: 30px;
             color: #4a3b38;
         }
+
+        /* 發音技巧區塊 */
+        .pronunciation-box {
+            background-color: #f0f8ff;
+            border-left: 4px solid var(--color-chic-blue);
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 4px;
+        }
+        .pronunciation-title {
+            font-weight: bold;
+            color: var(--color-chic-blue);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .pronunciation-item {
+            margin-bottom: 10px;
+            border-bottom: 1px dashed #cbd5e0;
+            padding-bottom: 8px;
+        }
+        .pronunciation-item:last-child { border-bottom: none; }
 
         /* 單字列表樣式 */
         .vocab-item {
@@ -186,7 +226,6 @@
             font-weight: bold;
         }
         
-        /* 法文標籤樣式 */
         .vocab-fr-row {
             display: flex;
             justify-content: flex-end;
@@ -214,9 +253,9 @@
         
         .vocab-ex-fr {
             font-size: 0.95rem;
-            color: #7D2027; /* 酒紅 */
+            color: #7D2027; 
             font-style: italic;
-            background-color: #FFF5F5; /* 淡紅背景 */
+            background-color: #FFF5F5; 
             padding: 10px;
             border-radius: 8px;
             border-left: 3px solid var(--color-primary-red);
@@ -330,9 +369,18 @@
         <div id="p-article" class="page">
             <div class="card">
                 <span class="date-tag" id="artDate"></span>
-                <div class="article-title" id="artTitle" onclick="speak(this.innerText, 'en-US')"></div>
-                <div style="font-size:0.8rem; color:#aaa; margin-top:-15px; margin-bottom:20px;">(點擊標題可朗讀)</div>
+                <div class="article-title" id="artTitle"></div>
+                
+                <!-- 全文朗讀按鈕 -->
+                <button class="btn-audio" onclick="playArticleAudio()">
+                    <span>🔊 播放文章朗讀 (Play Audio)</span>
+                </button>
+
                 <div class="english-text" id="artContent"></div>
+                
+                <!-- 發音技巧區塊 -->
+                <div id="artPronunciation"></div>
+
                 <div style="border-top: 2px dashed #ddd; padding-top: 20px; margin-top: 20px;">
                     <div style="font-weight: bold; color: var(--color-chic-blue); margin-bottom: 15px;">💬 Discussion Questions</div>
                     <div id="artQuestions"></div>
@@ -404,7 +452,12 @@
         /* --- 語音發音功能 --- */
         function speak(text, lang = 'en-US') {
             if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
+                // 如果已經在說話，點擊則停止
+                if (window.speechSynthesis.speaking) {
+                    window.speechSynthesis.cancel();
+                    // 如果點擊的是同一個內容，就只是停止；如果是新的內容，下面會繼續播放
+                }
+
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.lang = lang; 
                 utterance.rate = 0.9;     
@@ -422,6 +475,20 @@
                 window.speechSynthesis.speak(utterance);
             } else {
                 console.log("Speech API not supported");
+            }
+        }
+
+        // 停止所有發音
+        function stopAudio() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+        }
+
+        // 播放整篇文章
+        function playArticleAudio() {
+            if(currentLesson) {
+                speak(currentLesson.content, 'en-US');
             }
         }
 
@@ -521,6 +588,47 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
                     { en: "discarded boxes", zh: "被丟棄的紙箱", fr: "boîtes jetées", ex: "I grabbed some sturdy discarded boxes.", fr_ex: "J'ai pris quelques boîtes jetées solides." },
                     { en: "pile near the registers", zh: "收銀台附近的一堆(東西)", fr: "pile près des caisses", ex: "The boxes are in a pile near the registers.", fr_ex: "Les boîtes sont dans une pile près des caisses." }
                 ]
+            },
+            {
+                id: 3,
+                date: "2026.01.19",
+                title: "Welcome to my Place!",
+                content: `Come on in—feel free to kick your shoes off at the door. We like to keep the floors nice and clean. This is the living room, so make yourself comfortable on the sofa while I show you around.
+
+Over here is the kitchen. We’ve just upgraded to an induction cooktop, which has honestly been a game changer—it’s so easy to clean. There’s also a smart fridge and a built-in convection oven.
+
+Would you like a coffee? I can do a pour-over or a flat white with the espresso machine and built-in milk frother. While that’s brewing, let me show you this room—this is Marc’s study, he’s got a great setup!
+
+Alright, let’s grab our coffee and relax.`,
+                questions: [
+                    "When did you last have guests over?",
+                    "Which kitchen appliance do you use most at home, and why?",
+                    "Do you prefer a tidy or relaxed home environment? How does that affect how you design or organise your space?",
+                    "When guests visit you, what do you usually do together to relax?"
+                ],
+                pronunciation: [
+                    { title: "Long /i/ vs. Short /ɪ/", pairs: "clean, meat, receipt | milk, fridge, kick" },
+                    { title: "Butterfly /æ/ vs. Short /ɛ/", pairs: "packed, madhouse (大口) | extra, setup (中口)" },
+                    { title: "Close /u/ vs. Lax /ʊ/", pairs: "shoes, smooth | cooktop, look" }
+                ],
+                vocab: [
+                    { en: "kick off", zh: "脫掉(鞋子)", fr: "enlever", ex: "Feel free to kick your shoes off at the door.", fr_ex: "N'hésitez pas à enlever vos chaussures à la porte." },
+                    { en: "comfortable", zh: "舒適的", fr: "confortable", ex: "Make yourself comfortable on the sofa.", fr_ex: "Installez-vous confortablement sur le canapé." },
+                    { en: "show around", zh: "帶...參觀", fr: "faire visiter", ex: "I will show you around the house.", fr_ex: "Je vais vous faire visiter la maison." },
+                    { en: "upgrade", zh: "升級", fr: "améliorer", ex: "We just upgraded our kitchen.", fr_ex: "Nous venons d'améliorer notre cuisine." },
+                    { en: "induction cooktop", zh: "電磁爐", fr: "plaque à induction", ex: "The induction cooktop is easy to clean.", fr_ex: "La plaque à induction est facile à nettoyer." },
+                    { en: "game changer", zh: "改變局面的事物(指很好用)", fr: "change la donne", ex: "This new oven is a game changer.", fr_ex: "Ce nouveau four change la donne." },
+                    { en: "smart fridge", zh: "智慧冰箱", fr: "réfrigérateur intelligent", ex: "The smart fridge tells me what to buy.", fr_ex: "Le réfrigérateur intelligent me dit quoi acheter." },
+                    { en: "built-in", zh: "嵌入式的", fr: "encastré", ex: "We have a built-in convection oven.", fr_ex: "Nous avons un four à convection encastré." },
+                    { en: "convection oven", zh: "對流烤箱", fr: "four à convection", ex: "A convection oven cooks faster.", fr_ex: "Un four à convection cuit plus vite." },
+                    { en: "pour-over", zh: "手沖咖啡", fr: "café filtre", ex: "I can do a pour-over for you.", fr_ex: "Je peux vous préparer un café filtre." },
+                    { en: "flat white", zh: "馥芮白(咖啡)", fr: "café au lait", ex: "Do you prefer a latte or a flat white?", fr_ex: "Préférez-vous un latte ou un café au lait ?" },
+                    { en: "espresso machine", zh: "義式濃縮咖啡機", fr: "machine à expresso", ex: "We use the espresso machine every morning.", fr_ex: "Nous utilisons la machine à expresso tous les matins." },
+                    { en: "milk frother", zh: "奶泡機", fr: "mousseur à lait", ex: "The milk frother makes great foam.", fr_ex: "Le mousseur à lait fait une excellente mousse." },
+                    { en: "brew", zh: "沖煮/釀造", fr: "infuser", ex: "The coffee is brewing now.", fr_ex: "Le café est en train d'infuser." },
+                    { en: "study", zh: "書房", fr: "bureau", ex: "He is working in his study.", fr_ex: "Il travaille dans son bureau." },
+                    { en: "setup", zh: "設備/佈置", fr: "installation", ex: "He's got a great computer setup.", fr_ex: "Il a une excellente installation informatique." }
+                ]
             }
         ];
 
@@ -553,6 +661,22 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
             document.getElementById('artTitle').innerText = currentLesson.title;
             document.getElementById('artContent').innerHTML = currentLesson.content.replace(/\n\n/g, '<br><br>');
             
+            // 處理發音技巧區塊 (Pronunciation Tips)
+            const pronContainer = document.getElementById('artPronunciation');
+            pronContainer.innerHTML = '';
+            if (currentLesson.pronunciation && currentLesson.pronunciation.length > 0) {
+                let html = '<div class="pronunciation-box"><div class="pronunciation-title">🗣️ Pronunciation Tips (KK音標)</div>';
+                currentLesson.pronunciation.forEach(p => {
+                    html += `
+                        <div class="pronunciation-item">
+                            <div><strong>${p.title}</strong></div>
+                            <div style="color:#555; margin-top:4px;">${p.pairs}</div>
+                        </div>`;
+                });
+                html += '</div>';
+                pronContainer.innerHTML = html;
+            }
+
             const qContainer = document.getElementById('artQuestions');
             qContainer.innerHTML = '';
             currentLesson.questions.forEach(q => {
@@ -610,6 +734,9 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
 
         /* --- 頁面導航 --- */
         function showPage(pageId) {
+            // 每次切換頁面都停止聲音
+            stopAudio();
+            
             document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             window.scrollTo(0, 0); 
@@ -702,7 +829,6 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
                 }
             } else if (currentQuizMode === 'en-fr') {
                 correctAnswer = currentTargetWord.fr;
-                // 法文比對，忽略大小寫
                 if (inputVal === correctAnswer.toLowerCase()) {
                     isCorrect = true;
                 }
@@ -717,7 +843,6 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
                 feedbackEl.className = "feedback wrong";
             }
             
-            // 答錯時，自動唸出正確答案
             if (!isCorrect) {
                 if (currentQuizMode === 'zh-en') speak(currentTargetWord.en, 'en-US');
                 if (currentQuizMode === 'en-fr') speak(currentTargetWord.fr, 'fr-FR');
