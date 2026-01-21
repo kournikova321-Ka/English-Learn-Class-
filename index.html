@@ -452,10 +452,8 @@
         /* --- 語音發音功能 --- */
         function speak(text, lang = 'en-US') {
             if ('speechSynthesis' in window) {
-                // 如果已經在說話，點擊則停止
                 if (window.speechSynthesis.speaking) {
                     window.speechSynthesis.cancel();
-                    // 如果點擊的是同一個內容，就只是停止；如果是新的內容，下面會繼續播放
                 }
 
                 const utterance = new SpeechSynthesisUtterance(text);
@@ -492,7 +490,7 @@
             }
         }
 
-        /* --- 資料設定區 --- */
+        /* --- 資料設定區 (已更新第三堂課單字) --- */
         const lessons = [
             {
                 id: 1,
@@ -612,22 +610,17 @@ Alright, let’s grab our coffee and relax.`,
                     { title: "Close /u/ vs. Lax /ʊ/", pairs: "shoes, smooth | cooktop, look" }
                 ],
                 vocab: [
-                    { en: "kick off", zh: "脫掉(鞋子)", fr: "enlever", ex: "Feel free to kick your shoes off at the door.", fr_ex: "N'hésitez pas à enlever vos chaussures à la porte." },
-                    { en: "comfortable", zh: "舒適的", fr: "confortable", ex: "Make yourself comfortable on the sofa.", fr_ex: "Installez-vous confortablement sur le canapé." },
-                    { en: "show around", zh: "帶...參觀", fr: "faire visiter", ex: "I will show you around the house.", fr_ex: "Je vais vous faire visiter la maison." },
-                    { en: "upgrade", zh: "升級", fr: "améliorer", ex: "We just upgraded our kitchen.", fr_ex: "Nous venons d'améliorer notre cuisine." },
+                    { en: "kick your shoes off", zh: "踢掉鞋子/脫鞋", fr: "enlever ses chaussures", ex: "Feel free to kick your shoes off at the door.", fr_ex: "N'hésitez pas à enlever vos chaussures à la porte." },
+                    { en: "Over here", zh: "在這邊", fr: "par ici", ex: "Over here is the kitchen.", fr_ex: "Par ici, c'est la cuisine." },
                     { en: "induction cooktop", zh: "電磁爐", fr: "plaque à induction", ex: "The induction cooktop is easy to clean.", fr_ex: "La plaque à induction est facile à nettoyer." },
-                    { en: "game changer", zh: "改變局面的事物(指很好用)", fr: "change la donne", ex: "This new oven is a game changer.", fr_ex: "Ce nouveau four change la donne." },
-                    { en: "smart fridge", zh: "智慧冰箱", fr: "réfrigérateur intelligent", ex: "The smart fridge tells me what to buy.", fr_ex: "Le réfrigérateur intelligent me dit quoi acheter." },
-                    { en: "built-in", zh: "嵌入式的", fr: "encastré", ex: "We have a built-in convection oven.", fr_ex: "Nous avons un four à convection encastré." },
-                    { en: "convection oven", zh: "對流烤箱", fr: "four à convection", ex: "A convection oven cooks faster.", fr_ex: "Un four à convection cuit plus vite." },
-                    { en: "pour-over", zh: "手沖咖啡", fr: "café filtre", ex: "I can do a pour-over for you.", fr_ex: "Je peux vous préparer un café filtre." },
-                    { en: "flat white", zh: "馥芮白(咖啡)", fr: "café au lait", ex: "Do you prefer a latte or a flat white?", fr_ex: "Préférez-vous un latte ou un café au lait ?" },
-                    { en: "espresso machine", zh: "義式濃縮咖啡機", fr: "machine à expresso", ex: "We use the espresso machine every morning.", fr_ex: "Nous utilisons la machine à expresso tous les matins." },
-                    { en: "milk frother", zh: "奶泡機", fr: "mousseur à lait", ex: "The milk frother makes great foam.", fr_ex: "Le mousseur à lait fait une excellente mousse." },
-                    { en: "brew", zh: "沖煮/釀造", fr: "infuser", ex: "The coffee is brewing now.", fr_ex: "Le café est en train d'infuser." },
-                    { en: "study", zh: "書房", fr: "bureau", ex: "He is working in his study.", fr_ex: "Il travaille dans son bureau." },
-                    { en: "setup", zh: "設備/佈置", fr: "installation", ex: "He's got a great computer setup.", fr_ex: "Il a une excellente installation informatique." }
+                    { en: "smart fridge", zh: "智慧冰箱", fr: "réfrigérateur intelligent", ex: "There is a smart fridge in the kitchen.", fr_ex: "Il y a un réfrigérateur intelligent dans la cuisine." },
+                    { en: "built-in convection oven", zh: "嵌入式對流烤箱", fr: "four à convection encastré", ex: "We have a built-in convection oven.", fr_ex: "Nous avons un four à convection encastré." },
+                    { en: "pour-over", zh: "手沖咖啡", fr: "café filtre (manuel)", ex: "I can do a pour-over for you.", fr_ex: "Je peux vous préparer un café filtre." },
+                    { en: "frother", zh: "奶泡機/起泡器", fr: "mousseur", ex: "Use the milk frother to make foam.", fr_ex: "Utilisez le mousseur à lait pour faire de la mousse." },
+                    { en: "brewing", zh: "沖煮中/釀造中", fr: "en train d'infuser", ex: "The coffee is brewing right now.", fr_ex: "Le café est en train d'infuser en ce moment." },
+                    { en: "appliance", zh: "家用電器", fr: "appareil électroménager", ex: "Which kitchen appliance do you use most?", fr_ex: "Quel appareil de cuisine utilisez-vous le plus ?" },
+                    { en: "tidy", zh: "整潔的", fr: "rangé / ordonné", ex: "Do you prefer a tidy home environment?", fr_ex: "Préférez-vous un environnement domestique rangé ?" },
+                    { en: "affect", zh: "影響", fr: "affecter / influencer", ex: "How does that affect your design?", fr_ex: "Comment cela affecte-t-il votre conception ?" }
                 ]
             }
         ];
