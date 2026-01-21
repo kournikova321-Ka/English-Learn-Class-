@@ -171,16 +171,32 @@
         .pronunciation-title {
             font-weight: bold;
             color: var(--color-chic-blue);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
         }
-        .pronunciation-item {
-            margin-bottom: 10px;
-            border-bottom: 1px dashed #cbd5e0;
-            padding-bottom: 8px;
+        
+        /* KK音標表格 */
+        .kk-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
         }
-        .pronunciation-item:last-child { border-bottom: none; }
+        .kk-table th, .kk-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .kk-table th {
+            background-color: #e6f7ff;
+            color: var(--color-chic-blue);
+        }
+        .kk-symbol {
+            font-family: "Lucida Sans Unicode", "Arial Unicode MS", sans-serif;
+            color: var(--color-primary-red);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
 
         /* 單字列表樣式 */
         .vocab-item {
@@ -490,7 +506,7 @@
             }
         }
 
-        /* --- 資料設定區 (已更新第三堂課單字) --- */
+        /* --- 資料設定區 (已加入第四堂課) --- */
         const lessons = [
             {
                 id: 1,
@@ -502,7 +518,7 @@ When I finally reach the counter, the barista greets me with a tired but friendl
 
 Then comes the payment. I ask, "Do you take contactless?" She points to the card reader, and I tap my card. It beeps instantly to confirm the transaction. She asks if I want a receipt printed, but I tell her, "No need, thanks! Have a good one." Finally, I head over to the crowded pickup counter. I find a small napkin and a stirrer at the condiment station while I wait for the barista to call my name. Once I grab my cup, I’m finally ready to start my day with my caffeine fix.`,
                 questions: [
-                    "Have you ever had the experience where someone tried to cut in line in front of you?",
+                    "Have you ever had the experience where someone tried to cut in line in front of you? How did you handle it?",
                     "Do you usually need a caffeine fix to feel awake, or are you naturally energetic?",
                     "Are you 'picky' about your order at a cafe, or do you take whatever is on the menu?",
                     "Do you find it easy to strike up small talk with strangers?",
@@ -622,6 +638,63 @@ Alright, let’s grab our coffee and relax.`,
                     { en: "tidy", zh: "整潔的", fr: "rangé / ordonné", ex: "Do you prefer a tidy home environment?", fr_ex: "Préférez-vous un environnement domestique rangé ?" },
                     { en: "affect", zh: "影響", fr: "affecter / influencer", ex: "How does that affect your design?", fr_ex: "Comment cela affecte-t-il votre conception ?" }
                 ]
+            },
+            {
+                id: 4,
+                date: "2026.01.23",
+                title: "Heading to San Francisco!",
+                content: `Staff: "Come on forward! Please toss your bags onto the scale. Since you're flying to San Francisco today, just make yourself comfortable for a second while I pull up your booking."
+
+Staff: "Over here is the updated security info. We’ve just upgraded to a biometric face-scanner —it’s so fast and easy to get through. There’s also a self-service kiosk over there if you ever need to print a built-in baggage tag yourself."
+
+Staff: "Would you like an upgrade today? I can do an Economy Plus seat with the extra legroom or a flat-bed seat in Business Class. While your boarding pass is printing, let me show you the terminal map—this is the United Club Lounge, it's got a great setup for a quick snack!"
+
+Staff: "Alright, let's grab your documents and you're all set for SFO. Have a safe flight!"`,
+                questions: [
+                    "When did you last visit the US? Do you like the US?",
+                    "Which airport facility do you use most?",
+                    "What is your travel style?",
+                    "When you land in San Francisco, what do you usually do to relax?"
+                ],
+                pronunciation: [
+                    { title: "KK 音標 - 母音 (Vowels)", pairs: `
+                        <table class="kk-table">
+                            <tr><th>[ɪ]</th><td>比「一」短，嘴角放鬆 (sit, pig)</td></tr>
+                            <tr><th>[ɛ]</th><td>像中文「ㄝ」，嘴角略向外撇 (bed, ten)</td></tr>
+                            <tr><th>[æ]</th><td>蝴蝶音，嘴巴開最大 (cat, bag)</td></tr>
+                            <tr><th>[ɑ]</th><td>嘴巴呈長圓形 (hot, box)</td></tr>
+                            <tr><th>[ʌ]</th><td>短促的「啊」 (cup, bus)</td></tr>
+                            <tr><th>[ʊ]</th><td>比「烏」短，不嘟嘴 (foot, book)</td></tr>
+                            <tr><th>[ə]</th><td>懶人音 (about, sofa)</td></tr>
+                            <tr><th>[i]</th><td>微笑的「一」 (see, eat)</td></tr>
+                            <tr><th>[e]</th><td>像「ㄟ～」 (name, day)</td></tr>
+                            <tr><th>[u]</th><td>圓唇的「屋」 (moon, blue)</td></tr>
+                            <tr><th>[o]</th><td>像「歐～」 (go, home)</td></tr>
+                            <tr><th>[aɪ]</th><td>像「愛」 (my, kite)</td></tr>
+                            <tr><th>[aʊ]</th><td>像「凹」 (how, now)</td></tr>
+                            <tr><th>[ɔɪ]	像「歐一」 (boy, noise)</td></tr>
+                            <tr><th>[ɝ]</th><td>重音捲舌 (bird, her)</td></tr>
+                            <tr><th>[ɚ]</th><td>輕音捲舌 (teacher)</td></tr>
+                        </table>
+                    ` }
+                ],
+                vocab: [
+                    { en: "toss your bags", zh: "把行李放上來/扔上來", fr: "déposer vos sacs", ex: "Please toss your bags onto the scale.", fr_ex: "Veuillez déposer vos sacs sur la balance." },
+                    { en: "pull up your booking", zh: "調出你的訂位資料", fr: "sortir votre réservation", ex: "Let me pull up your booking.", fr_ex: "Laissez-moi sortir votre réservation." },
+                    { en: "built-in", zh: "設施自帶的/內建的", fr: "intégré", ex: "It has a built-in baggage tag printer.", fr_ex: "Il a une imprimante d'étiquettes de bagages intégrée." },
+                    { en: "setup", zh: "裝潢佈置/設置", fr: "installation", ex: "The lounge has a great setup.", fr_ex: "Le salon a une excellente installation." },
+                    { en: "biometric", zh: "生物識別的", fr: "biométrique", ex: "We use biometric scanners now.", fr_ex: "Nous utilisons maintenant des scanners biométriques." },
+                    { en: "face-scanner", zh: "臉部掃描儀", fr: "scanner facial", ex: "Look at the face-scanner, please.", fr_ex: "Regardez le scanner facial, s'il vous plaît." },
+                    { en: "self-service kiosk", zh: "自助服務機", fr: "borne libre-service", ex: "Use the self-service kiosk to check in.", fr_ex: "Utilisez la borne libre-service pour vous enregistrer." },
+                    { en: "upgrade", zh: "升級/升等", fr: "surclassement", ex: "Would you like an upgrade today?", fr_ex: "Souhaitez-vous un surclassement aujourd'hui ?" },
+                    { en: "Economy Plus", zh: "豪華經濟艙", fr: "Économie Plus", ex: "Economy Plus has more space.", fr_ex: "Économie Plus a plus d'espace." },
+                    { en: "legroom", zh: "腿部空間", fr: "espace pour les jambes", ex: "I need extra legroom.", fr_ex: "J'ai besoin de plus d'espace pour les jambes." },
+                    { en: "flat-bed seat", zh: "全平躺座椅", fr: "siège-lit", ex: "Business class has flat-bed seats.", fr_ex: "La classe affaires a des sièges-lits." },
+                    { en: "boarding pass", zh: "登機證", fr: "carte d'embarquement", ex: "Here is your boarding pass.", fr_ex: "Voici votre carte d'embarquement." },
+                    { en: "terminal map", zh: "航廈地圖", fr: "plan du terminal", ex: "Check the terminal map for your gate.", fr_ex: "Consultez le plan du terminal pour votre porte." },
+                    { en: "lounge", zh: "貴賓室/休息室", fr: "salon", ex: "We can relax in the lounge.", fr_ex: "Nous pouvons nous détendre dans le salon." },
+                    { en: "all set", zh: "一切就緒/準備好了", fr: "tout est prêt", ex: "You're all set for your flight.", fr_ex: "Tout est prêt pour votre vol." }
+                ]
             }
         ];
 
@@ -658,13 +731,21 @@ Alright, let’s grab our coffee and relax.`,
             const pronContainer = document.getElementById('artPronunciation');
             pronContainer.innerHTML = '';
             if (currentLesson.pronunciation && currentLesson.pronunciation.length > 0) {
-                let html = '<div class="pronunciation-box"><div class="pronunciation-title">🗣️ Pronunciation Tips (KK音標)</div>';
+                let html = '<div class="pronunciation-box"><div class="pronunciation-title">🗣️ Pronunciation Tips</div>';
                 currentLesson.pronunciation.forEach(p => {
-                    html += `
-                        <div class="pronunciation-item">
-                            <div><strong>${p.title}</strong></div>
-                            <div style="color:#555; margin-top:4px;">${p.pairs}</div>
-                        </div>`;
+                    // 如果 pairs 內容包含 HTML 標籤 (如 table)，直接渲染
+                    if (p.pairs.includes('<table')) {
+                        html += `
+                            <div class="pronunciation-item" style="border:none;">
+                                ${p.pairs}
+                            </div>`;
+                    } else {
+                        html += `
+                            <div class="pronunciation-item">
+                                <div><strong>${p.title}</strong></div>
+                                <div style="color:#555; margin-top:4px;">${p.pairs}</div>
+                            </div>`;
+                    }
                 });
                 html += '</div>';
                 pronContainer.innerHTML = html;
