@@ -190,6 +190,8 @@
         .kk-table th {
             background-color: #e6f7ff;
             color: var(--color-chic-blue);
+            width: 40px;
+            text-align: center;
         }
         .kk-symbol {
             font-family: "Lucida Sans Unicode", "Arial Unicode MS", sans-serif;
@@ -506,7 +508,7 @@
             }
         }
 
-        /* --- 資料設定區 (已加入第四堂課) --- */
+        /* --- 資料設定區 (已加入第五堂課) --- */
         const lessons = [
             {
                 id: 1,
@@ -518,7 +520,7 @@ When I finally reach the counter, the barista greets me with a tired but friendl
 
 Then comes the payment. I ask, "Do you take contactless?" She points to the card reader, and I tap my card. It beeps instantly to confirm the transaction. She asks if I want a receipt printed, but I tell her, "No need, thanks! Have a good one." Finally, I head over to the crowded pickup counter. I find a small napkin and a stirrer at the condiment station while I wait for the barista to call my name. Once I grab my cup, I’m finally ready to start my day with my caffeine fix.`,
                 questions: [
-                    "Have you ever had the experience where someone tried to cut in line in front of you? How did you handle it?",
+                    "Have you ever had the experience where someone tried to cut in line in front of you?",
                     "Do you usually need a caffeine fix to feel awake, or are you naturally energetic?",
                     "Are you 'picky' about your order at a cafe, or do you take whatever is on the menu?",
                     "Do you find it easy to strike up small talk with strangers?",
@@ -672,7 +674,7 @@ Staff: "Alright, let's grab your documents and you're all set for SFO. Have a sa
                             <tr><th>[o]</th><td>像「歐～」 (go, home)</td></tr>
                             <tr><th>[aɪ]</th><td>像「愛」 (my, kite)</td></tr>
                             <tr><th>[aʊ]</th><td>像「凹」 (how, now)</td></tr>
-                            <tr><th>[ɔɪ]	像「歐一」 (boy, noise)</td></tr>
+                            <tr><th>[ɔɪ]</th><td>像「歐一」 (boy, noise)</td></tr>
                             <tr><th>[ɝ]</th><td>重音捲舌 (bird, her)</td></tr>
                             <tr><th>[ɚ]</th><td>輕音捲舌 (teacher)</td></tr>
                         </table>
@@ -694,6 +696,62 @@ Staff: "Alright, let's grab your documents and you're all set for SFO. Have a sa
                     { en: "terminal map", zh: "航廈地圖", fr: "plan du terminal", ex: "Check the terminal map for your gate.", fr_ex: "Consultez le plan du terminal pour votre porte." },
                     { en: "lounge", zh: "貴賓室/休息室", fr: "salon", ex: "We can relax in the lounge.", fr_ex: "Nous pouvons nous détendre dans le salon." },
                     { en: "all set", zh: "一切就緒/準備好了", fr: "tout est prêt", ex: "You're all set for your flight.", fr_ex: "Tout est prêt pour votre vol." }
+                ]
+            },
+            {
+                id: 5,
+                date: "2026.01.29",
+                title: "The Prime Cut",
+                content: `Server: "Good evening! Come on in—feel free to kick your coats off and I'll have the host get those settled for you. I’ve got a great corner booth for you tonight, so make yourself comfortable."
+
+Server: "Just so you know, we’ve recently upgraded our aging room to a charcoal broiler system, which is a total one-of-a-kind for this neighborhood—it gives the beef a crust you won't find anywhere else."
+
+Guest: "That sounds incredible. We’ll grab our menus and take a look. What would you recommend for someone who loves a lot of flavor?"
+
+Server: "If you want flavor, the Bone-in Ribeye is the way to go. The marbling on our current batch is beautiful. How would you like that cooked?"
+
+Guest: "I'll take the Ribeye, medium-rare, please. And can we do the peppercorn sauce on the side?"
+
+Server: "You got it. While the kitchen is brewing up that sauce and getting your setup ready, can I start you off with a pour-over cocktail or maybe a local craft beer?"`,
+                questions: [
+                    "Why do high-end restaurants use this phrase if they want to appear 'fancy'?",
+                    "If you were the chef, what is the one kitchen appliance you would upgrade to make your cooking better?",
+                    "Does a busy New York steakhouse feel tidy or relaxed to you? Why?"
+                ],
+                pronunciation: [
+                    { title: "KK 音標 - 母音 (Vowels)", pairs: `
+                        <table class="kk-table">
+                            <tr><th>[ɪ]</th><td>比「一」短，嘴角放鬆 (sit, pig)</td></tr>
+                            <tr><th>[ɛ]</th><td>像中文「ㄝ」，嘴角略向外撇 (bed, ten)</td></tr>
+                            <tr><th>[æ]</th><td>蝴蝶音，嘴巴開最大 (cat, bag)</td></tr>
+                            <tr><th>[ɑ]</th><td>嘴巴呈長圓形 (hot, box)</td></tr>
+                            <tr><th>[ʌ]</th><td>短促的「啊」 (cup, bus)</td></tr>
+                            <tr><th>[ʊ]</th><td>比「烏」短，不嘟嘴 (foot, book)</td></tr>
+                            <tr><th>[ə]</th><td>懶人音 (about, sofa)</td></tr>
+                            <tr><th>[i]</th><td>微笑的「一」 (see, eat)</td></tr>
+                            <tr><th>[e]</th><td>像「ㄟ～」 (name, day)</td></tr>
+                            <tr><th>[u]</th><td>圓唇的「屋」 (moon, blue)</td></tr>
+                            <tr><th>[o]</th><td>像「歐～」 (go, home)</td></tr>
+                            <tr><th>[aɪ]</th><td>像「愛」 (my, kite)</td></tr>
+                            <tr><th>[aʊ]</th><td>像「凹」 (how, now)</td></tr>
+                            <tr><th>[ɔɪ]	像「歐一」 (boy, noise)</td></tr>
+                            <tr><th>[ɝ]</th><td>重音捲舌 (bird, her)</td></tr>
+                            <tr><th>[ɚ]</th><td>輕音捲舌 (teacher)</td></tr>
+                        </table>
+                    ` }
+                ],
+                vocab: [
+                    { en: "kick your coats off", zh: "脫掉外套/放鬆", fr: "enlever vos manteaux", ex: "Feel free to kick your coats off.", fr_ex: "N'hésitez pas à enlever vos manteaux." },
+                    { en: "settled", zh: "安頓好/處理好", fr: "installé", ex: "I'll get those settled for you.", fr_ex: "Je vais m'en occuper pour vous." },
+                    { en: "booth", zh: "雅座/包廂座位", fr: "banquette / box", ex: "We requested a corner booth.", fr_ex: "Nous avons demandé une banquette en coin." },
+                    { en: "aging room", zh: "熟成室", fr: "chambre de maturation", ex: "They have a dry aging room.", fr_ex: "Ils ont une chambre de maturation à sec." },
+                    { en: "one-of-a-kind", zh: "獨一無二的", fr: "unique en son genre", ex: "This steakhouse is one-of-a-kind.", fr_ex: "Ce steakhouse est unique en son genre." },
+                    { en: "crust", zh: "外殼/酥脆表皮", fr: "croûte", ex: "The steak has a perfect crust.", fr_ex: "Le steak a une croûte parfaite." },
+                    { en: "Bone-in", zh: "帶骨的", fr: "avec os / sur l'os", ex: "The bone-in ribeye is flavorful.", fr_ex: "L'entrecôte sur l'os est savoureuse." },
+                    { en: "marbling", zh: "油花(肉類)", fr: "persillage", ex: "The marbling makes the meat tender.", fr_ex: "Le persillage rend la viande tendre." },
+                    { en: "medium-rare", zh: "三分熟", fr: "saignant", ex: "I'd like my steak medium-rare.", fr_ex: "Je voudrais mon steak saignant." },
+                    { en: "on the side", zh: "放旁邊(醬料)", fr: "à part", ex: "Can I have the sauce on the side?", fr_ex: "Puis-je avoir la sauce à part ?" },
+                    { en: "brewing up", zh: "釀造/調製(醬料)", fr: "préparer / concocter", ex: "The kitchen is brewing up a sauce.", fr_ex: "La cuisine concocte une sauce." }
                 ]
             }
         ];
