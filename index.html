@@ -508,7 +508,7 @@
             }
         }
 
-        /* --- 資料設定區 (已加入第五堂課) --- */
+        /* --- 資料設定區 (已加入第五堂課並更新單字表) --- */
         const lessons = [
             {
                 id: 1,
@@ -520,7 +520,7 @@ When I finally reach the counter, the barista greets me with a tired but friendl
 
 Then comes the payment. I ask, "Do you take contactless?" She points to the card reader, and I tap my card. It beeps instantly to confirm the transaction. She asks if I want a receipt printed, but I tell her, "No need, thanks! Have a good one." Finally, I head over to the crowded pickup counter. I find a small napkin and a stirrer at the condiment station while I wait for the barista to call my name. Once I grab my cup, I’m finally ready to start my day with my caffeine fix.`,
                 questions: [
-                    "Have you ever had the experience where someone tried to cut in line in front of you?",
+                    "Have you ever had the experience where someone tried to cut in line in front of you? How did you handle it?",
                     "Do you usually need a caffeine fix to feel awake, or are you naturally energetic?",
                     "Are you 'picky' about your order at a cafe, or do you take whatever is on the menu?",
                     "Do you find it easy to strike up small talk with strangers?",
@@ -674,7 +674,7 @@ Staff: "Alright, let's grab your documents and you're all set for SFO. Have a sa
                             <tr><th>[o]</th><td>像「歐～」 (go, home)</td></tr>
                             <tr><th>[aɪ]</th><td>像「愛」 (my, kite)</td></tr>
                             <tr><th>[aʊ]</th><td>像「凹」 (how, now)</td></tr>
-                            <tr><th>[ɔɪ]</th><td>像「歐一」 (boy, noise)</td></tr>
+                            <tr><th>[ɔɪ]	像「歐一」 (boy, noise)</td></tr>
                             <tr><th>[ɝ]</th><td>重音捲舌 (bird, her)</td></tr>
                             <tr><th>[ɚ]</th><td>輕音捲舌 (teacher)</td></tr>
                         </table>
@@ -742,16 +742,17 @@ Server: "You got it. While the kitchen is brewing up that sauce and getting your
                 ],
                 vocab: [
                     { en: "kick your coats off", zh: "脫掉外套/放鬆", fr: "enlever vos manteaux", ex: "Feel free to kick your coats off.", fr_ex: "N'hésitez pas à enlever vos manteaux." },
-                    { en: "settled", zh: "安頓好/處理好", fr: "installé", ex: "I'll get those settled for you.", fr_ex: "Je vais m'en occuper pour vous." },
-                    { en: "booth", zh: "雅座/包廂座位", fr: "banquette / box", ex: "We requested a corner booth.", fr_ex: "Nous avons demandé une banquette en coin." },
+                    { en: "corner booth", zh: "角落雅座/包廂", fr: "banquette d'angle", ex: "I’ve got a great corner booth for you tonight.", fr_ex: "J'ai une excellente banquette d'angle pour vous ce soir." },
                     { en: "aging room", zh: "熟成室", fr: "chambre de maturation", ex: "They have a dry aging room.", fr_ex: "Ils ont une chambre de maturation à sec." },
-                    { en: "one-of-a-kind", zh: "獨一無二的", fr: "unique en son genre", ex: "This steakhouse is one-of-a-kind.", fr_ex: "Ce steakhouse est unique en son genre." },
+                    { en: "charcoal broiler system", zh: "炭烤爐系統", fr: "système de gril au charbon de bois", ex: "We use a charcoal broiler system for the steaks.", fr_ex: "Nous utilisons un système de gril au charbon de bois pour les steaks." },
                     { en: "crust", zh: "外殼/酥脆表皮", fr: "croûte", ex: "The steak has a perfect crust.", fr_ex: "Le steak a une croûte parfaite." },
-                    { en: "Bone-in", zh: "帶骨的", fr: "avec os / sur l'os", ex: "The bone-in ribeye is flavorful.", fr_ex: "L'entrecôte sur l'os est savoureuse." },
-                    { en: "marbling", zh: "油花(肉類)", fr: "persillage", ex: "The marbling makes the meat tender.", fr_ex: "Le persillage rend la viande tendre." },
+                    { en: "the Bone-in Ribeye", zh: "帶骨肋眼牛排", fr: "l'entrecôte sur l'os", ex: "The Bone-in Ribeye is the way to go.", fr_ex: "L'entrecôte sur l'os est le meilleur choix." },
+                    { en: "The marbling", zh: "油花(肉類)", fr: "le persillage", ex: "The marbling makes the meat tender.", fr_ex: "Le persillage rend la viande tendre." },
+                    { en: "Ribeye", zh: "肋眼牛排", fr: "entrecôte", ex: "I'll take the Ribeye, please.", fr_ex: "Je prendrai l'entrecôte, s'il vous plaît." },
                     { en: "medium-rare", zh: "三分熟", fr: "saignant", ex: "I'd like my steak medium-rare.", fr_ex: "Je voudrais mon steak saignant." },
-                    { en: "on the side", zh: "放旁邊(醬料)", fr: "à part", ex: "Can I have the sauce on the side?", fr_ex: "Puis-je avoir la sauce à part ?" },
-                    { en: "brewing up", zh: "釀造/調製(醬料)", fr: "préparer / concocter", ex: "The kitchen is brewing up a sauce.", fr_ex: "La cuisine concocte une sauce." }
+                    { en: "brewing up", zh: "釀造/調製(醬料)", fr: "préparer / concocter", ex: "The kitchen is brewing up a sauce.", fr_ex: "La cuisine concocte une sauce." },
+                    { en: "pour-over", zh: "手沖式(飲料)", fr: "versé à la main (café/cocktail)", ex: "Try our signature pour-over cocktail.", fr_ex: "Essayez notre cocktail signature versé à la main." },
+                    { en: "local craft beer", zh: "當地精釀啤酒", fr: "bière artisanale locale", ex: "Can I start you off with a local craft beer?", fr_ex: "Puis-je vous servir une bière artisanale locale pour commencer ?" }
                 ]
             }
         ];
