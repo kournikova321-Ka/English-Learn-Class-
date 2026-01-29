@@ -133,6 +133,10 @@
             gap: 8px;
             margin-bottom: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: background-color 0.2s;
+        }
+        .btn-audio.playing {
+            background-color: #333; /* 播放時變深色 */
         }
         .btn-audio:active { transform: scale(0.95); }
 
@@ -193,12 +197,6 @@
             width: 40px;
             text-align: center;
         }
-        .kk-symbol {
-            font-family: "Lucida Sans Unicode", "Arial Unicode MS", sans-serif;
-            color: var(--color-primary-red);
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
 
         /* 單字列表樣式 */
         .vocab-item {
@@ -221,10 +219,20 @@
             font-size: 1.2rem; 
             cursor: pointer;
             display: flex;
-            align-items: center;
+            flex-wrap: wrap;
+            align-items: baseline;
         }
         .vocab-en:active { opacity: 0.6; }
         
+        /* 單字旁的音標樣式 */
+        .vocab-ipa {
+            font-size: 0.9rem;
+            color: #888;
+            font-weight: normal;
+            margin-left: 8px;
+            font-family: "Lucida Sans Unicode", "Arial Unicode MS", sans-serif;
+        }
+
         .speaker-icon {
             font-size: 0.9rem;
             margin-left: 8px;
@@ -232,7 +240,7 @@
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             color: #555;
@@ -387,10 +395,10 @@
         <div id="p-article" class="page">
             <div class="card">
                 <span class="date-tag" id="artDate"></span>
-                <div class="article-title" id="artTitle"></div>
+                <div class="article-title" id="artTitle" onclick="speak(this.innerText, 'en-US')"></div>
                 
-                <!-- 全文朗讀按鈕 -->
-                <button class="btn-audio" onclick="playArticleAudio()">
+                <!-- 全文朗讀按鈕 (切換式) -->
+                <button id="btn-audio-toggle" class="btn-audio" onclick="toggleArticleAudio()">
                     <span>🔊 播放文章朗讀 (Play Audio)</span>
                 </button>
 
@@ -467,10 +475,11 @@
     </div>
 
     <script>
-        /* --- 語音發音功能 --- */
-        function speak(text, lang = 'en-US') {
+        /* --- 語音發音功能 (含停止) --- */
+        function speak(text, lang = 'en-US', onEndCallback) {
             if ('speechSynthesis' in window) {
-                if (window.speechSynthesis.speaking) {
+                // 如果是透過點擊單字觸發的（沒有 callback），就強制切換
+                if (!onEndCallback) {
                     window.speechSynthesis.cancel();
                 }
 
@@ -488,6 +497,10 @@
                 }
                 if (targetVoice) utterance.voice = targetVoice;
 
+                if (onEndCallback) {
+                    utterance.onend = onEndCallback;
+                }
+
                 window.speechSynthesis.speak(utterance);
             } else {
                 console.log("Speech API not supported");
@@ -499,16 +512,39 @@
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
             }
+            resetAudioButton();
         }
 
-        // 播放整篇文章
-        function playArticleAudio() {
-            if(currentLesson) {
-                speak(currentLesson.content, 'en-US');
+        // 文章播放切換邏輯
+        function toggleArticleAudio() {
+            const btn = document.getElementById('btn-audio-toggle');
+            
+            if (window.speechSynthesis.speaking) {
+                // 正在播放 -> 停止
+                stopAudio();
+            } else {
+                // 沒在播放 -> 開始
+                if(currentLesson) {
+                    btn.innerHTML = '<span>⏹️ 停止朗讀 (Stop Audio)</span>';
+                    btn.classList.add('playing');
+                    
+                    speak(currentLesson.content, 'en-US', function() {
+                        // 播放結束後自動重置按鈕
+                        resetAudioButton();
+                    });
+                }
             }
         }
 
-        /* --- 資料設定區 (已加入第五堂課並更新單字表) --- */
+        function resetAudioButton() {
+            const btn = document.getElementById('btn-audio-toggle');
+            if(btn) {
+                btn.innerHTML = '<span>🔊 播放文章朗讀 (Play Audio)</span>';
+                btn.classList.remove('playing');
+            }
+        }
+
+        /* --- 資料設定區 (所有單字已加入音標) --- */
         const lessons = [
             {
                 id: 1,
@@ -520,43 +556,43 @@ When I finally reach the counter, the barista greets me with a tired but friendl
 
 Then comes the payment. I ask, "Do you take contactless?" She points to the card reader, and I tap my card. It beeps instantly to confirm the transaction. She asks if I want a receipt printed, but I tell her, "No need, thanks! Have a good one." Finally, I head over to the crowded pickup counter. I find a small napkin and a stirrer at the condiment station while I wait for the barista to call my name. Once I grab my cup, I’m finally ready to start my day with my caffeine fix.`,
                 questions: [
-                    "Have you ever had the experience where someone tried to cut in line in front of you? How did you handle it?",
+                    "Have you ever had the experience where someone tried to cut in line in front of you?",
                     "Do you usually need a caffeine fix to feel awake, or are you naturally energetic?",
                     "Are you 'picky' about your order at a cafe, or do you take whatever is on the menu?",
                     "Do you find it easy to strike up small talk with strangers?",
                     "Do you prefer to tap your card for contactless transaction or use cash?"
                 ],
                 vocab: [
-                    { en: "thick", zh: "很濃、很厚", fr: "épais", ex: "The fog was so thick I couldn't see the road.", fr_ex: "Le brouillard était si épais que je ne voyais pas la route." },
-                    { en: "aroma", zh: "香氣", fr: "arôme", ex: "The aroma of fresh coffee filled the kitchen.", fr_ex: "L'arôme du café frais remplissait la cuisine." },
-                    { en: "roasted beans", zh: "烘焙過的咖啡豆", fr: "grains torréfiés", ex: "They use locally roasted beans here.", fr_ex: "Ils utilisent des grains torréfiés localement." },
-                    { en: "steaming milk", zh: "熱呼呼冒煙的牛奶", fr: "lait fumant", ex: "He poured steaming milk into the cup.", fr_ex: "Il a versé du lait fumant dans la tasse." },
-                    { en: "strike up", zh: "主動聊起來", fr: "entamer", ex: "I tried to strike up a conversation with her.", fr_ex: "J'ai essayé d'entamer une conversation avec elle." },
-                    { en: "cut in line", zh: "插隊", fr: "doubler dans la file", ex: "It is rude to cut in line.", fr_ex: "Il est impoli de doubler dans la file." },
-                    { en: "calmly", zh: "很冷靜地", fr: "calmement", ex: "She spoke calmly despite the chaos.", fr_ex: "Elle a parlé calmement malgré le chaos." },
-                    { en: "nod", zh: "點點頭", fr: "hocher la tête", ex: "He gave a nod of agreement.", fr_ex: "Il a hoché la tête en signe d'accord." },
-                    { en: "the line starts back there", zh: "隊伍在後面那邊喔", fr: "la queue commence là-bas", ex: "Excuse me, the line starts back there.", fr_ex: "Excusez-moi, la queue commence là-bas." },
-                    { en: "mumbles", zh: "小聲嘟囔", fr: "marmonne", ex: "He mumbles when he is nervous.", fr_ex: "Il marmonne quand il est nerveux." },
-                    { en: "queue", zh: "排隊的人龍", fr: "file d'attente", ex: "There was a long queue for the tickets.", fr_ex: "Il y avait une longue file d'attente pour les billets." },
-                    { en: "barista", zh: "咖啡師", fr: "barista", ex: "The barista made a beautiful latte art.", fr_ex: "Le barista a fait un beau dessin sur mon latte." },
-                    { en: "greets", zh: "打招呼", fr: "salue", ex: "The dog greets me at the door every day.", fr_ex: "Le chien me salue à la porte chaque jour." },
-                    { en: "place my order", zh: "點餐", fr: "passer ma commande", ex: "I am ready to place my order now.", fr_ex: "Je suis prêt à passer ma commande maintenant." },
-                    { en: "extra hot", zh: "特別燙", fr: "très chaud", ex: "Can I have my tea extra hot?", fr_ex: "Puis-je avoir mon thé très chaud ?" },
-                    { en: "hold the foam", zh: "不要奶泡", fr: "sans mousse", ex: "I'll have a latte, hold the foam.", fr_ex: "Je prendrai un latte, sans mousse." },
-                    { en: "pastries", zh: "甜點/糕點", fr: "pâtisseries", ex: "They sell fresh pastries every morning.", fr_ex: "Ils vendent des pâtisseries fraîches tous les matins." },
-                    { en: "display case", zh: "展示櫃", fr: "vitrine", ex: "Look at the cakes in the display case.", fr_ex: "Regardez les gâteaux dans la vitrine." },
-                    { en: "ultimately", zh: "最後還是", fr: "finalement", ex: "Ultimately, the decision is yours.", fr_ex: "Finalement, la décision vous appartient." },
-                    { en: "decline", zh: "婉拒", fr: "refuser", ex: "I have to decline your invitation.", fr_ex: "Je dois refuser votre invitation." },
-                    { en: "contactless", zh: "非接觸式", fr: "sans contact", ex: "Do you accept contactless payment?", fr_ex: "Acceptez-vous le paiement sans contact ?" },
-                    { en: "tap my card", zh: "感應付款", fr: "poser ma carte", ex: "Just tap your card on the machine.", fr_ex: "Posez simplement votre carte sur la machine." },
-                    { en: "transaction", zh: "交易", fr: "transaction", ex: "The transaction was successful.", fr_ex: "La transaction a été réussie." },
-                    { en: "over to the crowded", zh: "走向擁擠的...", fr: "vers la foule", ex: "He walked over to the crowded bar.", fr_ex: "Il s'est dirigé vers le bar bondé." },
-                    { en: "pickup counter", zh: "取餐櫃檯", fr: "comptoir de retrait", ex: "Please wait at the pickup counter.", fr_ex: "Veuillez attendre au comptoir de retrait." },
-                    { en: "napkin", zh: "紙巾", fr: "serviette", ex: "May I have a napkin, please?", fr_ex: "Puis-je avoir une serviette, s'il vous plaît ?" },
-                    { en: "stirrer", zh: "攪拌棒", fr: "touillette", ex: "Use a stirrer to mix your sugar.", fr_ex: "Utilisez une touillette pour mélanger votre sucre." },
-                    { en: "condiment station", zh: "自助調味區", fr: "station de condiments", ex: "You can find sugar at the condiment station.", fr_ex: "Vous trouverez du sucre à la station de condiments." },
-                    { en: "grab my cup", zh: "拿起我的咖啡", fr: "prendre ma tasse", ex: "I grabbed my cup and left quickly.", fr_ex: "J'ai pris ma tasse et je suis parti rapidement." },
-                    { en: "caffeine fix", zh: "今日咖啡續命成功", fr: "dose de caféine", ex: "I really need my afternoon caffeine fix.", fr_ex: "J'ai vraiment besoin de ma dose de caféine de l'après-midi." }
+                    { en: "thick", ipa: "[θɪk]", zh: "很濃、很厚", fr: "épais", ex: "The fog was so thick I couldn't see the road.", fr_ex: "Le brouillard était si épais que je ne voyais pas la route." },
+                    { en: "aroma", ipa: "[əˈroʊmə]", zh: "香氣", fr: "arôme", ex: "The aroma of fresh coffee filled the kitchen.", fr_ex: "L'arôme du café frais remplissait la cuisine." },
+                    { en: "roasted beans", ipa: "[ˈroʊstɪd binz]", zh: "烘焙過的咖啡豆", fr: "grains torréfiés", ex: "They use locally roasted beans here.", fr_ex: "Ils utilisent des grains torréfiés localement." },
+                    { en: "steaming milk", ipa: "[ˈstimɪŋ mɪlk]", zh: "熱呼呼冒煙的牛奶", fr: "lait fumant", ex: "He poured steaming milk into the cup.", fr_ex: "Il a versé du lait fumant dans la tasse." },
+                    { en: "strike up", ipa: "[straɪk ʌp]", zh: "主動聊起來", fr: "entamer", ex: "I tried to strike up a conversation with her.", fr_ex: "J'ai essayé d'entamer une conversation avec elle." },
+                    { en: "cut in line", ipa: "[kʌt ɪn laɪn]", zh: "插隊", fr: "doubler dans la file", ex: "It is rude to cut in line.", fr_ex: "Il est impoli de doubler dans la file." },
+                    { en: "calmly", ipa: "[ˈkɑmli]", zh: "很冷靜地", fr: "calmement", ex: "She spoke calmly despite the chaos.", fr_ex: "Elle a parlé calmement malgré le chaos." },
+                    { en: "nod", ipa: "[nɑd]", zh: "點點頭", fr: "hocher la tête", ex: "He gave a nod of agreement.", fr_ex: "Il a hoché la tête en signe d'accord." },
+                    { en: "the line starts back there", ipa: "[ðə laɪn stɑrts bæk ðɛr]", zh: "隊伍在後面那邊喔", fr: "la queue commence là-bas", ex: "Excuse me, the line starts back there.", fr_ex: "Excusez-moi, la queue commence là-bas." },
+                    { en: "mumbles", ipa: "[ˈmʌmbəlz]", zh: "小聲嘟囔", fr: "marmonne", ex: "He mumbles when he is nervous.", fr_ex: "Il marmonne quand il est nerveux." },
+                    { en: "queue", ipa: "[kju]", zh: "排隊的人龍", fr: "file d'attente", ex: "There was a long queue for the tickets.", fr_ex: "Il y avait une longue file d'attente pour les billets." },
+                    { en: "barista", ipa: "[bəˈristə]", zh: "咖啡師", fr: "barista", ex: "The barista made a beautiful latte art.", fr_ex: "Le barista a fait un beau dessin sur mon latte." },
+                    { en: "greets", ipa: "[grits]", zh: "打招呼", fr: "salue", ex: "The dog greets me at the door every day.", fr_ex: "Le chien me salue à la porte chaque jour." },
+                    { en: "place my order", ipa: "[pleɪs maɪ ˈɔrdər]", zh: "點餐", fr: "passer ma commande", ex: "I am ready to place my order now.", fr_ex: "Je suis prêt à passer ma commande maintenant." },
+                    { en: "extra hot", ipa: "[ˈɛkstrə hɑt]", zh: "特別燙", fr: "très chaud", ex: "Can I have my tea extra hot?", fr_ex: "Puis-je avoir mon thé très chaud ?" },
+                    { en: "hold the foam", ipa: "[hoʊld ðə foʊm]", zh: "不要奶泡", fr: "sans mousse", ex: "I'll have a latte, hold the foam.", fr_ex: "Je prendrai un latte, sans mousse." },
+                    { en: "pastries", ipa: "[ˈpeɪstriz]", zh: "甜點/糕點", fr: "pâtisseries", ex: "They sell fresh pastries every morning.", fr_ex: "Ils vendent des pâtisseries fraîches tous les matins." },
+                    { en: "display case", ipa: "[dɪˈspleɪ keɪs]", zh: "展示櫃", fr: "vitrine", ex: "Look at the cakes in the display case.", fr_ex: "Regardez les gâteaux dans la vitrine." },
+                    { en: "ultimately", ipa: "[ˈʌltəmətli]", zh: "最後還是", fr: "finalement", ex: "Ultimately, the decision is yours.", fr_ex: "Finalement, la décision vous appartient." },
+                    { en: "decline", ipa: "[dɪˈklaɪn]", zh: "婉拒", fr: "refuser", ex: "I have to decline your invitation.", fr_ex: "Je dois refuser votre invitation." },
+                    { en: "contactless", ipa: "[ˈkɑntæktləs]", zh: "非接觸式", fr: "sans contact", ex: "Do you accept contactless payment?", fr_ex: "Acceptez-vous le paiement sans contact ?" },
+                    { en: "tap my card", ipa: "[tæp maɪ kɑrd]", zh: "感應付款", fr: "poser ma carte", ex: "Just tap your card on the machine.", fr_ex: "Posez simplement votre carte sur la machine." },
+                    { en: "transaction", ipa: "[trænˈzækʃən]", zh: "交易", fr: "transaction", ex: "The transaction was successful.", fr_ex: "La transaction a été réussie." },
+                    { en: "over to the crowded", ipa: "[ˈoʊvər tu ðə ˈkraʊdəd]", zh: "走向擁擠的...", fr: "vers la foule", ex: "He walked over to the crowded bar.", fr_ex: "Il s'est dirigé vers le bar bondé." },
+                    { en: "pickup counter", ipa: "[ˈpɪkˌʌp ˈkaʊntər]", zh: "取餐櫃檯", fr: "comptoir de retrait", ex: "Please wait at the pickup counter.", fr_ex: "Veuillez attendre au comptoir de retrait." },
+                    { en: "napkin", ipa: "[ˈnæpkɪn]", zh: "紙巾", fr: "serviette", ex: "May I have a napkin, please?", fr_ex: "Puis-je avoir une serviette, s'il vous plaît ?" },
+                    { en: "stirrer", ipa: "[ˈstɜrər]", zh: "攪拌棒", fr: "touillette", ex: "Use a stirrer to mix your sugar.", fr_ex: "Utilisez une touillette pour mélanger votre sucre." },
+                    { en: "condiment station", ipa: "[ˈkɑndəmənt ˈsteɪʃən]", zh: "自助調味區", fr: "station de condiments", ex: "You can find sugar at the condiment station.", fr_ex: "Vous trouverez du sucre à la station de condiments." },
+                    { en: "grab my cup", ipa: "[græb maɪ kʌp]", zh: "拿起我的咖啡", fr: "prendre ma tasse", ex: "I grabbed my cup and left quickly.", fr_ex: "J'ai pris ma tasse et je suis parti rapidement." },
+                    { en: "caffeine fix", ipa: "[kæˈfin fɪks]", zh: "今日咖啡續命成功", fr: "dose de caféine", ex: "I really need my afternoon caffeine fix.", fr_ex: "J'ai vraiment besoin de ma dose de caféine de l'après-midi." }
                 ]
             },
             {
@@ -579,30 +615,30 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
                     "What is your favorite 'guilty pleasure' snack?"
                 ],
                 vocab: [
-                    { en: "tackle", zh: "處理／解決", fr: "s'attaquer à", ex: "If you're brave enough to tackle Costco on a Saturday...", fr_ex: "Si vous êtes assez courageux pour vous attaquer à Costco un samedi..." },
-                    { en: "pulled into", zh: "被捲入／被拉進 (駛入)", fr: "entré dans", ex: "I pulled into the lot at 10:00 AM.", fr_ex: "Je suis entré dans le parking à 10h00." },
-                    { en: "madhouse", zh: "瘋狂混亂的地方", fr: "maison de fous", ex: "The store was a total madhouse.", fr_ex: "Le magasin était une maison de fous totale." },
-                    { en: "laps", zh: "圈數／來回", fr: "tours", ex: "I did three laps to find a parking spot.", fr_ex: "J'ai fait trois tours pour trouver une place de parking." },
-                    { en: "steering a small boat", zh: "駕駛一艘小船", fr: "manœuvrer un petit bateau", ex: "The cart felt like steering a small boat.", fr_ex: "Le chariot donnait l'impression de manœuvrer un petit bateau." },
-                    { en: "produce cold room", zh: "蔬果冷藏室", fr: "chambre froide des produits frais", ex: "I started in the produce cold room.", fr_ex: "J'ai commencé dans la chambre froide des produits frais." },
-                    { en: "freezing your toes off", zh: "冷到腳趾快沒知覺", fr: "se geler les orteils", ex: "You are freezing your toes off in there.", fr_ex: "On se gèle les orteils là-dedans." },
-                    { en: "massive bag", zh: "超大一袋", fr: "sac énorme", ex: "I grabbed a massive bag of kale.", fr_ex: "J'ai pris un sac énorme de chou frisé." },
-                    { en: "kale", zh: "羽衣甘藍", fr: "chou frisé", ex: "Organic kale is healthy.", fr_ex: "Le chou frisé biologique est sain." },
-                    { en: "hosting a BBQ", zh: "舉辦烤肉派對", fr: "organiser un barbecue", ex: "I was hosting a BBQ later that day.", fr_ex: "J'organisais un barbecue plus tard ce jour-là." },
-                    { en: "navigating", zh: "穿梭／應付", fr: "naviguer", ex: "Navigating the sample stations is hard.", fr_ex: "Naviguer entre les stations de dégustation est difficile." },
-                    { en: "bottleneck", zh: "瓶頸／壅塞點", fr: "goulot d'étranglement", ex: "It creates a total bottleneck.", fr_ex: "Cela crée un goulot d'étranglement total." },
-                    { en: "rear-ended", zh: "被追撞", fr: "percuté par l'arrière", ex: "Don't get rear-ended by another cart!", fr_ex: "Ne vous faites pas percuter par l'arrière par un autre chariot !" },
-                    { en: "distracted", zh: "分心", fr: "distrait", ex: "I was distracted by the snacks.", fr_ex: "J'étais distrait par les collations." },
-                    { en: "Middle Aisle", zh: "中間走道", fr: "allée centrale", ex: "Costco puts random stuff in the Middle Aisle.", fr_ex: "Costco met des choses aléatoires dans l'allée centrale." },
-                    { en: "kayaks", zh: "獨木舟", fr: "kayaks", ex: "They even sell kayaks.", fr_ex: "Ils vendent même des kayaks." },
-                    { en: "air fryers", zh: "氣炸鍋", fr: "friteuses à air", ex: "Air fryers are on sale.", fr_ex: "Les friteuses à air sont en solde." },
-                    { en: "impulse buying", zh: "衝動購物", fr: "achat impulsif", ex: "I ended up impulse buying a bowl set.", fr_ex: "J'ai fini par faire un achat impulsif d'un ensemble de bols." },
-                    { en: "markdown price", zh: "降價／折扣價", fr: "prix démarqué", ex: "The markdown price was too good.", fr_ex: "Le prix démarqué était trop beau." },
-                    { en: "good to pass up", zh: "好到讓人無法錯過", fr: "trop beau pour laisser passer", ex: "The deal was too good to pass up.", fr_ex: "L'offre était trop belle pour la laisser passer." },
-                    { en: "checkout line", zh: "結帳隊伍", fr: "file d'attente à la caisse", ex: "The checkout line was backed up.", fr_ex: "La file d'attente à la caisse était bloquée." },
-                    { en: "hustling", zh: "忙碌奔波", fr: "s'activer", ex: "The staff were hustling to help customers.", fr_ex: "Le personnel s'activait pour aider les clients." },
-                    { en: "discarded boxes", zh: "被丟棄的紙箱", fr: "boîtes jetées", ex: "I grabbed some sturdy discarded boxes.", fr_ex: "J'ai pris quelques boîtes jetées solides." },
-                    { en: "pile near the registers", zh: "收銀台附近的一堆(東西)", fr: "pile près des caisses", ex: "The boxes are in a pile near the registers.", fr_ex: "Les boîtes sont dans une pile près des caisses." }
+                    { en: "tackle", ipa: "[ˈtækəl]", zh: "處理／解決", fr: "s'attaquer à", ex: "If you're brave enough to tackle Costco on a Saturday...", fr_ex: "Si vous êtes assez courageux pour vous attaquer à Costco un samedi..." },
+                    { en: "pulled into", ipa: "[pʊld ˈɪntu]", zh: "被捲入／被拉進 (駛入)", fr: "entré dans", ex: "I pulled into the lot at 10:00 AM.", fr_ex: "Je suis entré dans le parking à 10h00." },
+                    { en: "madhouse", ipa: "[ˈmædˌhaʊs]", zh: "瘋狂混亂的地方", fr: "maison de fous", ex: "The store was a total madhouse.", fr_ex: "Le magasin était une maison de fous totale." },
+                    { en: "laps", ipa: "[læps]", zh: "圈數／來回", fr: "tours", ex: "I did three laps to find a parking spot.", fr_ex: "J'ai fait trois tours pour trouver une place de parking." },
+                    { en: "steering a small boat", ipa: "[ˈstɪrɪŋ ə smɔl boʊt]", zh: "駕駛一艘小船", fr: "manœuvrer un petit bateau", ex: "The cart felt like steering a small boat.", fr_ex: "Le chariot donnait l'impression de manœuvrer un petit bateau." },
+                    { en: "produce cold room", ipa: "[ˈproʊdus koʊld rum]", zh: "蔬果冷藏室", fr: "chambre froide des produits frais", ex: "I started in the produce cold room.", fr_ex: "J'ai commencé dans la chambre froide des produits frais." },
+                    { en: "freezing your toes off", ipa: "[ˈfrizɪŋ jʊər toʊz ɔf]", zh: "冷到腳趾快沒知覺", fr: "se geler les orteils", ex: "You are freezing your toes off in there.", fr_ex: "On se gèle les orteils là-dedans." },
+                    { en: "massive bag", ipa: "[ˈmæsɪv bæg]", zh: "超大一袋", fr: "sac énorme", ex: "I grabbed a massive bag of kale.", fr_ex: "J'ai pris un sac énorme de chou frisé." },
+                    { en: "kale", ipa: "[keɪl]", zh: "羽衣甘藍", fr: "chou frisé", ex: "Organic kale is healthy.", fr_ex: "Le chou frisé biologique est sain." },
+                    { en: "hosting a BBQ", ipa: "[ˈhoʊstɪŋ ə bɑrbɪkju]", zh: "舉辦烤肉派對", fr: "organiser un barbecue", ex: "I was hosting a BBQ later that day.", fr_ex: "J'organisais un barbecue plus tard ce jour-là." },
+                    { en: "navigating", ipa: "[ˈnævəˌgeɪtɪŋ]", zh: "穿梭／應付", fr: "naviguer", ex: "Navigating the sample stations is hard.", fr_ex: "Naviguer entre les stations de dégustation est difficile." },
+                    { en: "bottleneck", ipa: "[ˈbɑtəlˌnɛk]", zh: "瓶頸／壅塞點", fr: "goulot d'étranglement", ex: "It creates a total bottleneck.", fr_ex: "Cela crée un goulot d'étranglement total." },
+                    { en: "rear-ended", ipa: "[rɪr ˈɛndɪd]", zh: "被追撞", fr: "percuté par l'arrière", ex: "Don't get rear-ended by another cart!", fr_ex: "Ne vous faites pas percuter par l'arrière par un autre chariot !" },
+                    { en: "distracted", ipa: "[dɪˈstræktɪd]", zh: "分心", fr: "distrait", ex: "I was distracted by the snacks.", fr_ex: "J'étais distrait par les collations." },
+                    { en: "Middle Aisle", ipa: "[ˈmɪdəl aɪl]", zh: "中間走道", fr: "allée centrale", ex: "Costco puts random stuff in the Middle Aisle.", fr_ex: "Costco met des choses aléatoires dans l'allée centrale." },
+                    { en: "kayaks", ipa: "[ˈkaɪæks]", zh: "獨木舟", fr: "kayaks", ex: "They even sell kayaks.", fr_ex: "Ils vendent même des kayaks." },
+                    { en: "air fryers", ipa: "[ɛr ˈfraɪərz]", zh: "氣炸鍋", fr: "friteuses à air", ex: "Air fryers are on sale.", fr_ex: "Les friteuses à air sont en solde." },
+                    { en: "impulse buying", ipa: "[ˈɪmpʌls ˈbaɪɪŋ]", zh: "衝動購物", fr: "achat impulsif", ex: "I ended up impulse buying a bowl set.", fr_ex: "J'ai fini par faire un achat impulsif d'un ensemble de bols." },
+                    { en: "markdown price", ipa: "[ˈmɑrkˌdaʊn praɪs]", zh: "降價／折扣價", fr: "prix démarqué", ex: "The markdown price was too good.", fr_ex: "Le prix démarqué était trop beau." },
+                    { en: "good to pass up", ipa: "[gʊd tu pæs ʌp]", zh: "好到讓人無法錯過", fr: "trop beau pour laisser passer", ex: "The deal was too good to pass up.", fr_ex: "L'offre était trop belle pour la laisser passer." },
+                    { en: "checkout line", ipa: "[ˈtʃɛkˌaʊt laɪn]", zh: "結帳隊伍", fr: "file d'attente à la caisse", ex: "The checkout line was backed up.", fr_ex: "La file d'attente à la caisse était bloquée." },
+                    { en: "hustling", ipa: "[ˈhʌslɪŋ]", zh: "忙碌奔波", fr: "s'activer", ex: "The staff were hustling to help customers.", fr_ex: "Le personnel s'activait pour aider les clients." },
+                    { en: "discarded boxes", ipa: "[dɪsˈkɑrdɪd ˈbɑksəz]", zh: "被丟棄的紙箱", fr: "boîtes jetées", ex: "I grabbed some sturdy discarded boxes.", fr_ex: "J'ai pris quelques boîtes jetées solides." },
+                    { en: "pile near the registers", ipa: "[paɪl nɪr ðə ˈrɛdʒɪstərz]", zh: "收銀台附近的一堆(東西)", fr: "pile près des caisses", ex: "The boxes are in a pile near the registers.", fr_ex: "Les boîtes sont dans une pile près des caisses." }
                 ]
             },
             {
@@ -628,17 +664,17 @@ Alright, let’s grab our coffee and relax.`,
                     { title: "Close /u/ vs. Lax /ʊ/", pairs: "shoes, smooth | cooktop, look" }
                 ],
                 vocab: [
-                    { en: "kick your shoes off", zh: "踢掉鞋子/脫鞋", fr: "enlever ses chaussures", ex: "Feel free to kick your shoes off at the door.", fr_ex: "N'hésitez pas à enlever vos chaussures à la porte." },
-                    { en: "Over here", zh: "在這邊", fr: "par ici", ex: "Over here is the kitchen.", fr_ex: "Par ici, c'est la cuisine." },
-                    { en: "induction cooktop", zh: "電磁爐", fr: "plaque à induction", ex: "The induction cooktop is easy to clean.", fr_ex: "La plaque à induction est facile à nettoyer." },
-                    { en: "smart fridge", zh: "智慧冰箱", fr: "réfrigérateur intelligent", ex: "There is a smart fridge in the kitchen.", fr_ex: "Il y a un réfrigérateur intelligent dans la cuisine." },
-                    { en: "built-in convection oven", zh: "嵌入式對流烤箱", fr: "four à convection encastré", ex: "We have a built-in convection oven.", fr_ex: "Nous avons un four à convection encastré." },
-                    { en: "pour-over", zh: "手沖咖啡", fr: "café filtre (manuel)", ex: "I can do a pour-over for you.", fr_ex: "Je peux vous préparer un café filtre." },
-                    { en: "frother", zh: "奶泡機/起泡器", fr: "mousseur", ex: "Use the milk frother to make foam.", fr_ex: "Utilisez le mousseur à lait pour faire de la mousse." },
-                    { en: "brewing", zh: "沖煮中/釀造中", fr: "en train d'infuser", ex: "The coffee is brewing right now.", fr_ex: "Le café est en train d'infuser en ce moment." },
-                    { en: "appliance", zh: "家用電器", fr: "appareil électroménager", ex: "Which kitchen appliance do you use most?", fr_ex: "Quel appareil de cuisine utilisez-vous le plus ?" },
-                    { en: "tidy", zh: "整潔的", fr: "rangé / ordonné", ex: "Do you prefer a tidy home environment?", fr_ex: "Préférez-vous un environnement domestique rangé ?" },
-                    { en: "affect", zh: "影響", fr: "affecter / influencer", ex: "How does that affect your design?", fr_ex: "Comment cela affecte-t-il votre conception ?" }
+                    { en: "kick your shoes off", ipa: "[kɪk jʊər ʃuz ɔf]", zh: "踢掉鞋子/脫鞋", fr: "enlever ses chaussures", ex: "Feel free to kick your shoes off at the door.", fr_ex: "N'hésitez pas à enlever vos chaussures à la porte." },
+                    { en: "Over here", ipa: "[ˈoʊvər hɪr]", zh: "在這邊", fr: "par ici", ex: "Over here is the kitchen.", fr_ex: "Par ici, c'est la cuisine." },
+                    { en: "induction cooktop", ipa: "[ɪnˈdʌkʃən ˈkʊkˌtɑp]", zh: "電磁爐", fr: "plaque à induction", ex: "The induction cooktop is easy to clean.", fr_ex: "La plaque à induction est facile à nettoyer." },
+                    { en: "smart fridge", ipa: "[smɑrt frɪdʒ]", zh: "智慧冰箱", fr: "réfrigérateur intelligent", ex: "There is a smart fridge in the kitchen.", fr_ex: "Il y a un réfrigérateur intelligent dans la cuisine." },
+                    { en: "built-in convection oven", ipa: "[ˈbɪltˈɪn kənˈvɛkʃən ˈʌvən]", zh: "嵌入式對流烤箱", fr: "four à convection encastré", ex: "We have a built-in convection oven.", fr_ex: "Nous avons un four à convection encastré." },
+                    { en: "pour-over", ipa: "[pɔr ˈoʊvər]", zh: "手沖咖啡", fr: "café filtre (manuel)", ex: "I can do a pour-over for you.", fr_ex: "Je peux vous préparer un café filtre." },
+                    { en: "frother", ipa: "[ˈfrɔθər]", zh: "奶泡機/起泡器", fr: "mousseur", ex: "Use the milk frother to make foam.", fr_ex: "Utilisez le mousseur à lait pour faire de la mousse." },
+                    { en: "brewing", ipa: "[ˈbruɪŋ]", zh: "沖煮中/釀造中", fr: "en train d'infuser", ex: "The coffee is brewing right now.", fr_ex: "Le café est en train d'infuser en ce moment." },
+                    { en: "appliance", ipa: "[əˈplaɪəns]", zh: "家用電器", fr: "appareil électroménager", ex: "Which kitchen appliance do you use most?", fr_ex: "Quel appareil de cuisine utilisez-vous le plus ?" },
+                    { en: "tidy", ipa: "[ˈtaɪdi]", zh: "整潔的", fr: "rangé / ordonné", ex: "Do you prefer a tidy home environment?", fr_ex: "Préférez-vous un environnement domestique rangé ?" },
+                    { en: "affect", ipa: "[əˈfɛkt]", zh: "影響", fr: "affecter / influencer", ex: "How does that affect your design?", fr_ex: "Comment cela affecte-t-il votre conception ?" }
                 ]
             },
             {
@@ -681,21 +717,21 @@ Staff: "Alright, let's grab your documents and you're all set for SFO. Have a sa
                     ` }
                 ],
                 vocab: [
-                    { en: "toss your bags", zh: "把行李放上來/扔上來", fr: "déposer vos sacs", ex: "Please toss your bags onto the scale.", fr_ex: "Veuillez déposer vos sacs sur la balance." },
-                    { en: "pull up your booking", zh: "調出你的訂位資料", fr: "sortir votre réservation", ex: "Let me pull up your booking.", fr_ex: "Laissez-moi sortir votre réservation." },
-                    { en: "built-in", zh: "設施自帶的/內建的", fr: "intégré", ex: "It has a built-in baggage tag printer.", fr_ex: "Il a une imprimante d'étiquettes de bagages intégrée." },
-                    { en: "setup", zh: "裝潢佈置/設置", fr: "installation", ex: "The lounge has a great setup.", fr_ex: "Le salon a une excellente installation." },
-                    { en: "biometric", zh: "生物識別的", fr: "biométrique", ex: "We use biometric scanners now.", fr_ex: "Nous utilisons maintenant des scanners biométriques." },
-                    { en: "face-scanner", zh: "臉部掃描儀", fr: "scanner facial", ex: "Look at the face-scanner, please.", fr_ex: "Regardez le scanner facial, s'il vous plaît." },
-                    { en: "self-service kiosk", zh: "自助服務機", fr: "borne libre-service", ex: "Use the self-service kiosk to check in.", fr_ex: "Utilisez la borne libre-service pour vous enregistrer." },
-                    { en: "upgrade", zh: "升級/升等", fr: "surclassement", ex: "Would you like an upgrade today?", fr_ex: "Souhaitez-vous un surclassement aujourd'hui ?" },
-                    { en: "Economy Plus", zh: "豪華經濟艙", fr: "Économie Plus", ex: "Economy Plus has more space.", fr_ex: "Économie Plus a plus d'espace." },
-                    { en: "legroom", zh: "腿部空間", fr: "espace pour les jambes", ex: "I need extra legroom.", fr_ex: "J'ai besoin de plus d'espace pour les jambes." },
-                    { en: "flat-bed seat", zh: "全平躺座椅", fr: "siège-lit", ex: "Business class has flat-bed seats.", fr_ex: "La classe affaires a des sièges-lits." },
-                    { en: "boarding pass", zh: "登機證", fr: "carte d'embarquement", ex: "Here is your boarding pass.", fr_ex: "Voici votre carte d'embarquement." },
-                    { en: "terminal map", zh: "航廈地圖", fr: "plan du terminal", ex: "Check the terminal map for your gate.", fr_ex: "Consultez le plan du terminal pour votre porte." },
-                    { en: "lounge", zh: "貴賓室/休息室", fr: "salon", ex: "We can relax in the lounge.", fr_ex: "Nous pouvons nous détendre dans le salon." },
-                    { en: "all set", zh: "一切就緒/準備好了", fr: "tout est prêt", ex: "You're all set for your flight.", fr_ex: "Tout est prêt pour votre vol." }
+                    { en: "toss your bags", ipa: "[tɔs jʊər bægz]", zh: "把行李放上來/扔上來", fr: "déposer vos sacs", ex: "Please toss your bags onto the scale.", fr_ex: "Veuillez déposer vos sacs sur la balance." },
+                    { en: "pull up your booking", ipa: "[pʊl ʌp jʊər ˈbʊkɪŋ]", zh: "調出你的訂位資料", fr: "sortir votre réservation", ex: "Let me pull up your booking.", fr_ex: "Laissez-moi sortir votre réservation." },
+                    { en: "built-in", ipa: "[ˈbɪltˈɪn]", zh: "設施自帶的/內建的", fr: "intégré", ex: "It has a built-in baggage tag printer.", fr_ex: "Il a une imprimante d'étiquettes de bagages intégrée." },
+                    { en: "setup", ipa: "[ˈsɛtˌʌp]", zh: "裝潢佈置/設置", fr: "installation", ex: "The lounge has a great setup.", fr_ex: "Le salon a une excellente installation." },
+                    { en: "biometric", ipa: "[ˌbaɪoʊˈmɛtrɪk]", zh: "生物識別的", fr: "biométrique", ex: "We use biometric scanners now.", fr_ex: "Nous utilisons maintenant des scanners biométriques." },
+                    { en: "face-scanner", ipa: "[feɪs ˈskænər]", zh: "臉部掃描儀", fr: "scanner facial", ex: "Look at the face-scanner, please.", fr_ex: "Regardez le scanner facial, s'il vous plaît." },
+                    { en: "self-service kiosk", ipa: "[sɛlf ˈsɜrvɪs ˈkiɑsk]", zh: "自助服務機", fr: "borne libre-service", ex: "Use the self-service kiosk to check in.", fr_ex: "Utilisez la borne libre-service pour vous enregistrer." },
+                    { en: "upgrade", ipa: "[ˈʌpˌgreɪd]", zh: "升級/升等", fr: "surclassement", ex: "Would you like an upgrade today?", fr_ex: "Souhaitez-vous un surclassement aujourd'hui ?" },
+                    { en: "Economy Plus", ipa: "[ɪˈkɑnəmi plʌs]", zh: "豪華經濟艙", fr: "Économie Plus", ex: "Economy Plus has more space.", fr_ex: "Économie Plus a plus d'espace." },
+                    { en: "legroom", ipa: "[ˈlɛgˌrum]", zh: "腿部空間", fr: "espace pour les jambes", ex: "I need extra legroom.", fr_ex: "J'ai besoin de plus d'espace pour les jambes." },
+                    { en: "flat-bed seat", ipa: "[flæt bɛd sit]", zh: "全平躺座椅", fr: "siège-lit", ex: "Business class has flat-bed seats.", fr_ex: "La classe affaires a des sièges-lits." },
+                    { en: "boarding pass", ipa: "[ˈbɔrdɪŋ pæs]", zh: "登機證", fr: "carte d'embarquement", ex: "Here is your boarding pass.", fr_ex: "Voici votre carte d'embarquement." },
+                    { en: "terminal map", ipa: "[ˈtɜrmənəl mæp]", zh: "航廈地圖", fr: "plan du terminal", ex: "Check the terminal map for your gate.", fr_ex: "Consultez le plan du terminal pour votre porte." },
+                    { en: "lounge", ipa: "[laʊndʒ]", zh: "貴賓室/休息室", fr: "salon", ex: "We can relax in the lounge.", fr_ex: "Nous pouvons nous détendre dans le salon." },
+                    { en: "all set", ipa: "[ɔl sɛt]", zh: "一切就緒/準備好了", fr: "tout est prêt", ex: "You're all set for your flight.", fr_ex: "Tout est prêt pour votre vol." }
                 ]
             },
             {
@@ -741,18 +777,18 @@ Server: "You got it. While the kitchen is brewing up that sauce and getting your
                     ` }
                 ],
                 vocab: [
-                    { en: "kick your coats off", zh: "脫掉外套/放鬆", fr: "enlever vos manteaux", ex: "Feel free to kick your coats off.", fr_ex: "N'hésitez pas à enlever vos manteaux." },
-                    { en: "corner booth", zh: "角落雅座/包廂", fr: "banquette d'angle", ex: "I’ve got a great corner booth for you tonight.", fr_ex: "J'ai une excellente banquette d'angle pour vous ce soir." },
-                    { en: "aging room", zh: "熟成室", fr: "chambre de maturation", ex: "They have a dry aging room.", fr_ex: "Ils ont une chambre de maturation à sec." },
-                    { en: "charcoal broiler system", zh: "炭烤爐系統", fr: "système de gril au charbon de bois", ex: "We use a charcoal broiler system for the steaks.", fr_ex: "Nous utilisons un système de gril au charbon de bois pour les steaks." },
-                    { en: "crust", zh: "外殼/酥脆表皮", fr: "croûte", ex: "The steak has a perfect crust.", fr_ex: "Le steak a une croûte parfaite." },
-                    { en: "the Bone-in Ribeye", zh: "帶骨肋眼牛排", fr: "l'entrecôte sur l'os", ex: "The Bone-in Ribeye is the way to go.", fr_ex: "L'entrecôte sur l'os est le meilleur choix." },
-                    { en: "The marbling", zh: "油花(肉類)", fr: "le persillage", ex: "The marbling makes the meat tender.", fr_ex: "Le persillage rend la viande tendre." },
-                    { en: "Ribeye", zh: "肋眼牛排", fr: "entrecôte", ex: "I'll take the Ribeye, please.", fr_ex: "Je prendrai l'entrecôte, s'il vous plaît." },
-                    { en: "medium-rare", zh: "三分熟", fr: "saignant", ex: "I'd like my steak medium-rare.", fr_ex: "Je voudrais mon steak saignant." },
-                    { en: "brewing up", zh: "釀造/調製(醬料)", fr: "préparer / concocter", ex: "The kitchen is brewing up a sauce.", fr_ex: "La cuisine concocte une sauce." },
-                    { en: "pour-over", zh: "手沖式(飲料)", fr: "versé à la main (café/cocktail)", ex: "Try our signature pour-over cocktail.", fr_ex: "Essayez notre cocktail signature versé à la main." },
-                    { en: "local craft beer", zh: "當地精釀啤酒", fr: "bière artisanale locale", ex: "Can I start you off with a local craft beer?", fr_ex: "Puis-je vous servir une bière artisanale locale pour commencer ?" }
+                    { en: "kick your coats off", ipa: "[kɪk jʊər koʊts ɔf]", zh: "脫掉外套/放鬆", fr: "enlever vos manteaux", ex: "Feel free to kick your coats off.", fr_ex: "N'hésitez pas à enlever vos manteaux." },
+                    { en: "corner booth", ipa: "[ˈkɔrnər buθ]", zh: "角落雅座/包廂", fr: "banquette d'angle", ex: "I’ve got a great corner booth for you tonight.", fr_ex: "J'ai une excellente banquette d'angle pour vous ce soir." },
+                    { en: "aging room", ipa: "[ˈeɪdʒɪŋ rum]", zh: "熟成室", fr: "chambre de maturation", ex: "They have a dry aging room.", fr_ex: "Ils ont une chambre de maturation à sec." },
+                    { en: "charcoal broiler system", ipa: "[ˈtʃɑrˌkoʊl ˈbrɔɪlər ˈsɪstəm]", zh: "炭烤爐系統", fr: "système de gril au charbon de bois", ex: "We use a charcoal broiler system for the steaks.", fr_ex: "Nous utilisons un système de gril au charbon de bois pour les steaks." },
+                    { en: "crust", ipa: "[krʌst]", zh: "外殼/酥脆表皮", fr: "croûte", ex: "The steak has a perfect crust.", fr_ex: "Le steak a une croûte parfaite." },
+                    { en: "the Bone-in Ribeye", ipa: "[ðə boʊn ɪn ˈrɪbˌaɪ]", zh: "帶骨肋眼牛排", fr: "l'entrecôte sur l'os", ex: "The Bone-in Ribeye is the way to go.", fr_ex: "L'entrecôte sur l'os est le meilleur choix." },
+                    { en: "The marbling", ipa: "[ðə ˈmɑrblɪŋ]", zh: "油花(肉類)", fr: "le persillage", ex: "The marbling makes the meat tender.", fr_ex: "Le persillage rend la viande tendre." },
+                    { en: "Ribeye", ipa: "[ˈrɪbˌaɪ]", zh: "肋眼牛排", fr: "entrecôte", ex: "I'll take the Ribeye, please.", fr_ex: "Je prendrai l'entrecôte, s'il vous plaît." },
+                    { en: "medium-rare", ipa: "[ˈmidiəm rɛr]", zh: "三分熟", fr: "saignant", ex: "I'd like my steak medium-rare.", fr_ex: "Je voudrais mon steak saignant." },
+                    { en: "brewing up", ipa: "[ˈbruɪŋ ʌp]", zh: "釀造/調製(醬料)", fr: "préparer / concocter", ex: "The kitchen is brewing up a sauce.", fr_ex: "La cuisine concocte une sauce." },
+                    { en: "pour-over", ipa: "[pɔr ˈoʊvər]", zh: "手沖式(飲料)", fr: "versé à la main (café/cocktail)", ex: "Try our signature pour-over cocktail.", fr_ex: "Essayez notre cocktail signature versé à la main." },
+                    { en: "local craft beer", ipa: "[ˈloʊkəl kræft bɪr]", zh: "當地精釀啤酒", fr: "bière artisanale locale", ex: "Can I start you off with a local craft beer?", fr_ex: "Puis-je vous servir une bière artisanale locale pour commencer ?" }
                 ]
             }
         ];
@@ -827,7 +863,8 @@ Server: "You got it. While the kitchen is brewing up that sauce and getting your
                     <div class="vocab-item">
                         <div class="vocab-header">
                             <span class="vocab-en" onclick="speak('${cleanEn}', 'en-US')">
-                                ${item.en} 
+                                ${item.en}
+                                <span class="vocab-ipa">${item.ipa || ''}</span>
                                 <span class="speaker-icon">🔊</span>
                             </span>
                             <span class="vocab-zh">${item.zh}</span>
