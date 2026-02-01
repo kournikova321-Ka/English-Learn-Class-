@@ -133,10 +133,6 @@
             gap: 8px;
             margin-bottom: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: background-color 0.2s;
-        }
-        .btn-audio.playing {
-            background-color: #333; /* 播放時變深色 */
         }
         .btn-audio:active { transform: scale(0.95); }
 
@@ -180,7 +176,7 @@
             align-items: center;
         }
         
-        /* KK音標表格 */
+        /* KK音標表格/列表 */
         .kk-table {
             width: 100%;
             border-collapse: collapse;
@@ -196,6 +192,22 @@
             color: var(--color-chic-blue);
             width: 40px;
             text-align: center;
+        }
+        
+        .kk-list {
+            padding-left: 20px;
+            line-height: 1.8;
+            color: #444;
+        }
+        .kk-symbol {
+            font-family: "Lucida Sans Unicode", "Arial Unicode MS", sans-serif;
+            color: var(--color-primary-red);
+            font-weight: bold;
+            background-color: #fff;
+            padding: 0 4px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            margin-right: 5px;
         }
 
         /* 單字列表樣式 */
@@ -219,15 +231,14 @@
             font-size: 1.2rem; 
             cursor: pointer;
             display: flex;
-            flex-wrap: wrap;
-            align-items: baseline;
+            align-items: center;
         }
         .vocab-en:active { opacity: 0.6; }
         
-        /* 單字旁的音標樣式 */
+        /* 單字旁的音標 */
         .vocab-ipa {
             font-size: 0.9rem;
-            color: #888;
+            color: #999;
             font-weight: normal;
             margin-left: 8px;
             font-family: "Lucida Sans Unicode", "Arial Unicode MS", sans-serif;
@@ -397,7 +408,7 @@
                 <span class="date-tag" id="artDate"></span>
                 <div class="article-title" id="artTitle" onclick="speak(this.innerText, 'en-US')"></div>
                 
-                <!-- 全文朗讀按鈕 (切換式) -->
+                <!-- 全文朗讀按鈕 -->
                 <button id="btn-audio-toggle" class="btn-audio" onclick="toggleArticleAudio()">
                     <span>🔊 播放文章朗讀 (Play Audio)</span>
                 </button>
@@ -478,7 +489,6 @@
         /* --- 語音發音功能 (含停止) --- */
         function speak(text, lang = 'en-US', onEndCallback) {
             if ('speechSynthesis' in window) {
-                // 如果是透過點擊單字觸發的（沒有 callback），就強制切換
                 if (!onEndCallback) {
                     window.speechSynthesis.cancel();
                 }
@@ -507,7 +517,6 @@
             }
         }
 
-        // 停止所有發音
         function stopAudio() {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
@@ -515,21 +524,16 @@
             resetAudioButton();
         }
 
-        // 文章播放切換邏輯
         function toggleArticleAudio() {
             const btn = document.getElementById('btn-audio-toggle');
-            
             if (window.speechSynthesis.speaking) {
-                // 正在播放 -> 停止
                 stopAudio();
             } else {
-                // 沒在播放 -> 開始
                 if(currentLesson) {
                     btn.innerHTML = '<span>⏹️ 停止朗讀 (Stop Audio)</span>';
                     btn.classList.add('playing');
                     
                     speak(currentLesson.content, 'en-US', function() {
-                        // 播放結束後自動重置按鈕
                         resetAudioButton();
                     });
                 }
@@ -544,7 +548,7 @@
             }
         }
 
-        /* --- 資料設定區 (所有單字已加入音標) --- */
+        /* --- 資料設定區 (新增第六堂課) --- */
         const lessons = [
             {
                 id: 1,
@@ -710,7 +714,7 @@ Staff: "Alright, let's grab your documents and you're all set for SFO. Have a sa
                             <tr><th>[o]</th><td>像「歐～」 (go, home)</td></tr>
                             <tr><th>[aɪ]</th><td>像「愛」 (my, kite)</td></tr>
                             <tr><th>[aʊ]</th><td>像「凹」 (how, now)</td></tr>
-                            <tr><th>[ɔɪ]	像「歐一」 (boy, noise)</td></tr>
+                            <tr><th>[ɔɪ]</th><td>像「歐一」 (boy, noise)</td></tr>
                             <tr><th>[ɝ]</th><td>重音捲舌 (bird, her)</td></tr>
                             <tr><th>[ɚ]</th><td>輕音捲舌 (teacher)</td></tr>
                         </table>
@@ -790,6 +794,67 @@ Server: "You got it. While the kitchen is brewing up that sauce and getting your
                     { en: "pour-over", ipa: "[pɔr ˈoʊvər]", zh: "手沖式(飲料)", fr: "versé à la main (café/cocktail)", ex: "Try our signature pour-over cocktail.", fr_ex: "Essayez notre cocktail signature versé à la main." },
                     { en: "local craft beer", ipa: "[ˈloʊkəl kræft bɪr]", zh: "當地精釀啤酒", fr: "bière artisanale locale", ex: "Can I start you off with a local craft beer?", fr_ex: "Puis-je vous servir une bière artisanale locale pour commencer ?" }
                 ]
+            },
+            {
+                id: 6,
+                date: "2026.02.03",
+                title: "The Manhattan Commute",
+                content: `Driver: "Morning! Just toss your luggage in the trunk and hop in. Watch your head there."
+
+Katia: "Thanks. To the airport, please. I'm running a bit tight on time."
+
+Driver: "No worries, I'll get you there. I make it a point to keep the cabin spick and span. I’ve customized this ride with sound-deadening glass—it’s a distinctive edge when you’re stuck in this midtown gridlock, right?"
+
+Katia: "Definitely."
+
+Driver: "Exactly. While the navigation is calculating the best bypass around the tunnel construction, let’s verify your drop-off point on the screen. I’ve got a smart fridge stocked with chilled water if you're thirsty. It’s a refreshing change from the old yellow cabs."
+
+Katia: "For sure. Do you have a charger? My phone is almost dead."
+
+Driver: "Check the armrest. There's an integrated port right there. We should be pulling up to the terminal in about twenty."
+
+Katia: "Sounds good!"`,
+                questions: [
+                    "Are you a 'hop in and chat' or a 'hop in and sleep' kind of passenger?",
+                    "In your city, which areas are most famous for total 'gridlock'?",
+                    "What is one 'smart' feature or 'upgrade' you wish all taxis had?",
+                    "When you call an Uber, do you prefer a 'spotless' modern car or a vintage 'classic' car with more character?"
+                ],
+                pronunciation: [
+                    { title: "KK 音標 - 母音總複習 (Vowel Recap)", pairs: `
+                        <div class="kk-list">
+                            <strong>單母音 (Monophthongs) 10 個</strong><br>
+                            • 短母音：[ɪ]、[ɛ]、[æ]、[ɑ]、[ʌ]、[ʊ]、[ə]<br>
+                            • 長母音：[i]、[u]、[ɔ]<br><br>
+                            <strong>雙母音 (Diphthongs) 5 個</strong><br>
+                            • [e] (對應 [eɪ])<br>
+                            • [o] (對應 [oʊ])<br>
+                            • [aɪ]<br>
+                            • [au] (對應 [aʊ])<br>
+                            • [ɔɪ]<br><br>
+                            <strong>捲舌母音 (R-colored) 2 個</strong><br>
+                            • [ɝ] (重音節)<br>
+                            • [ɚ] (非重音節)
+                        </div>
+                    ` }
+                ],
+                vocab: [
+                    { en: "hop in", ipa: "[hɑp ɪn]", zh: "上車吧！", fr: "monter", ex: "Just toss your bags in and hop in.", fr_ex: "Jetez simplement vos sacs et montez." },
+                    { en: "spick and span", ipa: "[spɪk ənd spæn]", zh: "一塵不染", fr: "propre comme un sou neuf", ex: "I keep the cabin spick and span.", fr_ex: "Je garde la cabine propre comme un sou neuf." },
+                    { en: "gridlock", ipa: "[ˈgrɪdˌlɑk]", zh: "交通大癱瘓/大塞車", fr: "embouteillage monstre", ex: "We are stuck in midtown gridlock.", fr_ex: "Nous sommes coincés dans un embouteillage monstre au centre-ville." },
+                    { en: "commute", ipa: "[kəˈmjut]", zh: "通勤", fr: "trajet", ex: "The Manhattan commute can be long.", fr_ex: "Le trajet vers Manhattan peut être long." },
+                    { en: "luggage", ipa: "[ˈlʌgɪdʒ]", zh: "行李", fr: "bagages", ex: "Toss your luggage in the trunk.", fr_ex: "Jetez vos bagages dans le coffre." },
+                    { en: "trunk", ipa: "[trʌŋk]", zh: "後車廂", fr: "coffre", ex: "The trunk is full.", fr_ex: "Le coffre est plein." },
+                    { en: "make it a point", ipa: "[meɪk ɪt ə pɔɪnt]", zh: "務必/特意", fr: "se faire un devoir de", ex: "I make it a point to be on time.", fr_ex: "Je me fais un devoir d'être à l'heure." },
+                    { en: "cabin", ipa: "[ˈkæbɪn]", zh: "車廂/座艙", fr: "habitacle", ex: "The car cabin is quiet.", fr_ex: "L'habitacle de la voiture est silencieux." },
+                    { en: "sound-deadening", ipa: "[saʊnd ˈdɛdənɪŋ]", zh: "隔音的", fr: "insonorisant", ex: "The glass is sound-deadening.", fr_ex: "Le verre est insonorisant." },
+                    { en: "distinctive edge", ipa: "[dɪˈstɪŋktɪv ɛdʒ]", zh: "獨特的優勢", fr: "avantage distinctif", ex: "Speed is our distinctive edge.", fr_ex: "La vitesse est notre avantage distinctif." },
+                    { en: "calculate", ipa: "[ˈkælkjəˌleɪt]", zh: "計算", fr: "calculer", ex: "The navigation is calculating the route.", fr_ex: "La navigation calcule l'itinéraire." },
+                    { en: "bypass", ipa: "[ˈbaɪˌpæs]", zh: "繞道/旁道", fr: "contournement", ex: "We need a bypass around the traffic.", fr_ex: "Nous avons besoin d'un contournement des embouteillages." },
+                    { en: "stocked", ipa: "[stɑkt]", zh: "儲備好的", fr: "approvisionné", ex: "The fridge is stocked with water.", fr_ex: "Le frigo est approvisionné en eau." },
+                    { en: "integrated port", ipa: "[ˈɪntəˌgreɪtɪd pɔrt]", zh: "內建插孔", fr: "port intégré", ex: "There is an integrated port for charging.", fr_ex: "Il y a un port intégré pour le chargement." },
+                    { en: "pull up", ipa: "[pʊl ʌp]", zh: "停車/抵達", fr: "s'arrêter", ex: "We are pulling up to the terminal.", fr_ex: "Nous nous arrêtons au terminal." }
+                ]
             }
         ];
 
@@ -828,8 +893,8 @@ Server: "You got it. While the kitchen is brewing up that sauce and getting your
             if (currentLesson.pronunciation && currentLesson.pronunciation.length > 0) {
                 let html = '<div class="pronunciation-box"><div class="pronunciation-title">🗣️ Pronunciation Tips</div>';
                 currentLesson.pronunciation.forEach(p => {
-                    // 如果 pairs 內容包含 HTML 標籤 (如 table)，直接渲染
-                    if (p.pairs.includes('<table')) {
+                    // 如果 pairs 內容包含 HTML 標籤 (如 table/div)，直接渲染
+                    if (p.pairs.includes('<table') || p.pairs.includes('<div')) {
                         html += `
                             <div class="pronunciation-item" style="border:none;">
                                 ${p.pairs}
