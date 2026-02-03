@@ -133,6 +133,10 @@
             gap: 8px;
             margin-bottom: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: background-color 0.2s;
+        }
+        .btn-audio.playing {
+            background-color: #333;
         }
         .btn-audio:active { transform: scale(0.95); }
 
@@ -195,7 +199,7 @@
         }
         
         .kk-list {
-            padding-left: 20px;
+            padding-left: 10px;
             line-height: 1.8;
             color: #444;
         }
@@ -231,7 +235,8 @@
             font-size: 1.2rem; 
             cursor: pointer;
             display: flex;
-            align-items: center;
+            flex-wrap: wrap;
+            align-items: baseline;
         }
         .vocab-en:active { opacity: 0.6; }
         
@@ -408,7 +413,7 @@
                 <span class="date-tag" id="artDate"></span>
                 <div class="article-title" id="artTitle" onclick="speak(this.innerText, 'en-US')"></div>
                 
-                <!-- 全文朗讀按鈕 -->
+                <!-- 全文朗讀按鈕 (切換式) -->
                 <button id="btn-audio-toggle" class="btn-audio" onclick="toggleArticleAudio()">
                     <span>🔊 播放文章朗讀 (Play Audio)</span>
                 </button>
@@ -548,7 +553,7 @@
             }
         }
 
-        /* --- 資料設定區 (新增第六堂課) --- */
+        /* --- 資料設定區 (已新增第六堂課) --- */
         const lessons = [
             {
                 id: 1,
@@ -560,7 +565,7 @@ When I finally reach the counter, the barista greets me with a tired but friendl
 
 Then comes the payment. I ask, "Do you take contactless?" She points to the card reader, and I tap my card. It beeps instantly to confirm the transaction. She asks if I want a receipt printed, but I tell her, "No need, thanks! Have a good one." Finally, I head over to the crowded pickup counter. I find a small napkin and a stirrer at the condiment station while I wait for the barista to call my name. Once I grab my cup, I’m finally ready to start my day with my caffeine fix.`,
                 questions: [
-                    "Have you ever had the experience where someone tried to cut in line in front of you?",
+                    "Have you ever had the experience where someone tried to cut in line in front of you? How did you handle it?",
                     "Do you usually need a caffeine fix to feel awake, or are you naturally energetic?",
                     "Are you 'picky' about your order at a cafe, or do you take whatever is on the menu?",
                     "Do you find it easy to strike up small talk with strangers?",
@@ -714,7 +719,7 @@ Staff: "Alright, let's grab your documents and you're all set for SFO. Have a sa
                             <tr><th>[o]</th><td>像「歐～」 (go, home)</td></tr>
                             <tr><th>[aɪ]</th><td>像「愛」 (my, kite)</td></tr>
                             <tr><th>[aʊ]</th><td>像「凹」 (how, now)</td></tr>
-                            <tr><th>[ɔɪ]</th><td>像「歐一」 (boy, noise)</td></tr>
+                            <tr><th>[ɔɪ]	像「歐一」 (boy, noise)</td></tr>
                             <tr><th>[ɝ]</th><td>重音捲舌 (bird, her)</td></tr>
                             <tr><th>[ɚ]</th><td>輕音捲舌 (teacher)</td></tr>
                         </table>
@@ -824,17 +829,17 @@ Katia: "Sounds good!"`,
                     { title: "KK 音標 - 母音總複習 (Vowel Recap)", pairs: `
                         <div class="kk-list">
                             <strong>單母音 (Monophthongs) 10 個</strong><br>
-                            • 短母音：[ɪ]、[ɛ]、[æ]、[ɑ]、[ʌ]、[ʊ]、[ə]<br>
-                            • 長母音：[i]、[u]、[ɔ]<br><br>
+                            <span class="kk-symbol">[ɪ]</span> <span class="kk-symbol">[ɛ]</span> <span class="kk-symbol">[æ]</span> <span class="kk-symbol">[ɑ]</span> <span class="kk-symbol">[ʌ]</span> <span class="kk-symbol">[ʊ]</span> <span class="kk-symbol">[ə]</span><br>
+                            <span class="kk-symbol">[i]</span> <span class="kk-symbol">[u]</span> <span class="kk-symbol">[ɔ]</span><br><br>
                             <strong>雙母音 (Diphthongs) 5 個</strong><br>
-                            • [e] (對應 [eɪ])<br>
-                            • [o] (對應 [oʊ])<br>
-                            • [aɪ]<br>
-                            • [au] (對應 [aʊ])<br>
-                            • [ɔɪ]<br><br>
+                            <span class="kk-symbol">[e]</span> (對應 [eɪ])<br>
+                            <span class="kk-symbol">[o]</span> (對應 [oʊ])<br>
+                            <span class="kk-symbol">[aɪ]</span><br>
+                            <span class="kk-symbol">[au]</span> (對應 [aʊ])<br>
+                            <span class="kk-symbol">[ɔɪ]</span><br><br>
                             <strong>捲舌母音 (R-colored) 2 個</strong><br>
-                            • [ɝ] (重音節)<br>
-                            • [ɚ] (非重音節)
+                            <span class="kk-symbol">[ɝ]</span> (重音節)<br>
+                            <span class="kk-symbol">[ɚ]</span> (非重音節)
                         </div>
                     ` }
                 ],
@@ -843,17 +848,23 @@ Katia: "Sounds good!"`,
                     { en: "spick and span", ipa: "[spɪk ənd spæn]", zh: "一塵不染", fr: "propre comme un sou neuf", ex: "I keep the cabin spick and span.", fr_ex: "Je garde la cabine propre comme un sou neuf." },
                     { en: "gridlock", ipa: "[ˈgrɪdˌlɑk]", zh: "交通大癱瘓/大塞車", fr: "embouteillage monstre", ex: "We are stuck in midtown gridlock.", fr_ex: "Nous sommes coincés dans un embouteillage monstre au centre-ville." },
                     { en: "commute", ipa: "[kəˈmjut]", zh: "通勤", fr: "trajet", ex: "The Manhattan commute can be long.", fr_ex: "Le trajet vers Manhattan peut être long." },
-                    { en: "luggage", ipa: "[ˈlʌgɪdʒ]", zh: "行李", fr: "bagages", ex: "Toss your luggage in the trunk.", fr_ex: "Jetez vos bagages dans le coffre." },
+                    { en: "toss your luggage", ipa: "[tɔs jʊər ˈlʌgɪdʒ]", zh: "扔行李/放行李", fr: "déposer vos bagages", ex: "Just toss your luggage in the trunk.", fr_ex: "Déposez simplement vos bagages dans le coffre." },
                     { en: "trunk", ipa: "[trʌŋk]", zh: "後車廂", fr: "coffre", ex: "The trunk is full.", fr_ex: "Le coffre est plein." },
-                    { en: "make it a point", ipa: "[meɪk ɪt ə pɔɪnt]", zh: "務必/特意", fr: "se faire un devoir de", ex: "I make it a point to be on time.", fr_ex: "Je me fais un devoir d'être à l'heure." },
+                    { en: "running a bit tight on time", ipa: "[ˈrʌnɪŋ ə bɪt taɪt ɑn taɪm]", zh: "時間有點趕", fr: "être un peu pressé", ex: "I'm running a bit tight on time.", fr_ex: "Je suis un peu pressé par le temps." },
                     { en: "cabin", ipa: "[ˈkæbɪn]", zh: "車廂/座艙", fr: "habitacle", ex: "The car cabin is quiet.", fr_ex: "L'habitacle de la voiture est silencieux." },
-                    { en: "sound-deadening", ipa: "[saʊnd ˈdɛdənɪŋ]", zh: "隔音的", fr: "insonorisant", ex: "The glass is sound-deadening.", fr_ex: "Le verre est insonorisant." },
+                    { en: "sound-deadening glass", ipa: "[saʊnd ˈdɛdənɪŋ glæs]", zh: "隔音玻璃", fr: "verre insonorisant", ex: "This car has sound-deadening glass.", fr_ex: "Cette voiture a un verre insonorisant." },
                     { en: "distinctive edge", ipa: "[dɪˈstɪŋktɪv ɛdʒ]", zh: "獨特的優勢", fr: "avantage distinctif", ex: "Speed is our distinctive edge.", fr_ex: "La vitesse est notre avantage distinctif." },
-                    { en: "calculate", ipa: "[ˈkælkjəˌleɪt]", zh: "計算", fr: "calculer", ex: "The navigation is calculating the route.", fr_ex: "La navigation calcule l'itinéraire." },
+                    { en: "Definitely", ipa: "[ˈdɛfənətli]", zh: "肯定地/當然", fr: "absolument", ex: "I will definitely be there.", fr_ex: "Je serai absolument là." },
+                    { en: "Exactly", ipa: "[ɪgˈzæktli]", zh: "正是/沒錯", fr: "exactement", ex: "That is exactly what I meant.", fr_ex: "C'est exactement ce que je voulais dire." },
+                    { en: "navigation", ipa: "[ˌnævəˈgeɪʃən]", zh: "導航", fr: "navigation", ex: "The navigation is calculating the route.", fr_ex: "La navigation calcule l'itinéraire." },
                     { en: "bypass", ipa: "[ˈbaɪˌpæs]", zh: "繞道/旁道", fr: "contournement", ex: "We need a bypass around the traffic.", fr_ex: "Nous avons besoin d'un contournement des embouteillages." },
-                    { en: "stocked", ipa: "[stɑkt]", zh: "儲備好的", fr: "approvisionné", ex: "The fridge is stocked with water.", fr_ex: "Le frigo est approvisionné en eau." },
-                    { en: "integrated port", ipa: "[ˈɪntəˌgreɪtɪd pɔrt]", zh: "內建插孔", fr: "port intégré", ex: "There is an integrated port for charging.", fr_ex: "Il y a un port intégré pour le chargement." },
-                    { en: "pull up", ipa: "[pʊl ʌp]", zh: "停車/抵達", fr: "s'arrêter", ex: "We are pulling up to the terminal.", fr_ex: "Nous nous arrêtons au terminal." }
+                    { en: "construction", ipa: "[kənˈstrʌkʃən]", zh: "施工/建設", fr: "travaux / construction", ex: "Avoid the tunnel construction.", fr_ex: "Évitez les travaux du tunnel." },
+                    { en: "verify", ipa: "[ˈvɛrəˌfaɪ]", zh: "確認/核實", fr: "vérifier", ex: "Let's verify your drop-off point.", fr_ex: "Vérifions votre point de dépose." },
+                    { en: "drop-off point", ipa: "[drɑp ɔf pɔɪnt]", zh: "下車點", fr: "point de dépose", ex: "Check the drop-off point on the screen.", fr_ex: "Vérifiez le point de dépose sur l'écran." },
+                    { en: "chilled water", ipa: "[tʃɪld ˈwɔtər]", zh: "冰水", fr: "eau fraîche", ex: "I have chilled water if you are thirsty.", fr_ex: "J'ai de l'eau fraîche si vous avez soif." },
+                    { en: "armrest", ipa: "[ˈɑrmˌrɛst]", zh: "扶手", fr: "accoudoir", ex: "Check the armrest for the charger.", fr_ex: "Vérifiez l'accoudoir pour le chargeur." },
+                    { en: "feature", ipa: "[ˈfitʃər]", zh: "功能/特色", fr: "fonctionnalité", ex: "What is one smart feature you wish taxis had?", fr_ex: "Quelle fonctionnalité intelligente souhaiteriez-vous que les taxis aient ?" },
+                    { en: "spotless", ipa: "[ˈspɑtləs]", zh: "一塵不染的", fr: "impeccable", ex: "Do you prefer a spotless modern car?", fr_ex: "Préférez-vous une voiture moderne impeccable ?" }
                 ]
             }
         ];
