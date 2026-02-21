@@ -413,7 +413,7 @@
                 <span class="date-tag" id="artDate"></span>
                 <div class="article-title" id="artTitle" onclick="speak(this.innerText, 'en-US')"></div>
                 
-                <!-- 全文朗讀按鈕 (切換式) -->
+                <!-- 全文朗讀按鈕 -->
                 <button id="btn-audio-toggle" class="btn-audio" onclick="toggleArticleAudio()">
                     <span>🔊 播放文章朗讀 (Play Audio)</span>
                 </button>
@@ -553,7 +553,7 @@
             }
         }
 
-        /* --- 資料設定區 (已新增第七堂課 - 35個單字) --- */
+        /* --- 資料設定區 (已新增第八堂課 - 30個單字) --- */
         const lessons = [
             {
                 id: 1,
@@ -924,17 +924,80 @@ Receptionist: "Absolutely. We’ve upgraded our techniques to include modern tri
                     { en: "prep", ipa: "[prɛp]", zh: "準備 (prepare)", fr: "préparer", ex: "She is prepping the room.", fr_ex: "Elle prépare la salle." },
                     { en: "lemongrass tea", ipa: "[ˈlɛmənˌgræs ti]", zh: "檸檬草茶", fr: "thé à la citronnelle", ex: "I love lemongrass tea.", fr_ex: "J'adore le thé à la citronnelle." },
                     { en: "stiff", ipa: "[stɪf]", zh: "僵硬的", fr: "raide", ex: "My neck is stiff from working.", fr_ex: "Mon cou est raide à cause du travail." },
-                    { en: "absolutely", ipa: "[ˌæbsəˈlutli]", zh: "當然/絕對", fr: "absolument", ex: "Absolutely, it will help.", fr_ex: "Absolument, cela aidera." },
-                    { en: "technique", ipa: "[tɛkˈnik]", zh: "技術/技巧", fr: "technique", ex: "The therapist uses a special technique.", fr_ex: "Le thérapeute utilise une technique spéciale." },
                     { en: "trigger-point therapy", ipa: "[ˈtrɪgər pɔɪnt ˈθɛrəpi]", zh: "激痛點療法", fr: "thérapie des points gâchettes", ex: "Trigger-point therapy relieves pain.", fr_ex: "La thérapie des points gâchettes soulage la douleur." },
                     { en: "huge plus", ipa: "[hjudʒ plʌs]", zh: "巨大的優勢/加分項", fr: "un gros plus", ex: "That is a huge plus for me.", fr_ex: "C'est un gros plus pour moi." },
                     { en: "padding", ipa: "[ˈpædɪŋ]", zh: "襯墊/填充物", fr: "rembourrage", ex: "The mat has extra padding.", fr_ex: "Le tapis a un rembourrage supplémentaire." },
-                    { en: "support", ipa: "[səˈpɔrt]", zh: "支撐", fr: "soutien", ex: "The padding provides good support.", fr_ex: "Le rembourrage offre un bon soutien." },
-                    { en: "comfortable", ipa: "[ˈkʌmfərtəbəl]", zh: "舒適的", fr: "confortable", ex: "Make yourself comfortable.", fr_ex: "Mettez-vous à l'aise." },
                     { en: "get the ball rolling", ipa: "[gɛt ðə bɔl ˈroʊlɪŋ]", zh: "開始行動", fr: "lancer les choses", ex: "Let's get the ball rolling.", fr_ex: "Lançons les choses." },
-                    { en: "lazy yoga", ipa: "[ˈleɪzi ˈjoʊgə]", zh: "懶人瑜伽", fr: "yoga paresseux", ex: "Thai massage is called lazy yoga.", fr_ex: "Le massage thaïlandais est appelé yoga paresseux." },
                     { en: "refreshing", ipa: "[rɪˈfrɛʃɪŋ]", zh: "提神的/清爽的", fr: "rafraîchissant", ex: "The massage was very refreshing.", fr_ex: "Le massage était très rafraîchissant." },
-                    { en: "office worker", ipa: "[ˈɔfɪs ˈwɜrkər]", zh: "上班族", fr: "employé de bureau", ex: "It is good for office workers.", fr_ex: "C'est bon pour les employés de bureau." }
+                    { en: "Sawadee", ipa: "[ˌsɑwɑˈdi]", zh: "薩瓦迪(泰語你好)", fr: "Sawadee (bonjour)", ex: "Sawadee! Welcome to our spa.", fr_ex: "Sawadee ! Bienvenue dans notre spa." }
+                ]
+            },
+            {
+                id: 8,
+                date: "2026.02.24",
+                title: "Trying Out the Reformer",
+                content: `Trainer: "Welcome to the studio! You can hop in and leave your shoes by the door. Everything here is spick and span so you can feel at ease."
+                
+Member: "Thanks! It looks very professional. What is that large machine with the springs?"
+
+Trainer: "That is the Pilates Reformer. We just revamped our studio with five of them. It has a sliding carriage, adjustable springs, and straps. It’s a huge plus for building core strength."
+
+Member: "It looks a bit complicated. Is it hard to use?"
+
+Trainer: "Not at all! It's very uncomplicated once you learn the basics. We also have Pilates balls, magic circles, and foam rollers on the mats. While I am prepping the equipment, you can do some light stretching. Let’s get the ball rolling!"`,
+                questions: [
+                    "Do you prefer 'Mat Pilates' or using the 'Reformer' machine?",
+                    "When you start class, do you 'get the ball rolling' with breathing or stretching?",
+                    "When you 'hop in' to a Pilates class, do you prefer a 'fast-paced' vibe or a 'slow' stretch?",
+                    "Do you think the 'Reformer' looks like a 'high-tech' machine or just a bed with 'springs'?"
+                ],
+                pronunciation: [
+                    { title: "KK 音標 - 子音 (摩擦音)", pairs: `
+                        <table class="kk-table">
+                            <tr><th>[f]</th><td>上齒輕咬下唇後噴氣（無聲） (foot, off)</td></tr>
+                            <tr><th>[v]</th><td>上齒輕咬下唇，聲帶振動（有聲） (vase, five)</td></tr>
+                            <tr><th>[s]</th><td>舌尖靠近上牙齦，發出嘶嘶聲（無聲） (sit, bus)</td></tr>
+                            <tr><th>[z]</th><td>舌尖靠近上牙齦，聲帶振動（有聲） (zoo, noise)</td></tr>
+                            <tr><th>[ʃ]</th><td>嘴唇略噘起，發出「噓」聲（無聲） (she, fish)</td></tr>
+                            <tr><th>[ʒ]</th><td>嘴唇略噘起，聲帶振動（有聲） (pleasure, vision)</td></tr>
+                            <tr><th>[θ]</th><td>舌尖放在上下齒之間吹氣（無聲） (think, math)</td></tr>
+                            <tr><th>[ð]</th><td>舌尖放在上下齒之間，聲帶振動（有聲） (this, mother)</td></tr>
+                            <tr><th>[h]</th><td>像哈氣一樣（無聲） (hot, how)</td></tr>
+                        </table>
+                    ` }
+                ],
+                vocab: [
+                    { en: "carriage", ipa: "[ˈkærɪdʒ]", zh: "滑動床板", fr: "chariot (partie mobile)", ex: "The carriage glides smoothly.", fr_ex: "Le chariot glisse doucement." },
+                    { en: "spick and span", ipa: "[spɪk ənd spæn]", zh: "一塵不染", fr: "propre comme un sou neuf", ex: "The room is spick and span.", fr_ex: "La pièce est propre comme un sou neuf." },
+                    { en: "revamp", ipa: "[riˈvæmp]", zh: "翻新/改進", fr: "rénover", ex: "We revamped the studio.", fr_ex: "Nous avons rénové le studio." },
+                    { en: "prepping", ipa: "[prɛpɪŋ]", zh: "準備 (prep的進行式)", fr: "préparer", ex: "I am prepping dinner.", fr_ex: "Je prépare le dîner." },
+                    { en: "studio", ipa: "[ˈstudiˌoʊ]", zh: "工作室/教室", fr: "studio", ex: "Meet me at the yoga studio.", fr_ex: "Retrouve-moi au studio de yoga." },
+                    { en: "hop in", ipa: "[hɑp ɪn]", zh: "進來/跳進來", fr: "monter / entrer", ex: "Hop in the car!", fr_ex: "Monte dans la voiture !" },
+                    { en: "feel at ease", ipa: "[fil æt iz]", zh: "感到自在/放鬆", fr: "se sentir à l'aise", ex: "Make sure guests feel at ease.", fr_ex: "Assurez-vous que les invités se sentent à l'aise." },
+                    { en: "professional", ipa: "[prəˈfɛʃənəl]", zh: "專業的", fr: "professionnel", ex: "She is very professional.", fr_ex: "Elle est très professionnelle." },
+                    { en: "spring", ipa: "[sprɪŋ]", zh: "彈簧", fr: "ressort", ex: "The machine has strong springs.", fr_ex: "La machine a des ressorts solides." },
+                    { en: "sliding", ipa: "[ˈslaɪdɪŋ]", zh: "滑動的", fr: "coulissant", ex: "Be careful on the sliding seat.", fr_ex: "Faites attention au siège coulissant." },
+                    { en: "adjustable", ipa: "[əˈdʒʌstəbəl]", zh: "可調整的", fr: "réglable", ex: "The straps are adjustable.", fr_ex: "Les sangles sont réglables." },
+                    { en: "strap", ipa: "[stræp]", zh: "帶子/皮帶", fr: "sangle", ex: "Hold onto the straps.", fr_ex: "Tenez les sangles." },
+                    { en: "huge plus", ipa: "[hjudʒ plʌs]", zh: "巨大的優勢", fr: "un gros plus", ex: "Experience is a huge plus.", fr_ex: "L'expérience est un gros plus." },
+                    { en: "core strength", ipa: "[kɔr strɛŋkθ]", zh: "核心肌群力量", fr: "force du tronc", ex: "Pilates builds core strength.", fr_ex: "Le Pilates renforce le tronc." },
+                    { en: "complicated", ipa: "[ˈkɑmpləˌkeɪtəd]", zh: "複雜的", fr: "compliqué", ex: "It looks complicated.", fr_ex: "Ça a l'air compliqué." },
+                    { en: "uncomplicated", ipa: "[ˌʌnˈkɑmpləˌkeɪtɪd]", zh: "不複雜的/簡單的", fr: "simple / non compliqué", ex: "The rules are uncomplicated.", fr_ex: "Les règles sont simples." },
+                    { en: "basics", ipa: "[ˈbeɪsɪks]", zh: "基礎", fr: "bases", ex: "Learn the basics first.", fr_ex: "Apprenez d'abord les bases." },
+                    { en: "Pilates ball", ipa: "[pɪˈlɑtiz bɔl]", zh: "皮拉提斯球", fr: "ballon de Pilates", ex: "Use the Pilates ball for balance.", fr_ex: "Utilisez le ballon de Pilates pour l'équilibre." },
+                    { en: "magic circle", ipa: "[ˈmædʒɪk ˈsɜrkəl]", zh: "健身環/魔力圈", fr: "cercle magique", ex: "Squeeze the magic circle.", fr_ex: "Serrez le cercle magique." },
+                    { en: "foam roller", ipa: "[foʊm ˈroʊlər]", zh: "泡沫滾筒", fr: "rouleau en mousse", ex: "Roll your back on the foam roller.", fr_ex: "Roulez votre dos sur le rouleau en mousse." },
+                    { en: "mat", ipa: "[mæt]", zh: "墊子", fr: "tapis", ex: "Put your mat on the floor.", fr_ex: "Mettez votre tapis sur le sol." },
+                    { en: "equipment", ipa: "[ɪˈkwɪpmənt]", zh: "設備/器材", fr: "équipement", ex: "The equipment is new.", fr_ex: "L'équipement est neuf." },
+                    { en: "light stretching", ipa: "[laɪt ˈstrɛtʃɪŋ]", zh: "輕度伸展", fr: "étirements légers", ex: "Do some light stretching first.", fr_ex: "Faites quelques étirements légers d'abord." },
+                    { en: "get the ball rolling", ipa: "[gɛt ðə bɔl ˈroʊlɪŋ]", zh: "開始進行", fr: "lancer les choses", ex: "Let's get the ball rolling.", fr_ex: "Lançons les choses." },
+                    { en: "at ease", ipa: "[æt iz]", zh: "自在/不拘束", fr: "à l'aise", ex: "I feel at ease here.", fr_ex: "Je me sens à l'aise ici." },
+                    { en: "welcome", ipa: "[ˈwɛlkəm]", zh: "歡迎", fr: "bienvenue", ex: "Welcome to our class.", fr_ex: "Bienvenue à notre cours." },
+                    { en: "leave", ipa: "[liv]", zh: "留下/脫下(鞋)", fr: "laisser", ex: "Leave your shoes here.", fr_ex: "Laissez vos chaussures ici." },
+                    { en: "door", ipa: "[dɔr]", zh: "門", fr: "porte", ex: "The door is open.", fr_ex: "La porte est ouverte." },
+                    { en: "build", ipa: "[bɪld]", zh: "建立/增強", fr: "construire / renforcer", ex: "It helps build muscles.", fr_ex: "Cela aide à renforcer les muscles." },
+                    { en: "machine", ipa: "[məˈʃin]", zh: "機器", fr: "machine", ex: "How does this machine work?", fr_ex: "Comment fonctionne cette machine ?" },
+                    { en: "Reformer", ipa: "[rɪˈfɔrmər]", zh: "核心床(皮拉提斯)", fr: "Reformer", ex: "This is the Pilates Reformer.", fr_ex: "C'est le Reformer Pilates." }
                 ]
             }
         ];
