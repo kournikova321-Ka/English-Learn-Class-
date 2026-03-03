@@ -553,7 +553,7 @@
             }
         }
 
-        /* --- 資料設定區 (已新增第八堂課 - 30個單字) --- */
+        /* --- 資料設定區 (已新增第九堂課 - 30個單字) --- */
         const lessons = [
             {
                 id: 1,
@@ -997,7 +997,104 @@ Trainer: "Not at all! It's very uncomplicated once you learn the basics. We also
                     { en: "door", ipa: "[dɔr]", zh: "門", fr: "porte", ex: "The door is open.", fr_ex: "La porte est ouverte." },
                     { en: "build", ipa: "[bɪld]", zh: "建立/增強", fr: "construire / renforcer", ex: "It helps build muscles.", fr_ex: "Cela aide à renforcer les muscles." },
                     { en: "machine", ipa: "[məˈʃin]", zh: "機器", fr: "machine", ex: "How does this machine work?", fr_ex: "Comment fonctionne cette machine ?" },
-                    { en: "Reformer", ipa: "[rɪˈfɔrmər]", zh: "核心床(皮拉提斯)", fr: "Reformer", ex: "This is the Pilates Reformer.", fr_ex: "C'est le Reformer Pilates." }
+                    { en: "Reformer", ipa: "[rɪˈfɔrmər]", zh: "核心床(皮拉提斯)", fr: "Reformer", ex: "This is the Pilates Reformer.", fr_ex: "C'est le Reformer Pilates." },
+                    { en: "athleisure", ipa: "[æθˈliʒər]", zh: "運動休閒風", fr: "athleisure", ex: "I love wearing athleisure on weekends.", fr_ex: "J'adore porter de l'athleisure le week-end." },
+                    { en: "vibe", ipa: "[vaɪb]", zh: "氛圍;感覺", fr: "ambiance", ex: "I like the vibe of this cafe.", fr_ex: "J'aime l'ambiance de ce café." },
+                    { en: "put-together", ipa: "[pʊt təˈgɛðər]", zh: "精心打扮的", fr: "soigné", ex: "She always looks so put-together.", fr_ex: "Elle a toujours l'air si soignée." },
+                    { en: "fit", ipa: "[fɪt]", zh: "合身度;版型", fr: "coupe", ex: "The fit of these jeans is perfect.", fr_ex: "La coupe de ce jean est parfaite." },
+                    { en: "oversized", ipa: "[ˈoʊvərˌsaɪzd]", zh: "超大號的", fr: "surdimensionné", ex: "Oversized sweaters are very popular.", fr_ex: "Les pulls surdimensionnés sont très populaires." },
+                    { en: "comfy", ipa: "[ˈkʌmfi]", zh: "舒適的", fr: "confortable (confort)", ex: "This chair is so comfy.", fr_ex: "Cette chaise est si confortable." },
+                    { en: "on point", ipa: "[ɑn pɔɪnt]", zh: "完美的;正點", fr: "parfait", ex: "Your makeup is on point today.", fr_ex: "Ton maquillage est parfait aujourd'hui." },
+                    { en: "low-key", ipa: "[loʊ ki]", zh: "低調的", fr: "discret", ex: "Let's keep the party low-key.", fr_ex: "Gardons la fête discrète." },
+                    { en: "capsule wardrobe", ipa: "[ˈkæpsəl ˈwɔrdroʊb]", zh: "膠囊衣櫥", fr: "garde-robe capsule", ex: "I am building a capsule wardrobe.", fr_ex: "Je constitue une garde-robe capsule." },
+                    { en: "mix and match", ipa: "[mɪks ənd mætʃ]", zh: "混搭", fr: "mélanger et assortir", ex: "It's fun to mix and match patterns.", fr_ex: "C'est amusant de mélanger et assortir les motifs." },
+                    { en: "elevate", ipa: "[ˈɛləˌveɪt]", zh: "提升(質感)", fr: "rehausser", ex: "Heels can elevate a casual outfit.", fr_ex: "Des talons peuvent rehausser une tenue décontractée." },
+                    { en: "monochrome", ipa: "[ˈmɑnəˌkroʊm]", zh: "單色的", fr: "monochrome", ex: "She wore a chic monochrome outfit.", fr_ex: "Elle portait une tenue monochrome chic." },
+                    { en: "chic", ipa: "[ʃik]", zh: "時髦的", fr: "chic", ex: "That dress is very chic.", fr_ex: "Cette robe est très chic." },
+                    { en: "hoodie", ipa: "[ˈhʊdi]", zh: "連帽衫", fr: "sweat à capuche", ex: "I'm just vibing in this hoodie.", fr_ex: "Je suis juste bien dans ce sweat à capuche." },
+                    { en: "flattering", ipa: "[ˈflætərɪŋ]", zh: "修飾身形的", fr: "flatteur", ex: "That color is flattering on you.", fr_ex: "Cette couleur est flatteuse pour vous." },
+                    { en: "spendy", ipa: "[ˈspɛndi]", zh: "昂貴的(口語)", fr: "cher", ex: "It's a bit spendy, but worth it.", fr_ex: "C'est un peu cher, mais ça vaut le coup." },
+                    { en: "baggy", ipa: "[ˈbægi]", zh: "寬鬆下垂的", fr: "ample", ex: "He likes wearing baggy pants.", fr_ex: "Il aime porter des pantalons amples." },
+                    { en: "blazer", ipa: "[ˈbleɪzər]", zh: "西裝外套", fr: "blazer", ex: "A blazer looks professional.", fr_ex: "Un blazer fait professionnel." },
+                    { en: "form-fitting", ipa: "[fɔrm ˈfɪtɪŋ]", zh: "合身的;貼身的", fr: "moulant", ex: "She prefers form-fitting dresses.", fr_ex: "Elle préfère les robes moulantes." },
+                    { en: "tailored", ipa: "[ˈteɪlərd]", zh: "量身訂做的;剪裁合身的", fr: "sur mesure", ex: "He bought a tailored suit.", fr_ex: "Il a acheté un costume sur mesure." },
+                    { en: "bargain", ipa: "[ˈbɑrgən]", zh: "便宜貨;划算品", fr: "bonne affaire", ex: "I found a great bargain at the store.", fr_ex: "J'ai trouvé une bonne affaire au magasin." },
+                    { en: "minimalist", ipa: "[ˈmɪnəməlɪst]", zh: "極簡主義者", fr: "minimaliste", ex: "She has a minimalist style.", fr_ex: "Elle a un style minimaliste." },
+                    { en: "basics", ipa: "[ˈbeɪsɪks]", zh: "基本款衣物", fr: "basiques", ex: "I need to buy some new basics.", fr_ex: "J'ai besoin d'acheter de nouveaux basiques." },
+                    { en: "outfit", ipa: "[ˈaʊtˌfɪt]", zh: "全套服裝", fr: "tenue", ex: "What outfit are you wearing tonight?", fr_ex: "Quelle tenue portes-tu ce soir ?" },
+                    { en: "denim", ipa: "[ˈdɛnəm]", zh: "丹寧布;牛仔布", fr: "jean", ex: "Denim jackets never go out of style.", fr_ex: "Les vestes en jean ne se démodent jamais." },
+                    { en: "leggings", ipa: "[ˈlɛgɪŋz]", zh: "內搭褲;緊身褲", fr: "leggings", ex: "I wear leggings to the gym.", fr_ex: "Je porte des leggings pour aller à la salle de sport." },
+                    { en: "obsessed", ipa: "[əbˈsɛst]", zh: "著迷的", fr: "obsédé", ex: "I am obsessed with this new brand.", fr_ex: "Je suis obsédé par cette nouvelle marque." },
+                    { en: "save up", ipa: "[seɪv ʌp]", zh: "存錢", fr: "économiser", ex: "I'm saving up for a new coat.", fr_ex: "J'économise pour un nouveau manteau." },
+                    { en: "approach", ipa: "[əˈproʊtʃ]", zh: "方式;方法", fr: "approche", ex: "I like her approach to fashion.", fr_ex: "J'aime son approche de la mode." },
+                    { en: "confidence", ipa: "[ˈkɑnfədəns]", zh: "自信", fr: "confiance", ex: "Confidence is the best accessory.", fr_ex: "La confiance est le meilleur accessoire." }
+                ]
+            },
+            {
+                id: 9,
+                date: "2026.03.03",
+                title: "The 'Everyday Look' Vibe",
+                content: `Have you noticed how athleisure has basically become the official uniform of the U.S.? It’s that perfect sweet spot where your gym gear meets your "going out for coffee" clothes. Since you’ve been hitting the reformer, you’ve probably seen the look everywhere—it’s all about looking put-together without looking like you’re trying too hard.
+
+In the States, we don’t really talk about "fashion" in a formal way for daily life. Instead, we talk about the fit. Is it oversized and comfy, or more of a slim fit? If an outfit looks great, we might say it’s on point. And if it’s just a casual day, we’re definitely keeping it low-key.
+
+The goal for most people is building a capsule wardrobe—basically, a bunch of solid basics you can mix and match so you don’t have to think twice in the morning. Maybe you throw a denim jacket over your leggings to "elevate" the look, or you go for a monochrome (all one color) vibe because it’s easy and chic.
+
+The best outfit is the one that makes you feel like yourself. After all, if you’re feelin’ your look, your confidence does the rest of the talking!`,
+                questions: [
+                    "American fashion is currently obsessed with oversized fits—like big hoodies or baggy blazers. Do you personally like that look, or do you prefer clothes that are more form-fitting and tailored?",
+                    "If you had to build a capsule wardrobe with only five items of clothing, what would they be? How would you mix and match them for a busy day?",
+                    "When it comes to clothes, are you someone who likes to find a bargain, or do you prefer to save up for something a bit spendy but high-quality? Why do you think some people prefer the minimalist approach?"
+                ],
+                pronunciation: [
+                    { title: "KK 音標 - 破擦音 (Affricates)", pairs: `
+                        <table class="kk-table">
+                            <tr><th>[tʃ]</th><td>像中文「去」的氣音（無聲） (chair, each)</td></tr>
+                            <tr><th>[dʒ]</th><td>像中文「具」，聲帶振動（有聲） (joy, age)</td></tr>
+                        </table>` },
+                    { title: "KK 音標 - 鼻音、流音與半母音", pairs: `
+                        <table class="kk-table">
+                            <tr><th>[m]</th><td>雙唇閉緊，氣流由鼻腔出 (my, moon)</td></tr>
+                            <tr><th>[n]</th><td>舌尖抵住上牙齦，氣流由鼻腔出 (name, ten)</td></tr>
+                            <tr><th>[ŋ]</th><td>舌根抵住軟顎（像「昂」尾音） (sing, ping)</td></tr>
+                            <tr><th>[l]</th><td>舌尖抵住上牙齦，氣流從兩側出 (like, blue)</td></tr>
+                            <tr><th>[r]</th><td>舌尖向後捲不碰觸上顎 (red, bird)</td></tr>
+                            <tr><th>[w]</th><td>嘴唇收圓，像中文「烏」 (win, with)</td></tr>
+                            <tr><th>[j]</th><td>舌面靠近硬顎，像中文「也」 (yes, you)</td></tr>
+                        </table>
+                    ` }
+                ],
+                vocab: [
+                    { en: "athleisure", ipa: "[æθˈliʒər]", zh: "運動休閒風", fr: "athleisure", ex: "I love wearing athleisure on weekends.", fr_ex: "J'adore porter de l'athleisure le week-end." },
+                    { en: "vibe", ipa: "[vaɪb]", zh: "氛圍;感覺", fr: "ambiance", ex: "I like the vibe of this cafe.", fr_ex: "J'aime l'ambiance de ce café." },
+                    { en: "put-together", ipa: "[pʊt təˈgɛðər]", zh: "精心打扮的", fr: "soigné", ex: "She always looks so put-together.", fr_ex: "Elle a toujours l'air si soignée." },
+                    { en: "fit", ipa: "[fɪt]", zh: "合身度;版型", fr: "coupe", ex: "The fit of these jeans is perfect.", fr_ex: "La coupe de ce jean est parfaite." },
+                    { en: "oversized", ipa: "[ˈoʊvərˌsaɪzd]", zh: "超大號的", fr: "surdimensionné", ex: "Oversized sweaters are very popular.", fr_ex: "Les pulls surdimensionnés sont très populaires." },
+                    { en: "comfy", ipa: "[ˈkʌmfi]", zh: "舒適的", fr: "confortable (confort)", ex: "This chair is so comfy.", fr_ex: "Cette chaise est si confortable." },
+                    { en: "on point", ipa: "[ɑn pɔɪnt]", zh: "完美的;正點", fr: "parfait", ex: "Your makeup is on point today.", fr_ex: "Ton maquillage est parfait aujourd'hui." },
+                    { en: "low-key", ipa: "[loʊ ki]", zh: "低調的", fr: "discret", ex: "Let's keep the party low-key.", fr_ex: "Gardons la fête discrète." },
+                    { en: "capsule wardrobe", ipa: "[ˈkæpsəl ˈwɔrdroʊb]", zh: "膠囊衣櫥", fr: "garde-robe capsule", ex: "I am building a capsule wardrobe.", fr_ex: "Je constitue une garde-robe capsule." },
+                    { en: "mix and match", ipa: "[mɪks ənd mætʃ]", zh: "混搭", fr: "mélanger et assortir", ex: "It's fun to mix and match patterns.", fr_ex: "C'est amusant de mélanger et assortir les motifs." },
+                    { en: "elevate", ipa: "[ˈɛləˌveɪt]", zh: "提升(質感)", fr: "rehausser", ex: "Heels can elevate a casual outfit.", fr_ex: "Des talons peuvent rehausser une tenue décontractée." },
+                    { en: "monochrome", ipa: "[ˈmɑnəˌkroʊm]", zh: "單色的", fr: "monochrome", ex: "She wore a chic monochrome outfit.", fr_ex: "Elle portait une tenue monochrome chic." },
+                    { en: "chic", ipa: "[ʃik]", zh: "時髦的", fr: "chic", ex: "That dress is very chic.", fr_ex: "Cette robe est très chic." },
+                    { en: "hoodie", ipa: "[ˈhʊdi]", zh: "連帽衫", fr: "sweat à capuche", ex: "I'm just vibing in this hoodie.", fr_ex: "Je suis juste bien dans ce sweat à capuche." },
+                    { en: "flattering", ipa: "[ˈflætərɪŋ]", zh: "修飾身形的", fr: "flatteur", ex: "That color is flattering on you.", fr_ex: "Cette couleur est flatteuse pour vous." },
+                    { en: "spendy", ipa: "[ˈspɛndi]", zh: "昂貴的(口語)", fr: "cher", ex: "It's a bit spendy, but worth it.", fr_ex: "C'est un peu cher, mais ça vaut le coup." },
+                    { en: "baggy", ipa: "[ˈbægi]", zh: "寬鬆下垂的", fr: "ample", ex: "He likes wearing baggy pants.", fr_ex: "Il aime porter des pantalons amples." },
+                    { en: "blazer", ipa: "[ˈbleɪzər]", zh: "西裝外套", fr: "blazer", ex: "A blazer looks professional.", fr_ex: "Un blazer fait professionnel." },
+                    { en: "form-fitting", ipa: "[fɔrm ˈfɪtɪŋ]", zh: "合身的;貼身的", fr: "moulant", ex: "She prefers form-fitting dresses.", fr_ex: "Elle préfère les robes moulantes." },
+                    { en: "tailored", ipa: "[ˈteɪlərd]", zh: "量身訂做的;剪裁合身的", fr: "sur mesure", ex: "He bought a tailored suit.", fr_ex: "Il a acheté un costume sur mesure." },
+                    { en: "bargain", ipa: "[ˈbɑrgən]", zh: "便宜貨;划算品", fr: "bonne affaire", ex: "I found a great bargain at the store.", fr_ex: "J'ai trouvé une bonne affaire au magasin." },
+                    { en: "minimalist", ipa: "[ˈmɪnəməlɪst]", zh: "極簡主義者", fr: "minimaliste", ex: "She has a minimalist style.", fr_ex: "Elle a un style minimaliste." },
+                    { en: "basics", ipa: "[ˈbeɪsɪks]", zh: "基本款衣物", fr: "basiques", ex: "I need to buy some new basics.", fr_ex: "J'ai besoin d'acheter de nouveaux basiques." },
+                    { en: "outfit", ipa: "[ˈaʊtˌfɪt]", zh: "全套服裝", fr: "tenue", ex: "What outfit are you wearing tonight?", fr_ex: "Quelle tenue portes-tu ce soir ?" },
+                    { en: "denim", ipa: "[ˈdɛnəm]", zh: "丹寧布;牛仔布", fr: "jean", ex: "Denim jackets never go out of style.", fr_ex: "Les vestes en jean ne se démodent jamais." },
+                    { en: "leggings", ipa: "[ˈlɛgɪŋz]", zh: "內搭褲;緊身褲", fr: "leggings", ex: "I wear leggings to the gym.", fr_ex: "Je porte des leggings pour aller à la salle de sport." },
+                    { en: "obsessed", ipa: "[əbˈsɛst]", zh: "著迷的", fr: "obsédé", ex: "I am obsessed with this new brand.", fr_ex: "Je suis obsédé par cette nouvelle marque." },
+                    { en: "save up", ipa: "[seɪv ʌp]", zh: "存錢", fr: "économiser", ex: "I'm saving up for a new coat.", fr_ex: "J'économise pour un nouveau manteau." },
+                    { en: "approach", ipa: "[əˈproʊtʃ]", zh: "方式;方法", fr: "approche", ex: "I like her approach to fashion.", fr_ex: "J'aime son approche de la mode." },
+                    { en: "confidence", ipa: "[ˈkɑnfədəns]", zh: "自信", fr: "confiance", ex: "Confidence is the best accessory.", fr_ex: "La confiance est le meilleur accessoire." }
                 ]
             }
         ];
