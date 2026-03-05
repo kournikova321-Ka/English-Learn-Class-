@@ -553,8 +553,9 @@
             }
         }
 
-        /* --- 資料設定區 (已新增第九堂課 - 30個單字) --- */
+        /* --- 資料設定區 (已新增第十堂課) --- */
         const lessons = [
+            // ... (省略 Lesson 1-9 以節省空間，請保持原樣) ...
             {
                 id: 1,
                 date: "2026.01.12",
@@ -997,37 +998,7 @@ Trainer: "Not at all! It's very uncomplicated once you learn the basics. We also
                     { en: "door", ipa: "[dɔr]", zh: "門", fr: "porte", ex: "The door is open.", fr_ex: "La porte est ouverte." },
                     { en: "build", ipa: "[bɪld]", zh: "建立/增強", fr: "construire / renforcer", ex: "It helps build muscles.", fr_ex: "Cela aide à renforcer les muscles." },
                     { en: "machine", ipa: "[məˈʃin]", zh: "機器", fr: "machine", ex: "How does this machine work?", fr_ex: "Comment fonctionne cette machine ?" },
-                    { en: "Reformer", ipa: "[rɪˈfɔrmər]", zh: "核心床(皮拉提斯)", fr: "Reformer", ex: "This is the Pilates Reformer.", fr_ex: "C'est le Reformer Pilates." },
-                    { en: "athleisure", ipa: "[æθˈliʒər]", zh: "運動休閒風", fr: "athleisure", ex: "I love wearing athleisure on weekends.", fr_ex: "J'adore porter de l'athleisure le week-end." },
-                    { en: "official uniform", ipa: "[əˈfɪʃəl ˈjunəˌfɔrm]", zh: "正式制服", fr: "uniforme officiel", ex: "Athleisure is the official uniform.", fr_ex: "L'athleisure est l'uniforme officiel." },
-                    { en: "sweet spot", ipa: "[swit spɑt]", zh: "最佳平衡點", fr: "point idéal", ex: "It's the sweet spot between comfort and style.", fr_ex: "C'est le point idéal entre confort et style." },
-                    { en: "gym gear", ipa: "[dʒɪm gɪr]", zh: "健身裝備", fr: "tenue de sport", ex: "I wear my gym gear everywhere.", fr_ex: "Je porte ma tenue de sport partout." },
-                    { en: "hitting the reformer", ipa: "[ˈhɪtɪŋ ðə rɪˈfɔrmər]", zh: "去練核心床(皮拉提斯)", fr: "faire du reformer", ex: "Since you’ve been hitting the reformer, you look strong.", fr_ex: "Puisque tu fais du reformer, tu as l'air fort." },
-                    { en: "put-together", ipa: "[pʊt təˈgɛðər]", zh: "精心打扮的/整潔俐落的", fr: "soigné", ex: "She always looks so put-together.", fr_ex: "Elle a toujours l'air si soignée." },
-                    { en: "fit", ipa: "[fɪt]", zh: "合身度;版型", fr: "coupe", ex: "The fit of these jeans is perfect.", fr_ex: "La coupe de ce jean est parfaite." },
-                    { en: "oversized", ipa: "[ˈoʊvərˌsaɪzd]", zh: "超大號的", fr: "surdimensionné", ex: "Oversized sweaters are very popular.", fr_ex: "Les pulls surdimensionnés sont très populaires." },
-                    { en: "comfy", ipa: "[ˈkʌmfi]", zh: "舒適的", fr: "confortable (confort)", ex: "This chair is so comfy.", fr_ex: "Cette chaise est si confortable." },
-                    { en: "slim fit", ipa: "[slɪm fɪt]", zh: "修身版型", fr: "coupe ajustée", ex: "I prefer a slim fit shirt.", fr_ex: "Je préfère une chemise coupe ajustée." },
-                    { en: "on point", ipa: "[ɑn pɔɪnt]", zh: "完美的/正點", fr: "au top / parfait", ex: "Your outfit is on point today.", fr_ex: "Ta tenue est au top aujourd'hui." },
-                    { en: "low-key", ipa: "[loʊ ki]", zh: "低調的/隨性的", fr: "discret / décontracté", ex: "We’re keeping it low-key today.", fr_ex: "Nous restons discrets aujourd'hui." },
-                    { en: "capsule wardrobe", ipa: "[ˈkæpsəl ˈwɔrdroʊb]", zh: "膠囊衣櫥", fr: "garde-robe capsule", ex: "I am building a capsule wardrobe.", fr_ex: "Je constitue une garde-robe capsule." },
-                    { en: "bunch of solid basics", ipa: "[bʌntʃ ʌv ˈsɑlɪd ˈbeɪsɪks]", zh: "一堆實用的基本款", fr: "tas de basiques solides", ex: "You need a bunch of solid basics.", fr_ex: "Tu as besoin d'un tas de basiques solides." },
-                    { en: "mix and match", ipa: "[mɪks ənd mætʃ]", zh: "混搭", fr: "mélanger et assortir", ex: "It's fun to mix and match patterns.", fr_ex: "C'est amusant de mélanger et assortir les motifs." },
-                    { en: "denim jacket", ipa: "[ˈdɛnəm ˈdʒækɪt]", zh: "牛仔外套", fr: "veste en jean", ex: "A denim jacket goes with everything.", fr_ex: "Une veste en jean va avec tout." },
-                    { en: "elevate", ipa: "[ˈɛləˌveɪt]", zh: "提升(質感)", fr: "rehausser", ex: "Accessories can elevate a look.", fr_ex: "Les accessoires peuvent rehausser un look." },
-                    { en: "monochrome", ipa: "[ˈmɑnəˌkroʊm]", zh: "單色的/同色系的", fr: "monochrome", ex: "She wore a chic monochrome outfit.", fr_ex: "Elle portait une tenue monochrome chic." },
-                    { en: "chic", ipa: "[ʃik]", zh: "時髦的", fr: "chic", ex: "That dress is very chic.", fr_ex: "Cette robe est très chic." },
-                    { en: "obsessed", ipa: "[əbˈsɛst]", zh: "著迷的", fr: "obsédé / fan", ex: "I am obsessed with this new brand.", fr_ex: "Je suis fan de cette nouvelle marque." },
-                    { en: "tailored", ipa: "[ˈteɪlərd]", zh: "量身訂做的/剪裁合身的", fr: "sur mesure / ajusté", ex: "He bought a tailored suit.", fr_ex: "Il a acheté un costume sur mesure." },
-                    { en: "bargain", ipa: "[ˈbɑrgən]", zh: "便宜貨/划算品", fr: "bonne affaire", ex: "I found a great bargain at the store.", fr_ex: "J'ai trouvé une bonne affaire au magasin." },
-                    { en: "minimalist", ipa: "[ˈmɪnəməlɪst]", zh: "極簡主義者", fr: "minimaliste", ex: "She has a minimalist style.", fr_ex: "Elle a un style minimaliste." },
-                    { en: "vibing", ipa: "[ˈvaɪbɪŋ]", zh: "享受氛圍/放鬆", fr: "se sentir bien", ex: "I’m just vibing in this hoodie today.", fr_ex: "Je me sens juste bien dans ce sweat à capuche aujourd'hui." },
-                    { en: "flattering", ipa: "[ˈflætərɪŋ]", zh: "修飾身形的/好看的", fr: "flatteur", ex: "That color is so flattering on you!", fr_ex: "Cette couleur est si flatteuse pour vous !" },
-                    { en: "grab", ipa: "[græb]", zh: "拿/買", fr: "prendre / acheter", ex: "I need to grab some new basics.", fr_ex: "J'ai besoin d'acheter de nouveaux basiques." },
-                    { en: "spendy", ipa: "[ˈspɛndi]", zh: "昂貴的(口語)", fr: "cher / coûteux", ex: "It’s a bit spendy, but the quality is amazing.", fr_ex: "C'est un peu cher, mais la qualité est incroyable." },
-                    { en: "hoodie", ipa: "[ˈhʊdi]", zh: "連帽衫", fr: "sweat à capuche", ex: "I'm wearing a warm hoodie.", fr_ex: "Je porte un sweat à capuche chaud." },
-                    { en: "blazer", ipa: "[ˈbleɪzər]", zh: "西裝外套", fr: "blazer", ex: "A blazer looks professional.", fr_ex: "Un blazer fait professionnel." },
-                    { en: "confidence", ipa: "[ˈkɑnfədəns]", zh: "自信", fr: "confiance", ex: "Confidence is the best accessory.", fr_ex: "La confiance est le meilleur accessoire." }
+                    { en: "Reformer", ipa: "[rɪˈfɔrmər]", zh: "核心床(皮拉提斯)", fr: "Reformer", ex: "This is the Pilates Reformer.", fr_ex: "C'est le Reformer Pilates." }
                 ]
             },
             {
@@ -1066,15 +1037,11 @@ The best outfit is the one that makes you feel like yourself. After all, if you�
                 ],
                 vocab: [
                     { en: "athleisure", ipa: "[æθˈliʒər]", zh: "運動休閒風", fr: "athleisure", ex: "I love wearing athleisure on weekends.", fr_ex: "J'adore porter de l'athleisure le week-end." },
-                    { en: "official uniform", ipa: "[əˈfɪʃəl ˈjunəˌfɔrm]", zh: "正式制服", fr: "uniforme officiel", ex: "Athleisure is the official uniform.", fr_ex: "L'athleisure est l'uniforme officiel." },
-                    { en: "sweet spot", ipa: "[swit spɑt]", zh: "最佳平衡點", fr: "point idéal", ex: "It's the sweet spot between comfort and style.", fr_ex: "C'est le point idéal entre confort et style." },
-                    { en: "gym gear", ipa: "[dʒɪm gɪr]", zh: "健身裝備", fr: "tenue de sport", ex: "I wear my gym gear everywhere.", fr_ex: "Je porte ma tenue de sport partout." },
-                    { en: "hitting the reformer", ipa: "[ˈhɪtɪŋ ðə rɪˈfɔrmər]", zh: "去練核心床(皮拉提斯)", fr: "faire du reformer", ex: "Since you’ve been hitting the reformer, you look strong.", fr_ex: "Puisque tu fais du reformer, tu as l'air fort." },
+                    { en: "vibe", ipa: "[vaɪb]", zh: "氛圍;感覺", fr: "ambiance", ex: "I like the vibe of this cafe.", fr_ex: "J'aime l'ambiance de ce café." },
                     { en: "put-together", ipa: "[pʊt təˈgɛðər]", zh: "精心打扮的/整潔俐落的", fr: "soigné", ex: "She always looks so put-together.", fr_ex: "Elle a toujours l'air si soignée." },
                     { en: "fit", ipa: "[fɪt]", zh: "合身度;版型", fr: "coupe", ex: "The fit of these jeans is perfect.", fr_ex: "La coupe de ce jean est parfaite." },
                     { en: "oversized", ipa: "[ˈoʊvərˌsaɪzd]", zh: "超大號的", fr: "surdimensionné", ex: "Oversized sweaters are very popular.", fr_ex: "Les pulls surdimensionnés sont très populaires." },
                     { en: "comfy", ipa: "[ˈkʌmfi]", zh: "舒適的", fr: "confortable (confort)", ex: "This chair is so comfy.", fr_ex: "Cette chaise est si confortable." },
-                    { en: "slim fit", ipa: "[slɪm fɪt]", zh: "修身版型", fr: "coupe ajustée", ex: "I prefer a slim fit shirt.", fr_ex: "Je préfère une chemise coupe ajustée." },
                     { en: "on point", ipa: "[ɑn pɔɪnt]", zh: "完美的/正點", fr: "au top / parfait", ex: "Your outfit is on point today.", fr_ex: "Ta tenue est au top aujourd'hui." },
                     { en: "low-key", ipa: "[loʊ ki]", zh: "低調的/隨性的", fr: "discret / décontracté", ex: "We’re keeping it low-key today.", fr_ex: "Nous restons discrets aujourd'hui." },
                     { en: "capsule wardrobe", ipa: "[ˈkæpsəl ˈwɔrdroʊb]", zh: "膠囊衣櫥", fr: "garde-robe capsule", ex: "I am building a capsule wardrobe.", fr_ex: "Je constitue une garde-robe capsule." },
@@ -1094,7 +1061,82 @@ The best outfit is the one that makes you feel like yourself. After all, if you�
                     { en: "spendy", ipa: "[ˈspɛndi]", zh: "昂貴的(口語)", fr: "cher / coûteux", ex: "It’s a bit spendy, but the quality is amazing.", fr_ex: "C'est un peu cher, mais la qualité est incroyable." },
                     { en: "hoodie", ipa: "[ˈhʊdi]", zh: "連帽衫", fr: "sweat à capuche", ex: "I'm wearing a warm hoodie.", fr_ex: "Je porte un sweat à capuche chaud." },
                     { en: "blazer", ipa: "[ˈbleɪzər]", zh: "西裝外套", fr: "blazer", ex: "A blazer looks professional.", fr_ex: "Un blazer fait professionnel." },
-                    { en: "confidence", ipa: "[ˈkɑnfədəns]", zh: "自信", fr: "confiance", ex: "Confidence is the best accessory.", fr_ex: "La confiance est le meilleur accessoire." }
+                    { en: "confidence", ipa: "[ˈkɑnfədəns]", zh: "自信", fr: "confiance", ex: "Confidence is the best accessory.", fr_ex: "La confiance est le meilleur accessoire." },
+                    { en: "official uniform", ipa: "[əˈfɪʃəl ˈjunəˌfɔrm]", zh: "正式制服", fr: "uniforme officiel", ex: "Athleisure is the official uniform.", fr_ex: "L'athleisure est l'uniforme officiel." },
+                    { en: "sweet spot", ipa: "[swit spɑt]", zh: "最佳平衡點", fr: "point idéal", ex: "It's the sweet spot between comfort and style.", fr_ex: "C'est le point idéal entre confort et style." },
+                    { en: "gym gear", ipa: "[dʒɪm gɪr]", zh: "健身裝備", fr: "tenue de sport", ex: "I wear my gym gear everywhere.", fr_ex: "Je porte ma tenue de sport partout." },
+                    { en: "hitting the reformer", ipa: "[ˈhɪtɪŋ ðə rɪˈfɔrmər]", zh: "去練核心床(皮拉提斯)", fr: "faire du reformer", ex: "Since you’ve been hitting the reformer, you look strong.", fr_ex: "Puisque tu fais du reformer, tu as l'air fort." }
+                ]
+            },
+            {
+                id: 10,
+                date: "2026.03.10",
+                title: "A The Sephora Lesson: Learning from the Pros",
+                content: `The coolest part about Sephora isn’t just the products; it’s the staff. The employees are called "Beauty Advisors," and they are trained to actually teach you how to apply the makeup.
+
+If you are struggling with a "cat-eye" or don't know where to put your bronzer, you can ask them for a quick demo. They will often do one side of your face and then let you try the other side to make sure you have the technique down. They show you how to blend your foundation so there are no harsh lines and how to set your concealer so it doesn't crease.
+
+You can even book a longer Full-Face Consultation. This is perfect if you have a special event, like a Valentine's Day dinner or a wedding. Instead of just buying a lipstick, you’re buying the knowledge of how to wear it. It’s like a private tutoring session, but for your face! Walking out with a new look and a few professional tips and tricks makes the "spendy" prices feel much more worth it.`,
+                questions: [
+                    "Have you ever had a pro show you a new technique at the store, or do you find it a bit overwhelming to have someone else doing your makeup?",
+                    "Do you look for makeup that stays put during a workout, or do you prefer to keep it low-key and go with a bare face to the gym?",
+                    "If you see a product that’s really spendy, do you usually grab a sample first, or are you the type of shopper who just swatches it on your hand and buys it immediately?"
+                ],
+                pronunciation: [
+                    { title: "KK 音標 - 子音總複習 (Consonant Recap)", pairs: `
+                        <table class="kk-table">
+                            <tr><th>[f]</th><td>foot, off</td></tr>
+                            <tr><th>[v]</th><td>vase, five</td></tr>
+                            <tr><th>[s]</th><td>sit, bus</td></tr>
+                            <tr><th>[z]</th><td>zoo, noise</td></tr>
+                            <tr><th>[ʃ]</th><td>she, fish</td></tr>
+                            <tr><th>[ʒ]</th><td>pleasure, vision</td></tr>
+                            <tr><th>[θ]</th><td>think, math</td></tr>
+                            <tr><th>[ð]</th><td>this, mother</td></tr>
+                            <tr><th>[h]</th><td>hot, how</td></tr>
+                            <tr><th>[tʃ]</th><td>chair, each</td></tr>
+                            <tr><th>[dʒ]</th><td>joy, age</td></tr>
+                            <tr><th>[m]</th><td>my, moon</td></tr>
+                            <tr><th>[n]</th><td>name, ten</td></tr>
+                            <tr><th>[ŋ]</th><td>sing, ping</td></tr>
+                            <tr><th>[l]</th><td>like, blue</td></tr>
+                            <tr><th>[r]</th><td>red, bird</td></tr>
+                            <tr><th>[w]</th><td>win, with</td></tr>
+                            <tr><th>[j]</th><td>yes, you</td></tr>
+                        </table>
+                    ` }
+                ],
+                vocab: [
+                    { en: "Beauty Advisor", ipa: "[ˈbjuti ædˈvaɪzər]", zh: "美容顧問", fr: "conseiller beauté", ex: "Ask a Beauty Advisor for help.", fr_ex: "Demandez de l'aide à un conseiller beauté." },
+                    { en: "apply", ipa: "[əˈplaɪ]", zh: "塗抹；應用", fr: "appliquer", ex: "Learn how to apply makeup.", fr_ex: "Apprenez à appliquer le maquillage." },
+                    { en: "struggle", ipa: "[ˈstrʌgəl]", zh: "掙扎；感到困難", fr: "avoir du mal", ex: "I struggle with eyeliner.", fr_ex: "J'ai du mal avec l'eye-liner." },
+                    { en: "cat-eye", ipa: "[kæt aɪ]", zh: "貓眼妝", fr: "œil de chat", ex: "A cat-eye look is classic.", fr_ex: "Un look œil de chat est classique." },
+                    { en: "bronzer", ipa: "[ˈbrɑnzər]", zh: "古銅粉；修容餅", fr: "poudre bronzante", ex: "Put bronzer on your cheeks.", fr_ex: "Mettez de la poudre bronzante sur vos joues." },
+                    { en: "demo", ipa: "[ˈdɛmoʊ]", zh: "示範", fr: "démo (démonstration)", ex: "Can I get a quick demo?", fr_ex: "Puis-je avoir une démo rapide ?" },
+                    { en: "technique", ipa: "[tɛkˈnik]", zh: "技巧", fr: "technique", ex: "Master the technique.", fr_ex: "Maîtrisez la technique." },
+                    { en: "blend", ipa: "[blɛnd]", zh: "暈染；混合", fr: "estomper", ex: "Blend your foundation well.", fr_ex: "Estompez bien votre fond de teint." },
+                    { en: "foundation", ipa: "[faʊnˈdeɪʃən]", zh: "粉底", fr: "fond de teint", ex: "Choose the right foundation.", fr_ex: "Choisissez le bon fond de teint." },
+                    { en: "harsh lines", ipa: "[hɑrʃ laɪnz]", zh: "生硬的線條", fr: "lignes dures", ex: "Avoid harsh lines.", fr_ex: "Évitez les lignes dures." },
+                    { en: "set", ipa: "[sɛt]", zh: "定妝", fr: "fixer", ex: "Set your makeup with powder.", fr_ex: "Fixez votre maquillage avec de la poudre." },
+                    { en: "concealer", ipa: "[kənˈsilər]", zh: "遮瑕膏", fr: "anti-cernes", ex: "Use concealer under your eyes.", fr_ex: "Utilisez un anti-cernes sous vos yeux." },
+                    { en: "crease", ipa: "[kris]", zh: "卡粉；產生皺摺", fr: "filer (dans les ridules)", ex: "My concealer tends to crease.", fr_ex: "Mon anti-cernes a tendance à filer." },
+                    { en: "consultation", ipa: "[ˌkɑnsəlˈteɪʃən]", zh: "諮詢", fr: "consultation", ex: "Book a consultation online.", fr_ex: "Réservez une consultation en ligne." },
+                    { en: "tutoring", ipa: "[ˈtutərɪŋ]", zh: "輔導；教學", fr: "tutorat", ex: "It's like a tutoring session.", fr_ex: "C'est comme une séance de tutorat." },
+                    { en: "tips and tricks", ipa: "[tɪps ənd trɪks]", zh: "撇步；訣竅", fr: "trucs et astuces", ex: "I learned some tips and tricks.", fr_ex: "J'ai appris quelques trucs et astuces." },
+                    { en: "spendy", ipa: "[ˈspɛndi]", zh: "昂貴的 (口語)", fr: "coûteux (cher)", ex: "Sephora can be spendy.", fr_ex: "Sephora peut être coûteux." },
+                    { en: "worth it", ipa: "[wɜrθ ɪt]", zh: "值得的", fr: "valoir le coup", ex: "The result is worth it.", fr_ex: "Le résultat en vaut la peine." },
+                    { en: "shade match", ipa: "[ʃeɪd mætʃ]", zh: "試色；色號匹配", fr: "test de teinte", ex: "Can I get a shade match?", fr_ex: "Puis-je faire un test de teinte ?" },
+                    { en: "natural finish", ipa: "[ˈnætʃərəl ˈfɪnɪʃ]", zh: "自然妝感", fr: "fini naturel", ex: "I prefer a natural finish.", fr_ex: "Je préfère un fini naturel." },
+                    { en: "stay put", ipa: "[steɪ pʊt]", zh: "持久；不脫妝", fr: "tenir (ne pas bouger)", ex: "This lipstick stays put all day.", fr_ex: "Ce rouge à lèvres tient toute la journée." },
+                    { en: "browsing", ipa: "[ˈbraʊzɪŋ]", zh: "隨便看看；瀏覽", fr: "regarder (flâner)", ex: "I'm just browsing, thanks.", fr_ex: "Je regarde juste, merci." },
+                    { en: "pro", ipa: "[proʊ]", zh: "專業人士", fr: "pro", ex: "Learn from the pros.", fr_ex: "Apprenez des pros." },
+                    { en: "overwhelming", ipa: "[ˌoʊvərˈwɛlmɪŋ]", zh: "令人不知所措的", fr: "accablant", ex: "The choices are overwhelming.", fr_ex: "Les choix sont accablants." },
+                    { en: "low-key", ipa: "[loʊ ki]", zh: "低調的；隨性的", fr: "discret", ex: "Keep your makeup low-key.", fr_ex: "Gardez votre maquillage discret." },
+                    { en: "bare face", ipa: "[bɛr feɪs]", zh: "素顏", fr: "visage nu", ex: "I go to the gym with a bare face.", fr_ex: "Je vais à la salle de sport le visage nu." },
+                    { en: "swatch", ipa: "[swɑtʃ]", zh: "試色 (在手上)", fr: "swatcher (tester)", ex: "Swatch the color on your hand.", fr_ex: "Swatche la couleur sur ta main." },
+                    { en: "sample", ipa: "[ˈsæmpəl]", zh: "樣品；試用包", fr: "échantillon", ex: "Ask for a free sample.", fr_ex: "Demandez un échantillon gratuit." },
+                    { en: "product", ipa: "[ˈprɑdəkt]", zh: "產品", fr: "produit", ex: "This product is popular.", fr_ex: "Ce produit est populaire." },
+                    { en: "look", ipa: "[lʊk]", zh: "造型；妝容", fr: "look", ex: "I love your new look.", fr_ex: "J'adore ton nouveau look." }
                 ]
             }
         ];
