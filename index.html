@@ -150,6 +150,172 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
+
+              
+
+
+沒問題！這篇看牙醫的文章寫得非常幽默生動，像「牙齦出賣了我（snitching on me）」這樣的表達既道地又有趣。
+
+我已經為您完成了以下更新：
+1. **新增第十一堂課**：**2026.03.17 "The One-Sided Chat"**。
+2. **整理 30 個精選單字**：我為您挑選了文章中最實用的 30 個單字與片語（包含 `plastic wedge` 牙醫撐口器、`suction straw` 牙醫用吸管、`cavity` 蛀牙等）。
+3. **完整雙語配置**：一樣為您補齊了 **KK 音標**、**法文翻譯**、**英文例句** 與 **法文例句**，並支援全文與單字的語音朗讀功能！
+
+請複製下方的完整程式碼，並儲存覆蓋原本的 `index.html` 檔案：
+
+```html
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>English & French Learning App</title>
+    <style>
+        /* --- 介面風格設計 (CSS) - Lady B 復古配色版 --- */
+        :root {
+            --color-primary-red: #7D2027;   /* 酒紅 */
+            --color-chic-blue: #5FA8C2;     /* 復古藍 */
+            --color-burnt-orange: #CF5527;  /* 焦糖橘 */
+            --color-deep-brown: #673C34;    /* 深棕 */
+            --color-cream: #FAE3B1;         /* 奶油黃 */
+            
+            --color-bg: #FDFBF6;            /* 極淡米色背景 */
+            --color-card-bg: #FFFFFF;       /* 卡片白 */
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-deep-brown);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--color-primary-red);
+            color: #FFFFFF;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(125, 32, 39, 0.3);
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .container {
+            padding: 20px;
+            flex: 1;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .card {
+            background: var(--color-card-bg);
+            padding: 24px;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 15px rgba(103, 60, 52, 0.08);
+            margin-bottom: 20px;
+            line-height: 1.8;
+            border: 1px solid rgba(0,0,0,0.03);
+            transition: transform 0.2s;
+        }
+        
+        .lesson-card {
+            cursor: pointer;
+            border-left: 6px solid var(--color-chic-blue);
+        }
+        .lesson-card:active {
+            transform: scale(0.98);
+            background-color: #f9f9f9;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 按鈕樣式 */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 12px;
+            background-color: var(--color-chic-blue);
+            color: #FFFFFF;
+            text-align: center;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+        .btn:active { transform: scale(0.98); }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--color-chic-blue);
+            color: var(--color-chic-blue);
+        }
+
+        .btn-back {
+            background-color: #EFEFEF;
+            color: var(--color-deep-brown);
+            margin-top: 30px;
+        }
+        
+        /* 文章播放按鈕 */
+        .btn-audio {
+            background-color: var(--color-primary-red);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: background-color 0.2s;
+        }
+        .btn-audio.playing {
+            background-color: #333;
+        }
+        .btn-audio:active { transform: scale(0.95); }
+
+        /* 文字樣式 */
+        .date-tag {
+            font-size: 0.85rem;
+            color: #998731;
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
         .article-title {
             color: var(--color-burnt-orange);
             font-size: 1.5rem;
@@ -413,7 +579,7 @@
                 <span class="date-tag" id="artDate"></span>
                 <div class="article-title" id="artTitle" onclick="speak(this.innerText, 'en-US')"></div>
                 
-                <!-- 全文朗讀按鈕 -->
+                <!-- 全文朗讀按鈕 (切換式) -->
                 <button id="btn-audio-toggle" class="btn-audio" onclick="toggleArticleAudio()">
                     <span>🔊 播放文章朗讀 (Play Audio)</span>
                 </button>
@@ -553,9 +719,8 @@
             }
         }
 
-        /* --- 資料設定區 (已新增第十堂課) --- */
-        const lessons = [
-            // ... (省略 Lesson 1-9 以節省空間，請保持原樣) ...
+        /* --- 資料設定區 (已新增第十一堂課) --- */
+        const lessons =[
             {
                 id: 1,
                 date: "2026.01.12",
@@ -565,7 +730,7 @@
 When I finally reach the counter, the barista greets me with a tired but friendly smile and asks, "What can I get for you?" I place my order clearly: "Can I get a large decaf latte, extra hot, with oat milk? And please hold the foam." The barista notes it down on a cup and asks if I'd like to try any of their freshly baked pastries. I take a quick look at the display case—the croissants look tempting—but I ultimately decline, saying, "I'm good, thanks."
 
 Then comes the payment. I ask, "Do you take contactless?" She points to the card reader, and I tap my card. It beeps instantly to confirm the transaction. She asks if I want a receipt printed, but I tell her, "No need, thanks! Have a good one." Finally, I head over to the crowded pickup counter. I find a small napkin and a stirrer at the condiment station while I wait for the barista to call my name. Once I grab my cup, I’m finally ready to start my day with my caffeine fix.`,
-                questions: [
+                questions:[
                     "Have you ever had the experience where someone tried to cut in line in front of you? How did you handle it?",
                     "Do you usually need a caffeine fix to feel awake, or are you naturally energetic?",
                     "Are you 'picky' about your order at a cafe, or do you take whatever is on the menu?",
@@ -618,7 +783,7 @@ The real challenge on weekends is navigating the sample stations. Every corner h
 I tried to stick to my shopping list, but I got distracted in the "Middle Aisle"—the place where Costco puts all the random stuff like kayaks, air fryers, and giant outdoor umbrellas. I ended up impulse buying a set of high-quality mixing bowls because the markdown price was just too good to pass up.
 
 By the time I hit the checkout line, it was backed up halfway to the back of the store. Luckily, the staff were hustling, and the line moved fast. I didn't bother with bags because Costco doesn't have them; I just grabbed a couple of sturdy discarded boxes from the pile near the registers. I finished the trip with the ultimate reward: a $1.50 hot dog and soda combo. It’s the only thing in the world that hasn't gone up in price!`,
-                questions: [
+                questions:[
                     "Do you prefer to go during the busy weekend or avoid crowds?",
                     "Are you easily distracted by random items in the 'Middle Aisle'?",
                     "Do you think waiting for a 'tiny square of pizza' is worth it?",
@@ -662,13 +827,13 @@ Over here is the kitchen. We’ve just upgraded to an induction cooktop, which h
 Would you like a coffee? I can do a pour-over or a flat white with the espresso machine and built-in milk frother. While that’s brewing, let me show you this room—this is Marc’s study, he’s got a great setup!
 
 Alright, let’s grab our coffee and relax.`,
-                questions: [
+                questions:[
                     "When did you last have guests over?",
                     "Which kitchen appliance do you use most at home, and why?",
                     "Do you prefer a tidy or relaxed home environment? How does that affect how you design or organise your space?",
                     "When guests visit you, what do you usually do together to relax?"
                 ],
-                pronunciation: [
+                pronunciation:[
                     { title: "Long /i/ vs. Short /ɪ/", pairs: "clean, meat, receipt | milk, fridge, kick" },
                     { title: "Butterfly /æ/ vs. Short /ɛ/", pairs: "packed, madhouse (大口) | extra, setup (中口)" },
                     { title: "Close /u/ vs. Lax /ʊ/", pairs: "shoes, smooth | cooktop, look" }
@@ -698,13 +863,13 @@ Staff: "Over here is the updated security info. We’ve just upgraded to a biome
 Staff: "Would you like an upgrade today? I can do an Economy Plus seat with the extra legroom or a flat-bed seat in Business Class. While your boarding pass is printing, let me show you the terminal map—this is the United Club Lounge, it's got a great setup for a quick snack!"
 
 Staff: "Alright, let's grab your documents and you're all set for SFO. Have a safe flight!"`,
-                questions: [
+                questions:[
                     "When did you last visit the US? Do you like the US?",
                     "Which airport facility do you use most?",
                     "What is your travel style?",
                     "When you land in San Francisco, what do you usually do to relax?"
                 ],
-                pronunciation: [
+                pronunciation:[
                     { title: "KK 音標 - 母音 (Vowels)", pairs: `
                         <table class="kk-table">
                             <tr><th>[ɪ]</th><td>比「一」短，嘴角放鬆 (sit, pig)</td></tr>
@@ -759,12 +924,12 @@ Server: "If you want flavor, the Bone-in Ribeye is the way to go. The marbling o
 Guest: "I'll take the Ribeye, medium-rare, please. And can we do the peppercorn sauce on the side?"
 
 Server: "You got it. While the kitchen is brewing up that sauce and getting your setup ready, can I start you off with a pour-over cocktail or maybe a local craft beer?"`,
-                questions: [
+                questions:[
                     "Why do high-end restaurants use this phrase if they want to appear 'fancy'?",
                     "If you were the chef, what is the one kitchen appliance you would upgrade to make your cooking better?",
                     "Does a busy New York steakhouse feel tidy or relaxed to you? Why?"
                 ],
-                pronunciation: [
+                pronunciation:[
                     { title: "KK 音標 - 母音 (Vowels)", pairs: `
                         <table class="kk-table">
                             <tr><th>[ɪ]</th><td>比「一」短，嘴角放鬆 (sit, pig)</td></tr>
@@ -786,7 +951,7 @@ Server: "You got it. While the kitchen is brewing up that sauce and getting your
                         </table>
                     ` }
                 ],
-                vocab: [
+                vocab:[
                     { en: "kick your coats off", ipa: "[kɪk jʊər koʊts ɔf]", zh: "脫掉外套/放鬆", fr: "enlever vos manteaux", ex: "Feel free to kick your coats off.", fr_ex: "N'hésitez pas à enlever vos manteaux." },
                     { en: "corner booth", ipa: "[ˈkɔrnər buθ]", zh: "角落雅座/包廂", fr: "banquette d'angle", ex: "I’ve got a great corner booth for you tonight.", fr_ex: "J'ai une excellente banquette d'angle pour vous ce soir." },
                     { en: "aging room", ipa: "[ˈeɪdʒɪŋ rum]", zh: "熟成室", fr: "chambre de maturation", ex: "They have a dry aging room.", fr_ex: "Ils ont une chambre de maturation à sec." },
@@ -820,13 +985,13 @@ Katia: "For sure. Do you have a charger? My phone is almost dead."
 Driver: "Check the armrest. There's an integrated port right there. We should be pulling up to the terminal in about twenty."
 
 Katia: "Sounds good!"`,
-                questions: [
+                questions:[
                     "Are you a 'hop in and chat' or a 'hop in and sleep' kind of passenger?",
                     "In your city, which areas are most famous for total 'gridlock'?",
                     "What is one 'smart' feature or 'upgrade' you wish all taxis had?",
                     "When you call an Uber, do you prefer a 'spotless' modern car or a vintage 'classic' car with more character?"
                 ],
-                pronunciation: [
+                pronunciation:[
                     { title: "KK 音標 - 母音總複習 (Vowel Recap)", pairs: `
                         <div class="kk-list">
                             <strong>單母音 (Monophthongs) 10 個</strong><br>
@@ -834,7 +999,7 @@ Katia: "Sounds good!"`,
                             <span class="kk-symbol">[i]</span> <span class="kk-symbol">[u]</span> <span class="kk-symbol">[ɔ]</span><br><br>
                             <strong>雙母音 (Diphthongs) 5 個</strong><br>
                             <span class="kk-symbol">[e]</span> (對應 [eɪ])<br>
-                            <span class="kk-symbol">[o]</span> (對應 [oʊ])<br>
+                            <span class="kk-symbol">[o]</span> (對應[oʊ])<br>
                             <span class="kk-symbol">[aɪ]</span><br>
                             <span class="kk-symbol">[au]</span> (對應 [aʊ])<br>
                             <span class="kk-symbol">[ɔɪ]</span><br><br>
@@ -844,7 +1009,7 @@ Katia: "Sounds good!"`,
                         </div>
                     ` }
                 ],
-                vocab: [
+                vocab:[
                     { en: "hop in", ipa: "[hɑp ɪn]", zh: "上車吧！", fr: "monter", ex: "Just toss your bags in and hop in.", fr_ex: "Jetez simplement vos sacs et montez." },
                     { en: "spick and span", ipa: "[spɪk ənd spæn]", zh: "一塵不染", fr: "propre comme un sou neuf", ex: "I keep the cabin spick and span.", fr_ex: "Je garde la cabine propre comme un sou neuf." },
                     { en: "gridlock", ipa: "[ˈgrɪdˌlɑk]", zh: "交通大癱瘓/大塞車", fr: "embouteillage monstre", ex: "We are stuck in midtown gridlock.", fr_ex: "Nous sommes coincés dans un embouteillage monstre au centre-ville." },
@@ -882,13 +1047,13 @@ Receptionist: "It's definitely different! We’ve overhauled our studio to focus
 Katia: "I’m a bit stiff from sitting at a desk all day. Will it help?"
 
 Receptionist: "Absolutely. We’ve upgraded our techniques to include modern trigger-point therapy, which is a huge plus for office workers. Each mat has built-in padding for extra support. Once you're comfortable, we’ll get the ball rolling. It’s like 'lazy yoga'—very refreshing once you finish!"`,
-                questions: [
+                questions:[
                     "Do you prefer a massage where you just 'relax,' or do you like the 'deep stretch' of a Thai massage?",
                     "If you could 'upgrade' your home, would you add a massage room or a 'smart gym'?",
                     "After a long week of work, do you prefer to 'slip into' a quiet spa or 'hit the gym' to decompress?",
                     "Do you think having a 'spotless' environment is the most important part of a 'top-tier' spa experience?"
                 ],
-                pronunciation: [
+                pronunciation:[
                     { title: "KK 音標 - 子音 (爆破音)", pairs: `
                         <table class="kk-table">
                             <tr><th>[p]</th><td>雙唇閉緊後突然噴氣（無聲） (pig, cup)</td></tr>
@@ -900,7 +1065,7 @@ Receptionist: "Absolutely. We’ve upgraded our techniques to include modern tri
                         </table>
                     ` }
                 ],
-                vocab: [
+                vocab:[
                     { en: "stow your gear", ipa: "[stoʊ jʊər gɪr]", zh: "收好你的東西", fr: "ranger vos affaires", ex: "Please stow your gear in the locker.", fr_ex: "Veuillez ranger vos affaires dans le casier." },
                     { en: "cubby", ipa: "[ˈkʌbi]", zh: "小隔間/置物櫃", fr: "casier", ex: "Put your bag in the cubby.", fr_ex: "Mettez votre sac dans le casier." },
                     { en: "slip into", ipa: "[slɪp ˈɪntu]", zh: "換上/迅速穿上", fr: "enfiler", ex: "Slip into these comfortable pajamas.", fr_ex: "Enfilez ce pyjama confortable." },
@@ -946,13 +1111,13 @@ Trainer: "That is the Pilates Reformer. We just revamped our studio with five of
 Member: "It looks a bit complicated. Is it hard to use?"
 
 Trainer: "Not at all! It's very uncomplicated once you learn the basics. We also have Pilates balls, magic circles, and foam rollers on the mats. While I am prepping the equipment, you can do some light stretching. Let’s get the ball rolling!"`,
-                questions: [
+                questions:[
                     "Do you prefer 'Mat Pilates' or using the 'Reformer' machine?",
                     "When you start class, do you 'get the ball rolling' with breathing or stretching?",
                     "When you 'hop in' to a Pilates class, do you prefer a 'fast-paced' vibe or a 'slow' stretch?",
                     "Do you think the 'Reformer' looks like a 'high-tech' machine or just a bed with 'springs'?"
                 ],
-                pronunciation: [
+                pronunciation:[
                     { title: "KK 音標 - 子音 (摩擦音)", pairs: `
                         <table class="kk-table">
                             <tr><th>[f]</th><td>上齒輕咬下唇後噴氣（無聲） (foot, off)</td></tr>
@@ -1012,12 +1177,12 @@ In the States, we don’t really talk about "fashion" in a formal way for daily 
 The goal for most people is building a capsule wardrobe—basically, a bunch of solid basics you can mix and match so you don’t have to think twice in the morning. Maybe you throw a denim jacket over your leggings to "elevate" the look, or you go for a monochrome (all one color) vibe because it’s easy and chic.
 
 The best outfit is the one that makes you feel like yourself. After all, if you’re feelin’ your look, your confidence does the rest of the talking!`,
-                questions: [
+                questions:[
                     "American fashion is currently obsessed with oversized fits—like big hoodies or baggy blazers. Do you personally like that look, or do you prefer clothes that are more form-fitting and tailored?",
                     "If you had to build a capsule wardrobe with only five items of clothing, what would they be? How would you mix and match them for a busy day?",
                     "When it comes to clothes, are you someone who likes to find a bargain, or do you prefer to save up for something a bit spendy but high-quality? Why do you think some people prefer the minimalist approach?"
                 ],
-                pronunciation: [
+                pronunciation:[
                     { title: "KK 音標 - 破擦音 (Affricates)", pairs: `
                         <table class="kk-table">
                             <tr><th>[tʃ]</th><td>像中文「去」的氣音（無聲） (chair, each)</td></tr>
@@ -1037,11 +1202,15 @@ The best outfit is the one that makes you feel like yourself. After all, if you�
                 ],
                 vocab: [
                     { en: "athleisure", ipa: "[æθˈliʒər]", zh: "運動休閒風", fr: "athleisure", ex: "I love wearing athleisure on weekends.", fr_ex: "J'adore porter de l'athleisure le week-end." },
-                    { en: "vibe", ipa: "[vaɪb]", zh: "氛圍;感覺", fr: "ambiance", ex: "I like the vibe of this cafe.", fr_ex: "J'aime l'ambiance de ce café." },
+                    { en: "official uniform", ipa: "[əˈfɪʃəl ˈjunəˌfɔrm]", zh: "正式制服", fr: "uniforme officiel", ex: "Athleisure is the official uniform.", fr_ex: "L'athleisure est l'uniforme officiel." },
+                    { en: "sweet spot", ipa: "[swit spɑt]", zh: "最佳平衡點", fr: "point idéal", ex: "It's the sweet spot between comfort and style.", fr_ex: "C'est le point idéal entre confort et style." },
+                    { en: "gym gear", ipa: "[dʒɪm gɪr]", zh: "健身裝備", fr: "tenue de sport", ex: "I wear my gym gear everywhere.", fr_ex: "Je porte ma tenue de sport partout." },
+                    { en: "hitting the reformer", ipa: "[ˈhɪtɪŋ ðə rɪˈfɔrmər]", zh: "去練核心床(皮拉提斯)", fr: "faire du reformer", ex: "Since you’ve been hitting the reformer, you look strong.", fr_ex: "Puisque tu fais du reformer, tu as l'air fort." },
                     { en: "put-together", ipa: "[pʊt təˈgɛðər]", zh: "精心打扮的/整潔俐落的", fr: "soigné", ex: "She always looks so put-together.", fr_ex: "Elle a toujours l'air si soignée." },
                     { en: "fit", ipa: "[fɪt]", zh: "合身度;版型", fr: "coupe", ex: "The fit of these jeans is perfect.", fr_ex: "La coupe de ce jean est parfaite." },
                     { en: "oversized", ipa: "[ˈoʊvərˌsaɪzd]", zh: "超大號的", fr: "surdimensionné", ex: "Oversized sweaters are very popular.", fr_ex: "Les pulls surdimensionnés sont très populaires." },
                     { en: "comfy", ipa: "[ˈkʌmfi]", zh: "舒適的", fr: "confortable (confort)", ex: "This chair is so comfy.", fr_ex: "Cette chaise est si confortable." },
+                    { en: "slim fit", ipa: "[slɪm fɪt]", zh: "修身版型", fr: "coupe ajustée", ex: "I prefer a slim fit shirt.", fr_ex: "Je préfère une chemise coupe ajustée." },
                     { en: "on point", ipa: "[ɑn pɔɪnt]", zh: "完美的/正點", fr: "au top / parfait", ex: "Your outfit is on point today.", fr_ex: "Ta tenue est au top aujourd'hui." },
                     { en: "low-key", ipa: "[loʊ ki]", zh: "低調的/隨性的", fr: "discret / décontracté", ex: "We’re keeping it low-key today.", fr_ex: "Nous restons discrets aujourd'hui." },
                     { en: "capsule wardrobe", ipa: "[ˈkæpsəl ˈwɔrdroʊb]", zh: "膠囊衣櫥", fr: "garde-robe capsule", ex: "I am building a capsule wardrobe.", fr_ex: "Je constitue une garde-robe capsule." },
@@ -1061,28 +1230,24 @@ The best outfit is the one that makes you feel like yourself. After all, if you�
                     { en: "spendy", ipa: "[ˈspɛndi]", zh: "昂貴的(口語)", fr: "cher / coûteux", ex: "It’s a bit spendy, but the quality is amazing.", fr_ex: "C'est un peu cher, mais la qualité est incroyable." },
                     { en: "hoodie", ipa: "[ˈhʊdi]", zh: "連帽衫", fr: "sweat à capuche", ex: "I'm wearing a warm hoodie.", fr_ex: "Je porte un sweat à capuche chaud." },
                     { en: "blazer", ipa: "[ˈbleɪzər]", zh: "西裝外套", fr: "blazer", ex: "A blazer looks professional.", fr_ex: "Un blazer fait professionnel." },
-                    { en: "confidence", ipa: "[ˈkɑnfədəns]", zh: "自信", fr: "confiance", ex: "Confidence is the best accessory.", fr_ex: "La confiance est le meilleur accessoire." },
-                    { en: "official uniform", ipa: "[əˈfɪʃəl ˈjunəˌfɔrm]", zh: "正式制服", fr: "uniforme officiel", ex: "Athleisure is the official uniform.", fr_ex: "L'athleisure est l'uniforme officiel." },
-                    { en: "sweet spot", ipa: "[swit spɑt]", zh: "最佳平衡點", fr: "point idéal", ex: "It's the sweet spot between comfort and style.", fr_ex: "C'est le point idéal entre confort et style." },
-                    { en: "gym gear", ipa: "[dʒɪm gɪr]", zh: "健身裝備", fr: "tenue de sport", ex: "I wear my gym gear everywhere.", fr_ex: "Je porte ma tenue de sport partout." },
-                    { en: "hitting the reformer", ipa: "[ˈhɪtɪŋ ðə rɪˈfɔrmər]", zh: "去練核心床(皮拉提斯)", fr: "faire du reformer", ex: "Since you’ve been hitting the reformer, you look strong.", fr_ex: "Puisque tu fais du reformer, tu as l'air fort." }
+                    { en: "confidence", ipa: "[ˈkɑnfədəns]", zh: "自信", fr: "confiance", ex: "Confidence is the best accessory.", fr_ex: "La confiance est le meilleur accessoire." }
                 ]
             },
             {
                 id: 10,
                 date: "2026.03.10",
-                title: "A The Sephora Lesson: Learning from the Pros",
+                title: "The Sephora Lesson: Learning from the Pros",
                 content: `The coolest part about Sephora isn’t just the products; it’s the staff. The employees are called "Beauty Advisors," and they are trained to actually teach you how to apply the makeup.
 
 If you are struggling with a "cat-eye" or don't know where to put your bronzer, you can ask them for a quick demo. They will often do one side of your face and then let you try the other side to make sure you have the technique down. They show you how to blend your foundation so there are no harsh lines and how to set your concealer so it doesn't crease.
 
 You can even book a longer Full-Face Consultation. This is perfect if you have a special event, like a Valentine's Day dinner or a wedding. Instead of just buying a lipstick, you’re buying the knowledge of how to wear it. It’s like a private tutoring session, but for your face! Walking out with a new look and a few professional tips and tricks makes the "spendy" prices feel much more worth it.`,
-                questions: [
+                questions:[
                     "Have you ever had a pro show you a new technique at the store, or do you find it a bit overwhelming to have someone else doing your makeup?",
                     "Do you look for makeup that stays put during a workout, or do you prefer to keep it low-key and go with a bare face to the gym?",
                     "If you see a product that’s really spendy, do you usually grab a sample first, or are you the type of shopper who just swatches it on your hand and buys it immediately?"
                 ],
-                pronunciation: [
+                pronunciation:[
                     { title: "KK 音標 - 子音總複習 (Consonant Recap)", pairs: `
                         <table class="kk-table">
                             <tr><th>[f]</th><td>foot, off</td></tr>
@@ -1106,7 +1271,7 @@ You can even book a longer Full-Face Consultation. This is perfect if you have a
                         </table>
                     ` }
                 ],
-                vocab: [
+                vocab:[
                     { en: "Beauty Advisor", ipa: "[ˈbjuti ædˈvaɪzər]", zh: "美容顧問", fr: "conseiller beauté", ex: "Ask a Beauty Advisor for help.", fr_ex: "Demandez de l'aide à un conseiller beauté." },
                     { en: "apply", ipa: "[əˈplaɪ]", zh: "塗抹；應用", fr: "appliquer", ex: "Learn how to apply makeup.", fr_ex: "Apprenez à appliquer le maquillage." },
                     { en: "struggle", ipa: "[ˈstrʌgəl]", zh: "掙扎；感到困難", fr: "avoir du mal", ex: "I struggle with eyeliner.", fr_ex: "J'ai du mal avec l'eye-liner." },
@@ -1137,6 +1302,49 @@ You can even book a longer Full-Face Consultation. This is perfect if you have a
                     { en: "sample", ipa: "[ˈsæmpəl]", zh: "樣品；試用包", fr: "échantillon", ex: "Ask for a free sample.", fr_ex: "Demandez un échantillon gratuit." },
                     { en: "product", ipa: "[ˈprɑdəkt]", zh: "產品", fr: "produit", ex: "This product is popular.", fr_ex: "Ce produit est populaire." },
                     { en: "look", ipa: "[lʊk]", zh: "造型；妝容", fr: "look", ex: "I love your new look.", fr_ex: "J'adore ton nouveau look." }
+                ]
+            },
+            {
+                id: 11,
+                date: "2026.03.17",
+                title: "The One-Sided Chat",
+                content: `"So, how’s your summer been?" Dr. Miller asked.\n\n"Guh—fne," I managed to gargle. My mouth was propped open with a plastic wedge, and a tiny suction straw was slurping away at my cheek.\n\n"That’s great," he replied, as if I’d just given him a full life update. He picked up a metallic hook that looked like something from a pirate movie. "Now, hold still. Just checking for a little bit of plaque."\n\n"Are you flossing?" he asked. His tone was casual, but I knew it was a trap.\n\n"Uhh—eery day," I lied. The dental hygienist, Sarah, raised an eyebrow. She knew the truth. My gums were currently snitching on me.\n\n"Well, keep it up," Dr. Miller said, finally pulling the tools out. "You're all set. No cavities this time."\n\nI sat up, my jaw aching and my tongue feeling like it had been through a car wash. "Thanks, Doc. See you in six months."\n\nI practically sprinted to the front desk. There’s no better feeling in the world than the cold air hitting your teeth as you walk out of a dental office, knowing you’re safe for another half-year.`,
+                questions:[
+                    "How do you feel while sitting in the waiting room?",
+                    "How often do you go to the dentist? Do you think it is important?",
+                    "Do you feel scared when the visit was over?"
+                ],
+                vocab: [
+                    { en: "one-sided", ipa: "[ˌwʌnˈsaɪdɪd]", zh: "單方面的", fr: "unilatéral", ex: "A one-sided conversation is awkward.", fr_ex: "Une conversation unilatérale est gênante." },
+                    { en: "chat", ipa: "[tʃæt]", zh: "閒聊/聊天", fr: "discussion / bavardage", ex: "We had a nice chat.", fr_ex: "Nous avons eu une belle discussion." },
+                    { en: "dentist", ipa: "[ˈdɛntɪst]", zh: "牙醫", fr: "dentiste", ex: "I need to visit the dentist.", fr_ex: "Je dois aller chez le dentiste." },
+                    { en: "manage to", ipa: "[ˈmænɪdʒ tu]", zh: "設法做到/勉強做到", fr: "réussir à", ex: "I managed to finish the work.", fr_ex: "J'ai réussi à finir le travail." },
+                    { en: "gargle", ipa: "[ˈgɑrgəl]", zh: "發出漱口聲/含糊不清地說", fr: "gargouiller", ex: "I managed to gargle an answer.", fr_ex: "J'ai réussi à gargouiller une réponse." },
+                    { en: "prop open", ipa: "[prɑp ˈoʊpən]", zh: "撐開/支住", fr: "maintenir ouvert", ex: "My mouth was propped open.", fr_ex: "Ma bouche était maintenue ouverte." },
+                    { en: "plastic wedge", ipa: "[ˈplæstɪk wɛdʒ]", zh: "塑膠楔子/開口器", fr: "cale en plastique", ex: "The dentist used a plastic wedge.", fr_ex: "Le dentiste a utilisé une cale en plastique." },
+                    { en: "suction straw", ipa: "[ˈsʌkʃən strɔ]", zh: "吸管(牙醫用)", fr: "paille d'aspiration", ex: "The suction straw is loud.", fr_ex: "La paille d'aspiration est bruyante." },
+                    { en: "slurp", ipa: "[slɜrp]", zh: "發出嘖嘖的吸水聲", fr: "aspirer bruyamment", ex: "The machine was slurping water.", fr_ex: "La machine aspirait l'eau bruyamment." },
+                    { en: "cheek", ipa: "[tʃik]", zh: "臉頰", fr: "joue", ex: "The straw was against my cheek.", fr_ex: "La paille était contre ma joue." },
+                    { en: "update", ipa: "[ˈʌpˌdeɪt]", zh: "更新/近況", fr: "mise à jour", ex: "Give me a life update.", fr_ex: "Donnez-moi une mise à jour sur votre vie." },
+                    { en: "metallic", ipa: "[məˈtælɪk]", zh: "金屬的", fr: "métallique", ex: "He held a metallic tool.", fr_ex: "Il tenait un outil métallique." },
+                    { en: "hook", ipa: "[hʊk]", zh: "鉤子", fr: "crochet", ex: "The dentist used a small hook.", fr_ex: "Le dentiste a utilisé un petit crochet." },
+                    { en: "pirate", ipa: "[ˈpaɪrət]", zh: "海盜", fr: "pirate", ex: "It looked like a pirate hook.", fr_ex: "Cela ressemblait à un crochet de pirate." },
+                    { en: "hold still", ipa: "[hoʊld stɪl]", zh: "保持不動", fr: "ne pas bouger", ex: "Please hold still for a second.", fr_ex: "S'il vous plaît, ne bougez pas une seconde." },
+                    { en: "plaque", ipa: "[plæk]", zh: "牙菌斑", fr: "plaque dentaire", ex: "He is checking for plaque.", fr_ex: "Il vérifie s'il y a de la plaque dentaire." },
+                    { en: "floss", ipa: "[flɔs]", zh: "用牙線潔牙", fr: "utiliser du fil dentaire", ex: "You should floss every day.", fr_ex: "Vous devriez utiliser du fil dentaire tous les jours." },
+                    { en: "casual", ipa: "[ˈkæʒuəl]", zh: "隨意的/漫不經心的", fr: "décontracté", ex: "His tone was very casual.", fr_ex: "Son ton était très décontracté." },
+                    { en: "trap", ipa: "[træp]", zh: "陷阱", fr: "piège", ex: "The question was a trap.", fr_ex: "La question était un piège." },
+                    { en: "dental hygienist", ipa: "[ˈdɛntəl haɪˈdʒɛnɪst]", zh: "洗牙師/牙齒衛生員", fr: "hygiéniste dentaire", ex: "The dental hygienist cleaned my teeth.", fr_ex: "L'hygiéniste dentaire a nettoyé mes dents." },
+                    { en: "raise an eyebrow", ipa: "[reɪz ən ˈaɪˌbraʊ]", zh: "挑眉/表示懷疑", fr: "lever un sourcil", ex: "She raised an eyebrow at my lie.", fr_ex: "Elle a levé un sourcil face à mon mensonge." },
+                    { en: "gum", ipa: "[gʌm]", zh: "牙齦", fr: "gencive", ex: "My gums were bleeding a bit.", fr_ex: "Mes gencives saignaient un peu." },
+                    { en: "snitch on", ipa: "[snɪtʃ ɑn]", zh: "告密/出賣", fr: "dénoncer / cafter sur", ex: "My gums were snitching on me.", fr_ex: "Mes gencives me dénonçaient." },
+                    { en: "tool", ipa: "[tul]", zh: "工具", fr: "outil", ex: "He pulled the tools out.", fr_ex: "Il a retiré les outils." },
+                    { en: "cavity", ipa: "[ˈkævəti]", zh: "蛀牙/齲齒", fr: "carie", ex: "Good news, no cavities!", fr_ex: "Bonne nouvelle, pas de caries !" },
+                    { en: "jaw", ipa: "[dʒɔ]", zh: "下巴/顎", fr: "mâchoire", ex: "My jaw was aching.", fr_ex: "Ma mâchoire me faisait mal." },
+                    { en: "ache", ipa: "[eɪk]", zh: "疼痛", fr: "faire mal", ex: "My teeth ache after the visit.", fr_ex: "Mes dents font mal après la visite." },
+                    { en: "sprint", ipa: "[sprɪnt]", zh: "衝刺/飛奔", fr: "courir / sprinter", ex: "I sprinted to the front desk.", fr_ex: "J'ai couru à la réception." },
+                    { en: "front desk", ipa: "[frʌnt dɛsk]", zh: "櫃台", fr: "réception", ex: "Pay at the front desk.", fr_ex: "Payez à la réception." },
+                    { en: "safe", ipa: "[seɪf]", zh: "安全的", fr: "en sécurité", ex: "I am safe for another half-year.", fr_ex: "Je suis en sécurité pour encore une demi-année." }
                 ]
             }
         ];
