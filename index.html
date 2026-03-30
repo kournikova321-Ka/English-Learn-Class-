@@ -150,172 +150,6 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
-              
-
-
-沒問題！這篇看牙醫的文章寫得非常幽默生動，像「牙齦出賣了我（snitching on me）」這樣的表達既道地又有趣。
-
-我已經為您完成了以下更新：
-1. **新增第十一堂課**：**2026.03.17 "The One-Sided Chat"**。
-2. **整理 30 個精選單字**：我為您挑選了文章中最實用的 30 個單字與片語（包含 `plastic wedge` 牙醫撐口器、`suction straw` 牙醫用吸管、`cavity` 蛀牙等）。
-3. **完整雙語配置**：一樣為您補齊了 **KK 音標**、**法文翻譯**、**英文例句** 與 **法文例句**，並支援全文與單字的語音朗讀功能！
-
-請複製下方的完整程式碼，並儲存覆蓋原本的 `index.html` 檔案：
-
-```html
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>English & French Learning App</title>
-    <style>
-        /* --- 介面風格設計 (CSS) - Lady B 復古配色版 --- */
-        :root {
-            --color-primary-red: #7D2027;   /* 酒紅 */
-            --color-chic-blue: #5FA8C2;     /* 復古藍 */
-            --color-burnt-orange: #CF5527;  /* 焦糖橘 */
-            --color-deep-brown: #673C34;    /* 深棕 */
-            --color-cream: #FAE3B1;         /* 奶油黃 */
-            
-            --color-bg: #FDFBF6;            /* 極淡米色背景 */
-            --color-card-bg: #FFFFFF;       /* 卡片白 */
-            --radius: 12px;
-        }
-
-        * {
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background-color: var(--color-bg);
-            color: var(--color-deep-brown);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        header {
-            background-color: var(--color-primary-red);
-            color: #FFFFFF;
-            padding: 20px;
-            text-align: center;
-            font-size: 1.4rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 12px rgba(125, 32, 39, 0.3);
-            cursor: pointer;
-            z-index: 10;
-        }
-
-        .container {
-            padding: 20px;
-            flex: 1;
-            max-width: 600px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .card {
-            background: var(--color-card-bg);
-            padding: 24px;
-            border-radius: var(--radius);
-            box-shadow: 0 4px 15px rgba(103, 60, 52, 0.08);
-            margin-bottom: 20px;
-            line-height: 1.8;
-            border: 1px solid rgba(0,0,0,0.03);
-            transition: transform 0.2s;
-        }
-        
-        .lesson-card {
-            cursor: pointer;
-            border-left: 6px solid var(--color-chic-blue);
-        }
-        .lesson-card:active {
-            transform: scale(0.98);
-            background-color: #f9f9f9;
-        }
-
-        .page {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-        .page.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* 按鈕樣式 */
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 16px;
-            margin-bottom: 12px;
-            background-color: var(--color-chic-blue);
-            color: #FFFFFF;
-            text-align: center;
-            border: none;
-            border-radius: var(--radius);
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: opacity 0.2s, transform 0.1s;
-        }
-        .btn:active { transform: scale(0.98); }
-
-        .btn-outline {
-            background-color: transparent;
-            border: 2px solid var(--color-chic-blue);
-            color: var(--color-chic-blue);
-        }
-
-        .btn-back {
-            background-color: #EFEFEF;
-            color: var(--color-deep-brown);
-            margin-top: 30px;
-        }
-        
-        /* 文章播放按鈕 */
-        .btn-audio {
-            background-color: var(--color-primary-red);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 0.95rem;
-            font-weight: bold;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: background-color 0.2s;
-        }
-        .btn-audio.playing {
-            background-color: #333;
-        }
-        .btn-audio:active { transform: scale(0.95); }
-
-        /* 文字樣式 */
-        .date-tag {
-            font-size: 0.85rem;
-            color: #998731;
-            font-weight: bold;
-            margin-bottom: 5px;
-            display: block;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
         .article-title {
             color: var(--color-burnt-orange);
             font-size: 1.5rem;
@@ -719,8 +553,9 @@
             }
         }
 
-        /* --- 資料設定區 (已新增第十一堂課) --- */
+        /* --- 資料設定區 (已新增第十二堂課) --- */
         const lessons =[
+            // (前11課省略，實作上請將此處替換為前面所有的 lesson1~11)
             {
                 id: 1,
                 date: "2026.01.12",
@@ -789,7 +624,7 @@ By the time I hit the checkout line, it was backed up halfway to the back of the
                     "Do you think waiting for a 'tiny square of pizza' is worth it?",
                     "What is your favorite 'guilty pleasure' snack?"
                 ],
-                vocab: [
+                vocab:[
                     { en: "tackle", ipa: "[ˈtækəl]", zh: "處理／解決", fr: "s'attaquer à", ex: "If you're brave enough to tackle Costco on a Saturday...", fr_ex: "Si vous êtes assez courageux pour vous attaquer à Costco un samedi..." },
                     { en: "pulled into", ipa: "[pʊld ˈɪntu]", zh: "被捲入／被拉進 (駛入)", fr: "entré dans", ex: "I pulled into the lot at 10:00 AM.", fr_ex: "Je suis entré dans le parking à 10h00." },
                     { en: "madhouse", ipa: "[ˈmædˌhaʊs]", zh: "瘋狂混亂的地方", fr: "maison de fous", ex: "The store was a total madhouse.", fr_ex: "Le magasin était une maison de fous totale." },
@@ -999,7 +834,7 @@ Katia: "Sounds good!"`,
                             <span class="kk-symbol">[i]</span> <span class="kk-symbol">[u]</span> <span class="kk-symbol">[ɔ]</span><br><br>
                             <strong>雙母音 (Diphthongs) 5 個</strong><br>
                             <span class="kk-symbol">[e]</span> (對應 [eɪ])<br>
-                            <span class="kk-symbol">[o]</span> (對應[oʊ])<br>
+                            <span class="kk-symbol">[o]</span> (對應 [oʊ])<br>
                             <span class="kk-symbol">[aɪ]</span><br>
                             <span class="kk-symbol">[au]</span> (對應 [aʊ])<br>
                             <span class="kk-symbol">[ɔɪ]</span><br><br>
@@ -1009,7 +844,7 @@ Katia: "Sounds good!"`,
                         </div>
                     ` }
                 ],
-                vocab:[
+                vocab: [
                     { en: "hop in", ipa: "[hɑp ɪn]", zh: "上車吧！", fr: "monter", ex: "Just toss your bags in and hop in.", fr_ex: "Jetez simplement vos sacs et montez." },
                     { en: "spick and span", ipa: "[spɪk ənd spæn]", zh: "一塵不染", fr: "propre comme un sou neuf", ex: "I keep the cabin spick and span.", fr_ex: "Je garde la cabine propre comme un sou neuf." },
                     { en: "gridlock", ipa: "[ˈgrɪdˌlɑk]", zh: "交通大癱瘓/大塞車", fr: "embouteillage monstre", ex: "We are stuck in midtown gridlock.", fr_ex: "Nous sommes coincés dans un embouteillage monstre au centre-ville." },
@@ -1065,7 +900,7 @@ Receptionist: "Absolutely. We’ve upgraded our techniques to include modern tri
                         </table>
                     ` }
                 ],
-                vocab:[
+                vocab: [
                     { en: "stow your gear", ipa: "[stoʊ jʊər gɪr]", zh: "收好你的東西", fr: "ranger vos affaires", ex: "Please stow your gear in the locker.", fr_ex: "Veuillez ranger vos affaires dans le casier." },
                     { en: "cubby", ipa: "[ˈkʌbi]", zh: "小隔間/置物櫃", fr: "casier", ex: "Put your bag in the cubby.", fr_ex: "Mettez votre sac dans le casier." },
                     { en: "slip into", ipa: "[slɪp ˈɪntu]", zh: "換上/迅速穿上", fr: "enfiler", ex: "Slip into these comfortable pajamas.", fr_ex: "Enfilez ce pyjama confortable." },
@@ -1200,7 +1035,7 @@ The best outfit is the one that makes you feel like yourself. After all, if you�
                         </table>
                     ` }
                 ],
-                vocab: [
+                vocab:[
                     { en: "athleisure", ipa: "[æθˈliʒər]", zh: "運動休閒風", fr: "athleisure", ex: "I love wearing athleisure on weekends.", fr_ex: "J'adore porter de l'athleisure le week-end." },
                     { en: "official uniform", ipa: "[əˈfɪʃəl ˈjunəˌfɔrm]", zh: "正式制服", fr: "uniforme officiel", ex: "Athleisure is the official uniform.", fr_ex: "L'athleisure est l'uniforme officiel." },
                     { en: "sweet spot", ipa: "[swit spɑt]", zh: "最佳平衡點", fr: "point idéal", ex: "It's the sweet spot between comfort and style.", fr_ex: "C'est le point idéal entre confort et style." },
@@ -1314,7 +1149,7 @@ You can even book a longer Full-Face Consultation. This is perfect if you have a
                     "How often do you go to the dentist? Do you think it is important?",
                     "Do you feel scared when the visit was over?"
                 ],
-                vocab: [
+                vocab:[
                     { en: "one-sided", ipa: "[ˌwʌnˈsaɪdɪd]", zh: "單方面的", fr: "unilatéral", ex: "A one-sided conversation is awkward.", fr_ex: "Une conversation unilatérale est gênante." },
                     { en: "chat", ipa: "[tʃæt]", zh: "閒聊/聊天", fr: "discussion / bavardage", ex: "We had a nice chat.", fr_ex: "Nous avons eu une belle discussion." },
                     { en: "dentist", ipa: "[ˈdɛntɪst]", zh: "牙醫", fr: "dentiste", ex: "I need to visit the dentist.", fr_ex: "Je dois aller chez le dentiste." },
@@ -1345,6 +1180,77 @@ You can even book a longer Full-Face Consultation. This is perfect if you have a
                     { en: "sprint", ipa: "[sprɪnt]", zh: "衝刺/飛奔", fr: "courir / sprinter", ex: "I sprinted to the front desk.", fr_ex: "J'ai couru à la réception." },
                     { en: "front desk", ipa: "[frʌnt dɛsk]", zh: "櫃台", fr: "réception", ex: "Pay at the front desk.", fr_ex: "Payez à la réception." },
                     { en: "safe", ipa: "[seɪf]", zh: "安全的", fr: "en sécurité", ex: "I am safe for another half-year.", fr_ex: "Je suis en sécurité pour encore une demi-année." }
+                ]
+            },
+            {
+                id: 12,
+                date: "2026.04.02",
+                title: "Chasing the Northern Lights: My Iceland Trip",
+                content: `If you are looking for the ultimate "cool" vacation, Iceland is the place to be. It is a small island in the North, but it has a very big personality. People call it the land of "Fire and Ice" because you can see a frozen glacier and a steaming volcano on the same day!
+
+My favorite part of the lifestyle there is the Blue Lagoon. It is a giant, milky-blue outdoor spa. Even when the weather is freezing, the water is like a warm bath. It is the perfect spot for relaxing and taking a deep breath of fresh air. It’s great for your health and makes your skin feel amazing.
+
+At night, everyone looks at the sky to find the Northern Lights. When the green and purple lights start to dance, it is a breathless moment. You feel so small under the huge, dark sky.
+
+The best way to explore is to hit the paths along the coast. You can see tiny puffins and beautiful waterfalls. The vibe in Iceland is very calm and quiet. If you need to hit the "reset" button on your life, a trip to the North is exactly what you need. It is a bucket-list dream come true!`,
+                questions:[
+                    "Iceland is very cold, but the Blue Lagoon is very warm. Do you prefer swimming in hot water when it is cold outside, or do you prefer the beach in the summer?",
+                    "The article says Iceland is a 'bucket list' trip. What is one country on your bucket list? Why do you want to go there?",
+                    "If you had to choose, would you rather hike on a frozen glacier or walk near a smoking volcano?"
+                ],
+                pronunciation:[
+                    { title: "KK 音標 - 母音 (Vowels)", pairs: `
+                        <table class="kk-table">
+                            <tr><th>[ɪ]</th><td>比「一」短，嘴角放鬆 (sit, pig)</td></tr>
+                            <tr><th>[ɛ]</th><td>像中文「ㄝ」，嘴角略向外撇 (bed, ten)</td></tr>
+                            <tr><th>[æ]</th><td>蝴蝶音，嘴巴開最大，舌尖抵下齒背 (cat, bag)</td></tr>
+                            <tr><th>[ɑ]</th><td>像看醫生說「啊」，嘴巴呈長圓形 (hot, box)</td></tr>
+                            <tr><th>[ʌ]</th><td>短促的「啊」，像被揍肚子發出的聲音 (cup, bus)</td></tr>
+                            <tr><th>[ʊ]</th><td>比「烏」短，嘴唇放鬆不嘟起 (foot, book)</td></tr>
+                            <tr><th>[ə]</th><td>懶人音，最放鬆的聲音 (about, sofa)</td></tr>
+                            <tr><th>[i]</th><td>嘴巴拉長像微笑的「一」 (see, eat)</td></tr>
+                            <tr><th>[e]</th><td>像「ㄟ～」，結尾帶點 [ɪ] (name, day)</td></tr>
+                            <tr><th>[u]</th><td>圓唇的「屋」 (moon, blue)</td></tr>
+                            <tr><th>[o]</th><td>像「歐～」，結尾嘴唇收圓 (go, home)</td></tr>
+                            <tr><th>[aɪ]</th><td>像中文「愛」 (my, kite)</td></tr>
+                            <tr><th>[aʊ]</th><td>像中文「凹」 (how, now)</td></tr>
+                            <tr><th>[ɔɪ]</th><td>像「歐一」連讀 (boy, noise)</td></tr>
+                            <tr><th>[ɝ]</th><td>重音節的捲舌音 (bird, her)</td></tr>
+                            <tr><th>[ɚ]</th><td>非重音節的捲舌音（輕聲） (teacher, mother)</td></tr>
+                        </table>
+                    ` }
+                ],
+                vocab: [
+                    { en: "ultimate", ipa: "[ˈʌltəmət]", zh: "終極的", fr: "ultime", ex: "This is the ultimate vacation.", fr_ex: "C'est les vacances ultimes." },
+                    { en: "vacation", ipa: "[veɪˈkeɪʃən]", zh: "假期", fr: "vacances", ex: "I am planning a summer vacation.", fr_ex: "Je planifie des vacances d'été." },
+                    { en: "island", ipa: "[ˈaɪlənd]", zh: "島嶼", fr: "île", ex: "Iceland is a small island.", fr_ex: "L'Islande est une petite île." },
+                    { en: "personality", ipa: "[ˌpɜrsəˈnæləti]", zh: "個性/特色", fr: "personnalité", ex: "It has a very big personality.", fr_ex: "Elle a une très grande personnalité." },
+                    { en: "frozen", ipa: "[ˈfroʊzən]", zh: "結冰的", fr: "gelé", ex: "We walked on a frozen glacier.", fr_ex: "Nous avons marché sur un glacier gelé." },
+                    { en: "glacier", ipa: "[ˈgleɪʃər]", zh: "冰川", fr: "glacier", ex: "The glacier is melting slowly.", fr_ex: "Le glacier fond lentement." },
+                    { en: "steaming", ipa: "[ˈstimɪŋ]", zh: "冒熱氣的", fr: "fumant", ex: "Look at that steaming volcano.", fr_ex: "Regardez ce volcan fumant." },
+                    { en: "volcano", ipa: "[vɑlˈkeɪnoʊ]", zh: "火山", fr: "volcan", ex: "The volcano erupted recently.", fr_ex: "Le volcan est entré en éruption récemment." },
+                    { en: "lifestyle", ipa: "[ˈlaɪfˌstaɪl]", zh: "生活方式", fr: "mode de vie", ex: "The relaxed lifestyle is great.", fr_ex: "Le mode de vie détendu est génial." },
+                    { en: "giant", ipa: "[ˈdʒaɪənt]", zh: "巨大的", fr: "géant", ex: "It is a giant outdoor spa.", fr_ex: "C'est un spa extérieur géant." },
+                    { en: "milky-blue", ipa: "[ˈmɪlki blu]", zh: "奶藍色的", fr: "bleu laiteux", ex: "The water is milky-blue.", fr_ex: "L'eau est bleu laiteux." },
+                    { en: "outdoor", ipa: "[ˈaʊtˌdɔr]", zh: "戶外的", fr: "en plein air", ex: "I enjoy outdoor activities.", fr_ex: "J'apprécie les activités en plein air." },
+                    { en: "freezing", ipa: "[ˈfrizɪŋ]", zh: "極冷的", fr: "glacial", ex: "The weather outside is freezing.", fr_ex: "Le temps dehors est glacial." },
+                    { en: "warm bath", ipa: "[wɔrm bæθ]", zh: "溫水浴", fr: "bain chaud", ex: "It feels like a warm bath.", fr_ex: "Cela ressemble à un bain chaud." },
+                    { en: "perfect spot", ipa: "[ˈpɜrfɪkt spɑt]", zh: "完美地點", fr: "endroit parfait", ex: "This is the perfect spot for resting.", fr_ex: "C'est l'endroit parfait pour se reposer." },
+                    { en: "relaxing", ipa: "[rɪˈlæksɪŋ]", zh: "放鬆的", fr: "relaxant", ex: "The spa is very relaxing.", fr_ex: "Le spa est très relaxant." },
+                    { en: "deep breath", ipa: "[dip brɛθ]", zh: "深呼吸", fr: "grande inspiration", ex: "Take a deep breath of fresh air.", fr_ex: "Prenez une grande inspiration d'air frais." },
+                    { en: "health", ipa: "[hɛlθ]", zh: "健康", fr: "santé", ex: "It is great for your health.", fr_ex: "C'est excellent pour votre santé." },
+                    { en: "amazing", ipa: "[əˈmeɪzɪŋ]", zh: "令人驚嘆的", fr: "incroyable", ex: "Your skin will feel amazing.", fr_ex: "Votre peau sera incroyable." },
+                    { en: "Northern Lights", ipa: "[ˈnɔrðərn laɪts]", zh: "北極光", fr: "aurores boréales", ex: "We saw the Northern Lights at night.", fr_ex: "Nous avons vu les aurores boréales la nuit." },
+                    { en: "purple", ipa: "[ˈpɜrpəl]", zh: "紫色的", fr: "violet", ex: "I saw green and purple lights.", fr_ex: "J'ai vu des lumières vertes et violettes." },
+                    { en: "breathless", ipa: "[ˈbrɛθləs]", zh: "令人屏息的", fr: "à couper le souffle", ex: "It was a breathless moment.", fr_ex: "C'était un moment à couper le souffle." },
+                    { en: "huge", ipa: "[hjudʒ]", zh: "巨大的", fr: "immense", ex: "The dark sky is huge.", fr_ex: "Le ciel sombre est immense." },
+                    { en: "explore", ipa: "[ɪkˈsplɔr]", zh: "探索", fr: "explorer", ex: "The best way to explore is walking.", fr_ex: "La meilleure façon d'explorer est de marcher." },
+                    { en: "path", ipa: "[pæθ]", zh: "小徑", fr: "sentier", ex: "Hit the paths along the coast.", fr_ex: "Prenez les sentiers le long de la côte." },
+                    { en: "coast", ipa: "[koʊst]", zh: "海岸", fr: "côte", ex: "We drove along the coast.", fr_ex: "Nous avons conduit le long de la côte." },
+                    { en: "puffin", ipa: "[ˈpʌfɪn]", zh: "海鸚", fr: "macareux", ex: "You can see tiny puffins there.", fr_ex: "Vous pouvez y voir de minuscules macareux." },
+                    { en: "waterfall", ipa: "[ˈwɔtərˌfɔl]", zh: "瀑布", fr: "cascade", ex: "The beautiful waterfalls are amazing.", fr_ex: "Les belles cascades sont incroyables." },
+                    { en: "calm", ipa: "[kɑm]", zh: "平靜的", fr: "calme", ex: "The vibe here is very calm.", fr_ex: "L'ambiance ici est très calme." },
+                    { en: "bucket-list", ipa: "[ˈbʌkɪt lɪst]", zh: "願望清單", fr: "liste de choses à faire", ex: "This trip is a bucket-list dream.", fr_ex: "Ce voyage est un rêve de la liste de choses à faire." }
                 ]
             }
         ];
