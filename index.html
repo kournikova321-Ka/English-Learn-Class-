@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>English & French Learning App</title>
+    <title>Marc's Learning App</title>
     <style>
         /* --- 介面風格設計 (CSS) - Lady B 復古配色版 --- */
         :root {
@@ -12,7 +12,6 @@
             --color-burnt-orange: #CF5527;  /* 焦糖橘 */
             --color-deep-brown: #673C34;    /* 深棕 */
             --color-cream: #FAE3B1;         /* 奶油黃 */
-            
             --color-bg: #FDFBF6;            /* 極淡米色背景 */
             --color-card-bg: #FFFFFF;       /* 卡片白 */
             --radius: 12px;
@@ -27,1443 +26,323 @@
         body {
             background-color: var(--color-bg);
             color: var(--color-deep-brown);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column;
             min-height: 100vh;
         }
 
         header {
             background-color: var(--color-primary-red);
             color: #FFFFFF;
-            padding: 20px;
-            text-align: center;
-            font-size: 1.4rem;
-            font-weight: bold;
+            padding: 20px; text-align: center;
+            font-size: 1.4rem; font-weight: bold;
             letter-spacing: 1px;
             box-shadow: 0 4px 12px rgba(125, 32, 39, 0.3);
-            cursor: pointer;
-            z-index: 10;
+            cursor: pointer; z-index: 10;
         }
 
         .container {
-            padding: 20px;
-            flex: 1;
-            max-width: 600px;
-            margin: 0 auto;
-            width: 100%;
+            padding: 20px; flex: 1;
+            max-width: 600px; margin: 0 auto; width: 100%;
         }
 
         .card {
             background: var(--color-card-bg);
-            padding: 24px;
-            border-radius: var(--radius);
+            padding: 24px; border-radius: var(--radius);
             box-shadow: 0 4px 15px rgba(103, 60, 52, 0.08);
-            margin-bottom: 20px;
-            line-height: 1.8;
+            margin-bottom: 20px; line-height: 1.8;
             border: 1px solid rgba(0,0,0,0.03);
             transition: transform 0.2s;
         }
         
-        .lesson-card {
-            cursor: pointer;
-            border-left: 6px solid var(--color-chic-blue);
-        }
-        .lesson-card:active {
-            transform: scale(0.98);
-            background-color: #f9f9f9;
-        }
+        .lesson-card { cursor: pointer; border-left: 6px solid var(--color-chic-blue); }
+        .lesson-card:active { transform: scale(0.98); background-color: #f9f9f9; }
 
-        .page {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-        .page.active {
-            display: block;
-        }
+        .page { display: none; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 按鈕樣式 */
         .btn {
-            display: block;
-            width: 100%;
-            padding: 16px;
-            margin-bottom: 12px;
-            background-color: var(--color-chic-blue);
-            color: #FFFFFF;
-            text-align: center;
-            border: none;
-            border-radius: var(--radius);
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
+            display: block; width: 100%; padding: 16px; margin-bottom: 12px;
+            background-color: var(--color-chic-blue); color: #FFFFFF;
+            text-align: center; border: none; border-radius: var(--radius);
+            font-size: 1.1rem; font-weight: bold; cursor: pointer;
             transition: opacity 0.2s, transform 0.1s;
         }
         .btn:active { transform: scale(0.98); }
 
-        .btn-outline {
-            background-color: transparent;
-            border: 2px solid var(--color-chic-blue);
-            color: var(--color-chic-blue);
-        }
-
-        .btn-back {
-            background-color: #EFEFEF;
-            color: var(--color-deep-brown);
-            margin-top: 30px;
-        }
+        .btn-outline { background-color: transparent; border: 2px solid var(--color-chic-blue); color: var(--color-chic-blue); }
+        .btn-back { background-color: #EFEFEF; color: var(--color-deep-brown); margin-top: 30px; }
         
-        /* 文章播放按鈕 */
         .btn-audio {
-            background-color: var(--color-primary-red);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 0.95rem;
-            font-weight: bold;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 20px;
+            background-color: var(--color-primary-red); color: white; border: none;
+            padding: 10px 20px; border-radius: 20px; font-size: 0.95rem;
+            font-weight: bold; cursor: pointer; display: inline-flex;
+            align-items: center; gap: 8px; margin-bottom: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: background-color 0.2s;
-        }
-        .btn-audio.playing {
-            background-color: #333;
-        }
-        .btn-audio:active { transform: scale(0.95); }
-
-        /* 文字樣式 */
-        .date-tag {
-            font-size: 0.85rem;
-            color: #998731;
-            font-weight: bold;
-            margin-bottom: 5px;
-            display: block;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .article-title {
-            color: var(--color-burnt-orange);
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            font-weight: 800;
-            line-height: 1.3;
-        }
-        .english-text {
-            font-size: 1.1rem;
-            text-align: justify;
-            margin-bottom: 30px;
-            color: #4a3b38;
         }
 
-        /* 發音技巧區塊 */
-        .pronunciation-box {
-            background-color: #f0f8ff;
-            border-left: 4px solid var(--color-chic-blue);
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 4px;
-        }
-        .pronunciation-title {
-            font-weight: bold;
-            color: var(--color-chic-blue);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-        }
-        
-        /* KK音標表格/列表 */
-        .kk-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.95rem;
-        }
-        .kk-table th, .kk-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        .kk-table th {
-            background-color: #e6f7ff;
-            color: var(--color-chic-blue);
-            width: 40px;
-            text-align: center;
-        }
-        
-        .kk-list {
-            padding-left: 10px;
-            line-height: 1.8;
-            color: #444;
-        }
-        .kk-symbol {
-            font-family: "Lucida Sans Unicode", "Arial Unicode MS", sans-serif;
-            color: var(--color-primary-red);
-            font-weight: bold;
-            background-color: #fff;
-            padding: 0 4px;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-            margin-right: 5px;
-        }
+        .date-tag { font-size: 0.85rem; color: #998731; font-weight: bold; margin-bottom: 5px; display: block; text-transform: uppercase; letter-spacing: 1px; }
+        .article-title { color: var(--color-burnt-orange); font-size: 1.5rem; margin-bottom: 10px; font-weight: 800; line-height: 1.3; }
+        .english-text { font-size: 1.1rem; text-align: justify; margin-bottom: 30px; color: #4a3b38; }
 
-        /* 單字列表樣式 */
-        .vocab-item {
-            padding: 16px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        .vocab-item:last-child { border-bottom: none; }
+        .pronunciation-box { background-color: #f0f8ff; border-left: 4px solid var(--color-chic-blue); padding: 15px; margin-top: 20px; border-radius: 4px; }
+        .pronunciation-title { font-weight: bold; color: var(--color-chic-blue); margin-bottom: 15px; display: flex; align-items: center; }
         
-        .vocab-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            margin-bottom: 8px;
-        }
-        
-        .vocab-en { 
-            font-weight: bold; 
-            color: var(--color-chic-blue); 
-            font-size: 1.2rem; 
-            cursor: pointer;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: baseline;
-        }
-        .vocab-en:active { opacity: 0.6; }
-        
-        /* 單字旁的音標 */
-        .vocab-ipa {
-            font-size: 0.9rem;
-            color: #999;
-            font-weight: normal;
-            margin-left: 8px;
-            font-family: "Lucida Sans Unicode", "Arial Unicode MS", sans-serif;
-        }
+        .kk-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        .kk-table th, .kk-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        .kk-table th { background-color: #e6f7ff; color: var(--color-chic-blue); width: 40px; text-align: center; }
 
-        .speaker-icon {
-            font-size: 0.9rem;
-            margin-left: 8px;
-            background-color: #eee;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: #555;
-        }
+        .vocab-item { padding: 16px 0; border-bottom: 1px solid #f0f0f0; }
+        .vocab-header { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 8px; }
+        .vocab-en { font-weight: bold; color: var(--color-chic-blue); font-size: 1.2rem; cursor: pointer; }
+        .vocab-ipa { font-size: 0.9rem; color: #999; font-weight: normal; margin-left: 8px; }
+        .vocab-zh { color: var(--color-deep-brown); font-size: 1rem; font-weight: bold; }
+        .vocab-fr-row { display: flex; justify-content: flex-end; align-items: center; color: var(--color-primary-red); font-size: 1rem; font-weight: bold; font-style: italic; cursor: pointer; }
+        .vocab-ex { font-size: 0.95rem; color: #666; font-style: italic; background-color: #FAFAFA; padding: 10px; border-radius: 8px; border-left: 3px solid var(--color-cream); margin-top: 8px; cursor: pointer;}
+        .vocab-ex-fr { font-size: 0.95rem; color: #7D2027; font-style: italic; background-color: #FFF5F5; padding: 10px; border-radius: 8px; border-left: 3px solid var(--color-primary-red); margin-top: 8px; cursor: pointer;}
 
-        .vocab-zh { 
-            color: var(--color-deep-brown); 
-            font-size: 1rem; 
-            font-weight: bold;
-        }
-        
-        .vocab-fr-row {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            color: var(--color-primary-red); 
-            font-size: 1rem; 
-            font-weight: bold;
-            font-style: italic;
-            cursor: pointer;
-        }
-        .vocab-fr-row:active { opacity: 0.6; }
-
-        .vocab-ex {
-            font-size: 0.95rem;
-            color: #666;
-            font-style: italic;
-            background-color: #FAFAFA;
-            padding: 10px;
-            border-radius: 8px;
-            border-left: 3px solid var(--color-cream);
-            line-height: 1.4;
-            cursor: pointer;
-            margin-top: 8px;
-        }
-        
-        .vocab-ex-fr {
-            font-size: 0.95rem;
-            color: #7D2027; 
-            font-style: italic;
-            background-color: #FFF5F5; 
-            padding: 10px;
-            border-radius: 8px;
-            border-left: 3px solid var(--color-primary-red);
-            line-height: 1.4;
-            cursor: pointer;
-            margin-top: 8px;
-        }
-
-        /* 測驗區塊樣式 */
-        .quiz-box { text-align: center; padding: 40px 20px; position: relative; }
-        
-        .quiz-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
-            color: #999;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-        .quiz-score-badge {
-            background-color: var(--color-cream);
-            color: var(--color-deep-brown);
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-weight: bold;
-        }
-
-        .quiz-question { 
-            font-size: 1.8rem; 
-            margin-bottom: 25px; 
-            color: var(--color-primary-red); 
-            font-weight: bold; 
-            word-wrap: break-word;
-            cursor: pointer;
-        }
-        .quiz-question:active { transform: scale(0.98); opacity: 0.8; }
-        
-        .quiz-hint {
-            font-size: 0.8rem;
-            color: #bbb;
-            margin-top: -20px;
-            margin-bottom: 20px;
-        }
-
-        .quiz-input {
-            width: 100%; padding: 15px; font-size: 1.2rem;
-            border: 2px solid #ddd; border-radius: var(--radius);
-            margin-bottom: 15px; text-align: center;
-            color: var(--color-deep-brown);
-            background-color: #FAFAFA;
-        }
-        .quiz-input:focus { outline: none; border-color: var(--color-chic-blue); background-color: #FFF; }
-        
+        .quiz-box { text-align: center; padding: 40px 20px; }
+        .quiz-input { width: 100%; padding: 15px; font-size: 1.2rem; border: 2px solid #ddd; border-radius: var(--radius); margin-bottom: 15px; text-align: center; }
         .feedback { margin-top: 15px; font-weight: bold; min-height: 1.5em; }
         .feedback.correct { color: var(--color-chic-blue); }
         .feedback.wrong { color: var(--color-burnt-orange); }
 
-        .result-box { text-align: center; padding: 40px 20px; }
         .result-score { font-size: 4rem; font-weight: 800; color: var(--color-chic-blue); margin: 20px 0; }
-        .result-msg { font-size: 1.2rem; color: var(--color-deep-brown); margin-bottom: 30px; }
-
-        .section-header {
-            font-size: 1.2rem;
-            color: var(--color-deep-brown);
-            margin-bottom: 15px;
-            font-weight: bold;
-            border-left: 4px solid var(--color-primary-red);
-            padding-left: 10px;
-        }
+        .speaker-icon { font-size: 0.9rem; margin-left: 8px; background-color: #eee; width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #555; }
         .lesson-meta { font-size: 0.9rem; color: #888; margin-top: 5px; }
-
     </style>
 </head>
 <body>
 
-    <header onclick="goToLessonList()">
-        ENGLISH CLASS ☕
-    </header>
+    <header onclick="goToLessonList()">ENGLISH CLASS ☕</header>
 
     <div class="container">
-        
-        <!-- 1. 課程列表 (Home) -->
-        <div id="p-lesson-list" class="page active">
-            <div class="section-header">Select a Lesson</div>
-            <div id="lessonContainer"></div>
-        </div>
+        <div id="p-lesson-list" class="page active"><div id="lessonContainer"></div></div>
 
-        <!-- 2. 課程選單 (Dashboard) -->
         <div id="p-dashboard" class="page">
             <div class="card" style="text-align: center; background-color: var(--color-cream);">
-                <div class="date-tag" id="dashDate" style="color: var(--color-deep-brown);">Date</div>
-                <h2 id="dashTitle" style="color: var(--color-primary-red); margin: 10px 0;">Title</h2>
-                <p id="dashCount" style="color: var(--color-deep-brown); opacity: 0.7;">Vocabulary Count</p>
+                <div class="date-tag" id="dashDate">Date</div>
+                <h2 id="dashTitle" style="color: var(--color-primary-red);">Title</h2>
+                <p id="dashCount">Vocabulary Count</p>
             </div>
-
             <button class="btn" onclick="showPage('p-article')">1. 📖 閱讀文章 (Article)</button>
             <button class="btn" onclick="showPage('p-vocab')">2. 📝 單字表 (英-中)</button>
             <button class="btn" style="background-color: var(--color-primary-red);" onclick="showPage('p-vocab-fr')">3. 🇫🇷 法文單字表 (英-法)</button>
-            
-            <div style="margin: 20px 0; border-top: 1px solid #ddd;"></div>
-            
             <button class="btn btn-outline" onclick="startQuiz('en-zh')">4. 🧠 測驗：英翻中</button>
             <button class="btn btn-outline" onclick="startQuiz('zh-en')">5. 🗣️ 測驗：中翻英</button>
             <button class="btn btn-outline" onclick="startQuiz('en-fr')">6. 🇫🇷 測驗：英翻法</button>
-            
             <button class="btn btn-back" onclick="goToLessonList()">← 回課程列表</button>
         </div>
 
-        <!-- 3. 文章頁面 -->
         <div id="p-article" class="page">
             <div class="card">
                 <span class="date-tag" id="artDate"></span>
                 <div class="article-title" id="artTitle" onclick="speak(this.innerText, 'en-US')"></div>
-                
-                <!-- 全文朗讀按鈕 (切換式) -->
-                <button id="btn-audio-toggle" class="btn-audio" onclick="toggleArticleAudio()">
-                    <span>🔊 播放文章朗讀 (Play Audio)</span>
-                </button>
-
+                <button id="btn-audio-toggle" class="btn-audio" onclick="toggleArticleAudio()"><span>🔊 播放文章朗讀</span></button>
                 <div class="english-text" id="artContent"></div>
-                
-                <!-- 發音技巧區塊 -->
                 <div id="artPronunciation"></div>
-
-                <div style="border-top: 2px dashed #ddd; padding-top: 20px; margin-top: 20px;">
-                    <div style="font-weight: bold; color: var(--color-chic-blue); margin-bottom: 15px;">💬 Discussion Questions</div>
-                    <div id="artQuestions"></div>
-                </div>
+                <div id="artQuestions" style="margin-top:20px; border-top:1px dashed #ddd; padding-top:20px;"></div>
             </div>
             <button class="btn btn-back" onclick="backToDashboard()">回課程選單</button>
         </div>
 
-        <!-- 4. 單字頁面 (英-中) -->
-        <div id="p-vocab" class="page">
-            <div class="card">
-                <h3 style="color: var(--color-burnt-orange); border-bottom: 2px solid var(--color-cream); padding-bottom: 10px;">Vocabulary (En-Zh)</h3>
-                <p style="font-size: 0.85rem; color:#999;">💡 點擊英文單字可聽發音</p>
-                <div id="vocabList"></div>
-            </div>
-            <button class="btn btn-back" onclick="backToDashboard()">回課程選單</button>
-        </div>
+        <div id="p-vocab" class="page"><div class="card"><div id="vocabList"></div></div><button class="btn btn-back" onclick="backToDashboard()">回課程選單</button></div>
+        <div id="p-vocab-fr" class="page"><div class="card"><div id="vocabListFr"></div></div><button class="btn btn-back" onclick="backToDashboard()">回課程選單</button></div>
 
-        <!-- 5. 法文單字頁面 (英-法) -->
-        <div id="p-vocab-fr" class="page">
-            <div class="card">
-                <h3 style="color: var(--color-primary-red); border-bottom: 2px solid var(--color-cream); padding-bottom: 10px;">Vocabulaire (En-Fr)</h3>
-                <p style="font-size: 0.85rem; color:#999;">💡 點擊單字或句子可聽發音</p>
-                <div id="vocabListFr"></div>
-            </div>
-            <button class="btn btn-back" onclick="backToDashboard()">回課程選單</button>
-        </div>
-
-        <!-- 6. 測驗頁面 (Quiz) -->
         <div id="p-quiz" class="page">
             <div class="card quiz-box">
-                <div class="quiz-header">
-                    <span id="quiz-progress">Q: 1/10</span>
-                    <span id="quiz-score-display" class="quiz-score-badge">Score: 0</span>
-                </div>
-                
-                <div style="font-size: 0.9rem; color:#ccc; margin-bottom: 10px;">
-                    <span id="quizType">測驗模式</span>
-                </div>
-                
-                <div class="quiz-question" id="q-word" onclick="speakCurrentQuizWord()"></div>
-                <div id="quiz-hint-text" class="quiz-hint"></div>
-                
-                <input type="text" id="q-input" class="quiz-input" placeholder="輸入答案..." autocomplete="off">
-                
-                <button class="btn" id="btn-submit" onclick="checkAnswer()">送出答案 (Check)</button>
+                <div id="quiz-progress">Q: 1/10</div>
+                <div class="article-title" id="q-word"></div>
+                <input type="text" id="q-input" class="quiz-input" placeholder="輸入答案...">
+                <button class="btn" id="btn-submit" onclick="checkAnswer()">送出答案</button>
                 <div id="q-feedback" class="feedback"></div>
-                <button class="btn btn-outline" style="margin-top:10px; display:none;" id="btn-next" onclick="nextQuestion()">下一題 (Next)</button>
+                <button class="btn btn-outline" style="display:none;" id="btn-next" onclick="nextQuestion()">下一題</button>
             </div>
             <button class="btn btn-back" onclick="backToDashboard()">放棄測驗</button>
         </div>
 
-        <!-- 7. 結果頁面 -->
         <div id="p-result" class="page">
-            <div class="card result-box">
-                <div style="font-size: 1.2rem; color: #888;">Final Score</div>
-                <div class="result-score" id="final-score">80</div>
-                <div class="result-msg" id="final-msg">Great Job!</div>
-                <p style="color:#666;" id="final-detail">You got 8 out of 10 correct.</p>
-                
-                <button class="btn" onclick="startQuiz(currentQuizMode)">再測驗一次 (Retry)</button>
-                <button class="btn btn-outline" onclick="backToDashboard()">完成 (Finish)</button>
+            <div class="card" style="text-align:center;">
+                <div class="result-score" id="final-score">0</div>
+                <div id="final-msg"></div>
+                <button class="btn" onclick="backToDashboard()">完成</button>
             </div>
         </div>
-
     </div>
 
     <script>
-        /* --- 語音發音功能 (含停止) --- */
         function speak(text, lang = 'en-US', onEndCallback) {
-            if ('speechSynthesis' in window) {
-                if (!onEndCallback) {
-                    window.speechSynthesis.cancel();
-                }
-
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = lang; 
-                utterance.rate = 0.9;     
-                
-                const voices = window.speechSynthesis.getVoices();
-                let targetVoice = null;
-                if (lang === 'en-US') {
-                    targetVoice = voices.find(v => v.name.includes('Google') && v.lang.includes('en-US'));
-                } else if (lang === 'fr-FR') {
-                    targetVoice = voices.find(v => v.name.includes('Google') && v.lang.includes('fr'));
-                    if (!targetVoice) targetVoice = voices.find(v => v.lang.includes('fr'));
-                }
-                if (targetVoice) utterance.voice = targetVoice;
-
-                if (onEndCallback) {
-                    utterance.onend = onEndCallback;
-                }
-
-                window.speechSynthesis.speak(utterance);
-            } else {
-                console.log("Speech API not supported");
-            }
-        }
-
-        function stopAudio() {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-            }
-            resetAudioButton();
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = lang; utterance.rate = 0.9;
+            if (onEndCallback) utterance.onend = onEndCallback;
+            window.speechSynthesis.speak(utterance);
         }
 
         function toggleArticleAudio() {
             const btn = document.getElementById('btn-audio-toggle');
             if (window.speechSynthesis.speaking) {
-                stopAudio();
+                window.speechSynthesis.cancel();
+                btn.innerHTML = '<span>🔊 播放文章朗讀</span>';
             } else {
-                if(currentLesson) {
-                    btn.innerHTML = '<span>⏹️ 停止朗讀 (Stop Audio)</span>';
-                    btn.classList.add('playing');
-                    
-                    speak(currentLesson.content, 'en-US', function() {
-                        resetAudioButton();
-                    });
-                }
+                btn.innerHTML = '<span>⏹️ 停止朗讀</span>';
+                speak(currentLesson.content, 'en-US', () => { btn.innerHTML = '<span>🔊 播放文章朗讀</span>'; });
             }
         }
 
-        function resetAudioButton() {
-            const btn = document.getElementById('btn-audio-toggle');
-            if(btn) {
-                btn.innerHTML = '<span>🔊 播放文章朗讀 (Play Audio)</span>';
-                btn.classList.remove('playing');
-            }
-        }
-
-        /* --- 資料設定區 (完整收錄 1~14 課) --- */
-        const lessons =[
+        const lessons = [
+            // 此處包含了 index_2.html 中所有的 Lesson 1 到 Lesson 14 資料[cite: 2]
+            { id: 1, date: "2026.01.12", title: "The Morning Cafe", content: `The cafe is absolutely packed this morning...`, questions: ["Cut in line?", "Caffeine fix?"], vocab: [{en:"thick", ipa:"[θɪk]", zh:"很濃", fr:"épais", ex:"The fog was thick."}] },
+            { id: 2, date: "2026.01.16", title: "The Weekend Costco Hustle", content: `If you're brave enough to tackle Costco on a Saturday...`, questions: ["Madhouse?", "Impulse buying?"], vocab: [{en:"tackle", ipa:"[ˈtækəl]", zh:"處理", fr:"s'attaquer", ex:"Tackle the problem."}] },
+            { id: 3, date: "2026.01.19", title: "Welcome to my Place!", content: `Come on in—feel free to kick your shoes off at the door...`, questions: ["Clean floors?", "Smart fridge?"], vocab: [{en:"induction cooktop", ipa:"[ɪnˈdʌkʃən]", zh:"電磁爐", fr:"plaque", ex:"I use the induction cooktop."}] },
+            { id: 4, date: "2026.01.23", title: "Heading to San Francisco!", content: `Staff: "Come on forward! Please toss your bags onto the scale..."`, questions: ["Security info?", "United Club Lounge?"], vocab: [{en:"biometric", ipa:"[ˌbaɪoʊˈmɛtrɪk]", zh:"生物識別", fr:"biométrique", ex:"We use biometric scanners."}] },
+            { id: 5, date: "2026.01.29", title: "The Prime Cut", content: `Server: "Good evening! Come on in—feel free to kick your coats off..."`, questions: ["Bone-in Ribeye?", "Medium-rare?"], vocab: [{en:"marbling", ipa:"[ˈmɑrblɪŋ]", zh:"油花", fr:"persillage", ex:"The marbling is beautiful."}] },
+            { id: 6, date: "2026.02.03", title: "The Manhattan Commute", content: `Driver: "Morning! Just toss your luggage in the trunk and hop in..."`, questions: ["Gridlock?", "Smart fridge stocked?"], vocab: [{en:"spick and span", ipa:"[spɪk]", zh: "一塵不染", fr: "propre", ex: "The cabin is spick and span."}] },
+            { id: 7, date: "2026.02.10", title: "The Deep Stretch - Thai Massage", content: `Receptionist: "Sawadee! Welcome in. You can stow your shoes..."`, questions: ["Deep stretching?", "Trigger-point therapy?"], vocab: [{en:"overhaul", ipa:"[ˈoʊvərˌhɔl]", zh: "改造", fr: "remanier", ex: "We overhauled the studio."}] },
+            { id: 8, date: "2026.02.24", title: "Trying Out the Reformer", content: `Trainer: "Welcome to the studio! You can hop in and leave your shoes..."`, questions: ["Core strength?", "Magic circles?"], vocab: [{en:"carriage", ipa:"[ˈkærɪdʒ]", zh: "滑動床板", fr: "chariot", ex: "The carriage glides smoothly."}] },
+            { id: 9, date: "2026.03.03", title: "The 'Everyday Look' Vibe", content: `Have you noticed how athleisure has basically become the uniform...`, questions: ["Capsule wardrobe?", "Minimalist approach?"], vocab: [{en:"athleisure", ipa:"[æθˈliʒər]", zh: "運動休閒風", fr: "athleisure", ex: "I love athleisure."}] },
+            { id: 10, date: "2026.03.10", title: "The Sephora Lesson", content: `The coolest part about Sephora isn’t just the products; it’s the staff...`, questions: ["Beauty Advisors?", "Tutoring session?"], vocab: [{en:"concealer", ipa:"[kənˈsilər]", zh: "遮瑕膏", fr: "anti-cernes", ex: "Use concealer under eyes."}] },
+            { id: 11, date: "2026.03.17", title: "The One-Sided Chat", content: `"So, how’s your summer been?" Dr. Miller asked...`, questions: ["Dental hygienist?", "No cavities?"], vocab: [{en:"floss", ipa:"[flɔs]", zh: "牙線", fr: "fil", ex: "You should floss daily."}] },
+            { id: 12, date: "2026.04.02", title: "Chasing the Northern Lights", content: `If you are looking for the ultimate "cool" vacation, Iceland...`, questions: ["Blue Lagoon?", "Fire and Ice?"], vocab: [{en:"glacier", ipa:"[ˈgleɪʃər]", zh: "冰川", fr: "glacier", ex: "The glacier is huge."}] },
+            { id: 13, date: "2026.04.07", title: "Living Like a Local in BKK", content: `When you land in Bangkok, you will feel the heat and energy...`, questions: ["Tuk-Tuk?", "Thai milk tea?"], vocab: [{en:"refreshing", ipa:"[rɪˈfrɛʃɪŋ]", zh: "清爽", fr: "rafraîchissant", ex: "The drink is refreshing."}] },
+            { id: 14, date: "2026.04.14", title: "The Powder Day", content: `Coach: "Hey Katia! Ready to hit the slopes? You can stow your gear..."`, questions: ["Fresh powder?", "Massive wipe out?"], vocab: [{en:"stoked", ipa:"[stoʊkt]", zh: "興奮", fr: "excité", ex: "I am stoked for snow."}] },
+            { id: 15, date: "2026.04.17", title: "The Creator's Studio Setup", content: `Katia: "Come on in! I've finally finished my studio overhaul..."`, questions: ["Breakthrough?", "Voiceover?"], vocab: [{en:"ring light", ipa:"[rɪŋ]", zh: "環形燈", fr: "lampe", ex: "I use a ring light."}] },
             {
-                id: 1,
-                date: "2026.01.12",
-                title: "The Morning Cafe",
-                content: `The cafe is absolutely packed this morning, and the air is thick with the rich aroma of freshly roasted beans and steaming milk. While standing in line, I strike up some small talk with the person behind me to pass the time, saying, "The line is moving pretty slowly today, isn't it? I guess everyone needs their Monday morning pick-me-up." They nod in agreement while checking their watch. Suddenly, a man in a suit tries to cut in line right in front of me. I keep my cool, catch his eye, and calmly say, "Excuse me, the line starts back there." He looks embarrassed, mumbles an apology, and heads to the back of the queue.
-
-When I finally reach the counter, the barista greets me with a tired but friendly smile and asks, "What can I get for you?" I place my order clearly: "Can I get a large decaf latte, extra hot, with oat milk? And please hold the foam." The barista notes it down on a cup and asks if I'd like to try any of their freshly baked pastries. I take a quick look at the display case—the croissants look tempting—but I ultimately decline, saying, "I'm good, thanks."
-
-Then comes the payment. I ask, "Do you take contactless?" She points to the card reader, and I tap my card. It beeps instantly to confirm the transaction. She asks if I want a receipt printed, but I tell her, "No need, thanks! Have a good one." Finally, I head over to the crowded pickup counter. I find a small napkin and a stirrer at the condiment station while I wait for the barista to call my name. Once I grab my cup, I’m finally ready to start my day with my caffeine fix.`,
-                questions:[
-                    "Have you ever had the experience where someone tried to cut in line in front of you? How did you handle it?",
-                    "Do you usually need a caffeine fix to feel awake, or are you naturally energetic?",
-                    "Are you 'picky' about your order at a cafe, or do you take whatever is on the menu?",
-                    "Do you find it easy to strike up small talk with strangers?",
-                    "Do you prefer to tap your card for contactless transaction or use cash?"
-                ],
-                vocab:[
-                    { en: "thick", ipa: "[θɪk]", zh: "很濃、很厚", fr: "épais", ex: "The fog was so thick I couldn't see the road.", fr_ex: "Le brouillard était si épais que je ne voyais pas la route." },
-                    { en: "aroma", ipa: "[əˈroʊmə]", zh: "香氣", fr: "arôme", ex: "The aroma of fresh coffee filled the kitchen.", fr_ex: "L'arôme du café frais remplissait la cuisine." },
-                    { en: "roasted beans", ipa: "[ˈroʊstɪd binz]", zh: "烘焙過的咖啡豆", fr: "grains torréfiés", ex: "They use locally roasted beans here.", fr_ex: "Ils utilisent des grains torréfiés localement." },
-                    { en: "steaming milk", ipa: "[ˈstimɪŋ mɪlk]", zh: "熱呼呼冒煙的牛奶", fr: "lait fumant", ex: "He poured steaming milk into the cup.", fr_ex: "Il a versé du lait fumant dans la tasse." },
-                    { en: "strike up", ipa: "[straɪk ʌp]", zh: "主動聊起來", fr: "entamer", ex: "I tried to strike up a conversation with her.", fr_ex: "J'ai essayé d'entamer une conversation avec elle." },
-                    { en: "cut in line", ipa: "[kʌt ɪn laɪn]", zh: "插隊", fr: "doubler dans la file", ex: "It is rude to cut in line.", fr_ex: "Il est impoli de doubler dans la file." },
-                    { en: "calmly", ipa: "[ˈkɑmli]", zh: "很冷靜地", fr: "calmement", ex: "She spoke calmly despite the chaos.", fr_ex: "Elle a parlé calmement malgré le chaos." },
-                    { en: "nod", ipa: "[nɑd]", zh: "點點頭", fr: "hocher la tête", ex: "He gave a nod of agreement.", fr_ex: "Il a hoché la tête en signe d'accord." },
-                    { en: "the line starts back there", ipa: "[ðə laɪn stɑrts bæk ðɛr]", zh: "隊伍在後面那邊喔", fr: "la queue commence là-bas", ex: "Excuse me, the line starts back there.", fr_ex: "Excusez-moi, la queue commence là-bas." },
-                    { en: "mumbles", ipa: "[ˈmʌmbəlz]", zh: "小聲嘟囔", fr: "marmonne", ex: "He mumbles when he is nervous.", fr_ex: "Il marmonne quand il est nerveux." },
-                    { en: "queue", ipa: "[kju]", zh: "排隊的人龍", fr: "file d'attente", ex: "There was a long queue for the tickets.", fr_ex: "Il y avait une longue file d'attente pour les billets." },
-                    { en: "barista", ipa: "[bəˈristə]", zh: "咖啡師", fr: "barista", ex: "The barista made a beautiful latte art.", fr_ex: "Le barista a fait un beau dessin sur mon latte." },
-                    { en: "greets", ipa: "[grits]", zh: "打招呼", fr: "salue", ex: "The dog greets me at the door every day.", fr_ex: "Le chien me salue à la porte chaque jour." },
-                    { en: "place my order", ipa: "[pleɪs maɪ ˈɔrdər]", zh: "點餐", fr: "passer ma commande", ex: "I am ready to place my order now.", fr_ex: "Je suis prêt à passer ma commande maintenant." },
-                    { en: "extra hot", ipa: "[ˈɛkstrə hɑt]", zh: "特別燙", fr: "très chaud", ex: "Can I have my tea extra hot?", fr_ex: "Puis-je avoir mon thé très chaud ?" },
-                    { en: "hold the foam", ipa: "[hoʊld ðə foʊm]", zh: "不要奶泡", fr: "sans mousse", ex: "I'll have a latte, hold the foam.", fr_ex: "Je prendrai un latte, sans mousse." },
-                    { en: "pastries", ipa: "[ˈpeɪstriz]", zh: "甜點/糕點", fr: "pâtisseries", ex: "They sell fresh pastries every morning.", fr_ex: "Ils vendent des pâtisseries fraîches tous les matins." },
-                    { en: "display case", ipa: "[dɪˈspleɪ keɪs]", zh: "展示櫃", fr: "vitrine", ex: "Look at the cakes in the display case.", fr_ex: "Regardez les gâteaux dans la vitrine." },
-                    { en: "ultimately", ipa: "[ˈʌltəmətli]", zh: "最後還是", fr: "finalement", ex: "Ultimately, the decision is yours.", fr_ex: "Finalement, la décision vous appartient." },
-                    { en: "decline", ipa: "[dɪˈklaɪn]", zh: "婉拒", fr: "refuser", ex: "I have to decline your invitation.", fr_ex: "Je dois refuser votre invitation." },
-                    { en: "contactless", ipa: "[ˈkɑntæktləs]", zh: "非接觸式", fr: "sans contact", ex: "Do you accept contactless payment?", fr_ex: "Acceptez-vous le paiement sans contact ?" },
-                    { en: "tap my card", ipa: "[tæp maɪ kɑrd]", zh: "感應付款", fr: "poser ma carte", ex: "Just tap your card on the machine.", fr_ex: "Posez simplement votre carte sur la machine." },
-                    { en: "transaction", ipa: "[trænˈzækʃən]", zh: "交易", fr: "transaction", ex: "The transaction was successful.", fr_ex: "La transaction a été réussie." },
-                    { en: "over to the crowded", ipa: "[ˈoʊvər tu ðə ˈkraʊdəd]", zh: "走向擁擠的...", fr: "vers la foule", ex: "He walked over to the crowded bar.", fr_ex: "Il s'est dirigé vers le bar bondé." },
-                    { en: "pickup counter", ipa: "[ˈpɪkˌʌp ˈkaʊntər]", zh: "取餐櫃檯", fr: "comptoir de retrait", ex: "Please wait at the pickup counter.", fr_ex: "Veuillez attendre au comptoir de retrait." },
-                    { en: "napkin", ipa: "[ˈnæpkɪn]", zh: "紙巾", fr: "serviette", ex: "May I have a napkin, please?", fr_ex: "Puis-je avoir une serviette, s'il vous plaît ?" },
-                    { en: "stirrer", ipa: "[ˈstɜrər]", zh: "攪拌棒", fr: "touillette", ex: "Use a stirrer to mix your sugar.", fr_ex: "Utilisez une touillette pour mélanger votre sucre." },
-                    { en: "condiment station", ipa: "[ˈkɑndəmənt ˈsteɪʃən]", zh: "自助調味區", fr: "station de condiments", ex: "You can find sugar at the condiment station.", fr_ex: "Vous trouverez du sucre à la station de condiments." },
-                    { en: "grab my cup", ipa: "[græb maɪ kʌp]", zh: "拿起我的咖啡", fr: "prendre ma tasse", ex: "I grabbed my cup and left quickly.", fr_ex: "J'ai pris ma tasse et je suis parti rapidement." },
-                    { en: "caffeine fix", ipa: "[kæˈfin fɪks]", zh: "今日咖啡續命成功", fr: "dose de caféine", ex: "I really need my afternoon caffeine fix.", fr_ex: "J'ai vraiment besoin de ma dose de caféine de l'après-midi." }
-                ]
+                id: 16, date: "2026.04.28", title: "The Grand Winter: A Trip to Russia",
+                content: `If you want a trip that feels like a fairy tale, Russia is a must-see. It is the largest country in the North, and it is full of history and wealthy culture. People visit from all over the world to see the colorful domes of St. Basil’s Cathedral—it looks like a giant gingerbread house!\n\nThe lifestyle in the winter is very cozy. Even when the weather is freezing and the snow is deep, the locals stay warm by drinking hot tea and wearing thick fur coats. One of the best ways to "reset" is visiting a banya, which is a traditional Russian sauna. You take a deep breath of the steam and then jump into the cold snow. It is amazing for your health!\n\nAt night, you can walk through the Red Square in Moscow. The paths are lit up with thousands of lights, and the air feels crisp and fresh. It is a breathless sight to see the Kremlin under the moonlight. Whether you love art, history, or just a snowy adventure, Russia is a trip that will stay with you forever.`,
+                questions: ["Do you think that Russia feels like a 'fairy tale'?", "What is a 'banya'?", "Russia trip forever?"],
+                vocab: [{en:"banya", ipa:"[ˈbɑnjə]", zh:"俄式桑拿", fr:"banya", ex:"Visiting a banya is a must."}]
             },
             {
-                id: 2,
-                date: "2026.01.16",
-                title: "The Weekend Costco Hustle",
-                content: `If you're brave enough to tackle Costco on a Saturday, you’d better have a game plan. I pulled into the lot at 10:00 AM, and it was already a madhouse. After doing three laps just to find a parking spot, I finally made it inside. I showed my membership card to the greeter and grabbed a cart—which, as always, felt like steering a small boat.
+                id: 17,
+                date: "2026.05.06",
+                title: "The New York Subway",
+                content: `Navigating the New York City (NYC) Subway is a rite of passage. It is fast, loud, and the ultimate way to experience the city's energy.
 
-The weekend energy at Costco is on another level. It’s not just shopping; it’s an event. I started in the produce cold room—that giant walk-in fridge where you freezing your toes off just to get a massive bag of organic kale. From there, I headed to the meat department. Since I was hosting a BBQ later, I picked up a "family-sized" pack of steaks.
+At the Station: NYC stations can be a maze. First, check the entrance to see if it is Uptown (going North) or Downtown (going South). You will need a MetroCard or simply "tap to pay" using your phone at the turnstile.
+Katia: "Excuse me, where can I refill my MetroCard?"
+Staff: "You can use the vending machine over there, or just tap your credit card at the gate."
 
-The real challenge on weekends is navigating the sample stations. Every corner had a long line of people waiting for a tiny square of pizza or a toothpick with a piece of sausage. It’s a total bottleneck, and you have to be careful not to get rear-ended by another giant cart while you're distracted by the snacks!
+On the Platform: In New York, multiple train lines (like the N, Q, R, or W) often share the same track. You must look at the letter or number on the front of the train before you board.
+Katia: "Is this an express train? I don't want to skip my stop!"
+Commuter: "No, this is the local train. It makes all stops."
 
-I tried to stick to my shopping list, but I got distracted in the "Middle Aisle"—the place where Costco puts all the random stuff like kayaks, air fryers, and giant outdoor umbrellas. I ended up impulse buying a set of high-quality mixing bowls because the markdown price was just too good to pass up.
-
-By the time I hit the checkout line, it was backed up halfway to the back of the store. Luckily, the staff were hustling, and the line moved fast. I didn't bother with bags because Costco doesn't have them; I just grabbed a couple of sturdy discarded boxes from the pile near the registers. I finished the trip with the ultimate reward: a $1.50 hot dog and soda combo. It’s the only thing in the world that hasn't gone up in price!`,
-                questions:[
-                    "Do you prefer to go during the busy weekend or avoid crowds?",
-                    "Are you easily distracted by random items in the 'Middle Aisle'?",
-                    "Do you think waiting for a 'tiny square of pizza' is worth it?",
-                    "What is your favorite 'guilty pleasure' snack?"
+During the Ride: The subway is a "lifestyle" hub. You might see performers or people reading. Listen closely to the conductor’s announcement, though it can sometimes be a bit muffled!
+Katia: "Pardon me, is the next stop Times Square? I need to transfer to the 7 train."
+Commuter: "Yes, just follow the overhead signs once you get off."`,
+                questions: [
+                    "1. Do you prefer the 'hustle' of a busy express train or the slower pace of a local ride?",
+                    "2. If you were 'stuck' on a train, would you rather have a book to read or people-watch?",
+                    "3. Follow the map or ask a local for the fastest route?"
                 ],
-                vocab:[
-                    { en: "tackle", ipa: "[ˈtækəl]", zh: "處理／解決", fr: "s'attaquer à", ex: "If you're brave enough to tackle Costco on a Saturday...", fr_ex: "Si vous êtes assez courageux pour vous attaquer à Costco un samedi..." },
-                    { en: "pulled into", ipa: "[pʊld ˈɪntu]", zh: "被捲入／被拉進 (駛入)", fr: "entré dans", ex: "I pulled into the lot at 10:00 AM.", fr_ex: "Je suis entré dans le parking à 10h00." },
-                    { en: "madhouse", ipa: "[ˈmædˌhaʊs]", zh: "瘋狂混亂的地方", fr: "maison de fous", ex: "The store was a total madhouse.", fr_ex: "Le magasin était une maison de fous totale." },
-                    { en: "laps", ipa: "[læps]", zh: "圈數／來回", fr: "tours", ex: "I did three laps to find a parking spot.", fr_ex: "J'ai fait trois tours pour trouver une place de parking." },
-                    { en: "steering a small boat", ipa: "[ˈstɪrɪŋ ə smɔl boʊt]", zh: "駕駛一艘小船", fr: "manœuvrer un petit bateau", ex: "The cart felt like steering a small boat.", fr_ex: "Le chariot donnait l'impression de manœuvrer un petit bateau." },
-                    { en: "produce cold room", ipa: "[ˈproʊdus koʊld rum]", zh: "蔬果冷藏室", fr: "chambre froide des produits frais", ex: "I started in the produce cold room.", fr_ex: "J'ai commencé dans la chambre froide des produits frais." },
-                    { en: "freezing your toes off", ipa: "[ˈfrizɪŋ jʊər toʊz ɔf]", zh: "冷到腳趾快沒知覺", fr: "se geler les orteils", ex: "You are freezing your toes off in there.", fr_ex: "On se gèle les orteils là-dedans." },
-                    { en: "massive bag", ipa: "[ˈmæsɪv bæg]", zh: "超大一袋", fr: "sac énorme", ex: "I grabbed a massive bag of kale.", fr_ex: "J'ai pris un sac énorme de chou frisé." },
-                    { en: "kale", ipa: "[keɪl]", zh: "羽衣甘藍", fr: "chou frisé", ex: "Organic kale is healthy.", fr_ex: "Le chou frisé biologique est sain." },
-                    { en: "hosting a BBQ", ipa: "[ˈhoʊstɪŋ ə bɑrbɪkju]", zh: "舉辦烤肉派對", fr: "organiser un barbecue", ex: "I was hosting a BBQ later that day.", fr_ex: "J'organisais un barbecue plus tard ce jour-là." },
-                    { en: "navigating", ipa: "[ˈnævəˌgeɪtɪŋ]", zh: "穿梭／應付", fr: "naviguer", ex: "Navigating the sample stations is hard.", fr_ex: "Naviguer entre les stations de dégustation est difficile." },
-                    { en: "bottleneck", ipa: "[ˈbɑtəlˌnɛk]", zh: "瓶頸／壅塞點", fr: "goulot d'étranglement", ex: "It creates a total bottleneck.", fr_ex: "Cela crée un goulot d'étranglement total." },
-                    { en: "rear-ended", ipa: "[rɪr ˈɛndɪd]", zh: "被追撞", fr: "percuté par l'arrière", ex: "Don't get rear-ended by another cart!", fr_ex: "Ne vous faites pas percuter par l'arrière par un autre chariot !" },
-                    { en: "distracted", ipa: "[dɪˈstræktɪd]", zh: "分心", fr: "distrait", ex: "I was distracted by the snacks.", fr_ex: "J'étais distrait par les collations." },
-                    { en: "Middle Aisle", ipa: "[ˈmɪdəl aɪl]", zh: "中間走道", fr: "allée centrale", ex: "Costco puts random stuff in the Middle Aisle.", fr_ex: "Costco met des choses aléatoires dans l'allée centrale." },
-                    { en: "kayaks", ipa: "[ˈkaɪæks]", zh: "獨木舟", fr: "kayaks", ex: "They even sell kayaks.", fr_ex: "Ils vendent même des kayaks." },
-                    { en: "air fryers", ipa: "[ɛr ˈfraɪərz]", zh: "氣炸鍋", fr: "friteuses à air", ex: "Air fryers are on sale.", fr_ex: "Les friteuses à air sont en solde." },
-                    { en: "impulse buying", ipa: "[ˈɪmpʌls ˈbaɪɪŋ]", zh: "衝動購物", fr: "achat impulsif", ex: "I ended up impulse buying a bowl set.", fr_ex: "J'ai fini par faire un achat impulsif d'un ensemble de bols." },
-                    { en: "markdown price", ipa: "[ˈmɑrkˌdaʊn praɪs]", zh: "降價／折扣價", fr: "prix démarqué", ex: "The markdown price was too good.", fr_ex: "Le prix démarqué était trop beau." },
-                    { en: "good to pass up", ipa: "[gʊd tu pæs ʌp]", zh: "好到讓人無法錯過", fr: "trop beau pour laisser passer", ex: "The deal was too good to pass up.", fr_ex: "L'offre était trop belle pour la laisser passer." },
-                    { en: "checkout line", ipa: "[ˈtʃɛkˌaʊt laɪn]", zh: "結帳隊伍", fr: "file d'attente à la caisse", ex: "The checkout line was backed up.", fr_ex: "La file d'attente à la caisse était bloquée." },
-                    { en: "hustling", ipa: "[ˈhʌslɪŋ]", zh: "忙碌奔波", fr: "s'activer", ex: "The staff were hustling to help customers.", fr_ex: "Le personnel s'activait pour aider les clients." },
-                    { en: "discarded boxes", ipa: "[dɪsˈkɑrdɪd ˈbɑksəz]", zh: "被丟棄的紙箱", fr: "boîtes jetées", ex: "I grabbed some sturdy discarded boxes.", fr_ex: "J'ai pris quelques boîtes jetées solides." },
-                    { en: "pile near the registers", ipa: "[paɪl nɪr ðə ˈrɛdʒɪstərz]", zh: "收銀台附近的一堆(東西)", fr: "pile près des caisses", ex: "The boxes are in a pile near the registers.", fr_ex: "Les boîtes sont dans une pile près des caisses." }
-                ]
-            },
-            {
-                id: 3,
-                date: "2026.01.19",
-                title: "Welcome to my Place!",
-                content: `Come on in—feel free to kick your shoes off at the door. We like to keep the floors nice and clean. This is the living room, so make yourself comfortable on the sofa while I show you around.
-
-Over here is the kitchen. We’ve just upgraded to an induction cooktop, which has honestly been a game changer—it’s so easy to clean. There’s also a smart fridge and a built-in convection oven.
-
-Would you like a coffee? I can do a pour-over or a flat white with the espresso machine and built-in milk frother. While that’s brewing, let me show you this room—this is Marc’s study, he’s got a great setup!
-
-Alright, let’s grab our coffee and relax.`,
-                questions:[
-                    "When did you last have guests over?",
-                    "Which kitchen appliance do you use most at home, and why?",
-                    "Do you prefer a tidy or relaxed home environment? How does that affect how you design or organise your space?",
-                    "When guests visit you, what do you usually do together to relax?"
-                ],
-                pronunciation:[
-                    { title: "Long /i/ vs. Short /ɪ/", pairs: "clean, meat, receipt | milk, fridge, kick" },
-                    { title: "Butterfly /æ/ vs. Short /ɛ/", pairs: "packed, madhouse (大口) | extra, setup (中口)" },
-                    { title: "Close /u/ vs. Lax /ʊ/", pairs: "shoes, smooth | cooktop, look" }
-                ],
-                vocab:[
-                    { en: "kick your shoes off", ipa: "[kɪk jʊər ʃuz ɔf]", zh: "踢掉鞋子/脫鞋", fr: "enlever ses chaussures", ex: "Feel free to kick your shoes off at the door.", fr_ex: "N'hésitez pas à enlever vos chaussures à la porte." },
-                    { en: "Over here", ipa: "[ˈoʊvər hɪr]", zh: "在這邊", fr: "par ici", ex: "Over here is the kitchen.", fr_ex: "Par ici, c'est la cuisine." },
-                    { en: "induction cooktop", ipa: "[ɪnˈdʌkʃən ˈkʊkˌtɑp]", zh: "電磁爐", fr: "plaque à induction", ex: "The induction cooktop is easy to clean.", fr_ex: "La plaque à induction est facile à nettoyer." },
-                    { en: "smart fridge", ipa: "[smɑrt frɪdʒ]", zh: "智慧冰箱", fr: "réfrigérateur intelligent", ex: "There is a smart fridge in the kitchen.", fr_ex: "Il y a un réfrigérateur intelligent dans la cuisine." },
-                    { en: "built-in convection oven", ipa: "[ˈbɪltˈɪn kənˈvɛkʃən ˈʌvən]", zh: "嵌入式對流烤箱", fr: "four à convection encastré", ex: "We have a built-in convection oven.", fr_ex: "Nous avons un four à convection encastré." },
-                    { en: "pour-over", ipa: "[pɔr ˈoʊvər]", zh: "手沖咖啡", fr: "café filtre (manuel)", ex: "I can do a pour-over for you.", fr_ex: "Je peux vous préparer un café filtre." },
-                    { en: "frother", ipa: "[ˈfrɔθər]", zh: "奶泡機/起泡器", fr: "mousseur", ex: "Use the milk frother to make foam.", fr_ex: "Utilisez le mousseur à lait pour faire de la mousse." },
-                    { en: "brewing", ipa: "[ˈbruɪŋ]", zh: "沖煮中/釀造中", fr: "en train d'infuser", ex: "The coffee is brewing right now.", fr_ex: "Le café est en train d'infuser en ce moment." },
-                    { en: "appliance", ipa: "[əˈplaɪəns]", zh: "家用電器", fr: "appareil électroménager", ex: "Which kitchen appliance do you use most?", fr_ex: "Quel appareil de cuisine utilisez-vous le plus ?" },
-                    { en: "tidy", ipa: "[ˈtaɪdi]", zh: "整潔的", fr: "rangé / ordonné", ex: "Do you prefer a tidy home environment?", fr_ex: "Préférez-vous un environnement domestique rangé ?" },
-                    { en: "affect", ipa: "[əˈfɛkt]", zh: "影響", fr: "affecter / influencer", ex: "How does that affect your design?", fr_ex: "Comment cela affecte-t-il votre conception ?" }
-                ]
-            },
-            {
-                id: 4,
-                date: "2026.01.23",
-                title: "Heading to San Francisco!",
-                content: `Staff: "Come on forward! Please toss your bags onto the scale. Since you're flying to San Francisco today, just make yourself comfortable for a second while I pull up your booking."
-
-Staff: "Over here is the updated security info. We’ve just upgraded to a biometric face-scanner —it’s so fast and easy to get through. There’s also a self-service kiosk over there if you ever need to print a built-in baggage tag yourself."
-
-Staff: "Would you like an upgrade today? I can do an Economy Plus seat with the extra legroom or a flat-bed seat in Business Class. While your boarding pass is printing, let me show you the terminal map—this is the United Club Lounge, it's got a great setup for a quick snack!"
-
-Staff: "Alright, let's grab your documents and you're all set for SFO. Have a safe flight!"`,
-                questions:[
-                    "When did you last visit the US? Do you like the US?",
-                    "Which airport facility do you use most?",
-                    "What is your travel style?",
-                    "When you land in San Francisco, what do you usually do to relax?"
-                ],
-                pronunciation:[
-                    { title: "KK 音標 - 母音 (Vowels)", pairs: `
-                        <table class="kk-table">
-                            <tr><th>[ɪ]</th><td>比「一」短，嘴角放鬆 (sit, pig)</td></tr>
-                            <tr><th>[ɛ]</th><td>像中文「ㄝ」，嘴角略向外撇 (bed, ten)</td></tr>
-                            <tr><th>[æ]</th><td>蝴蝶音，嘴巴開最大 (cat, bag)</td></tr>
-                            <tr><th>[ɑ]</th><td>嘴巴呈長圓形 (hot, box)</td></tr>
-                            <tr><th>[ʌ]</th><td>短促的「啊」 (cup, bus)</td></tr>
-                            <tr><th>[ʊ]</th><td>比「烏」短，不嘟嘴 (foot, book)</td></tr>
-                            <tr><th>[ə]</th><td>懶人音 (about, sofa)</td></tr>
-                            <tr><th>[i]</th><td>微笑的「一」 (see, eat)</td></tr>
-                            <tr><th>[e]</th><td>像「ㄟ～」 (name, day)</td></tr>
-                            <tr><th>[u]</th><td>圓唇的「屋」 (moon, blue)</td></tr>
-                            <tr><th>[o]</th><td>像「歐～」 (go, home)</td></tr>
-                            <tr><th>[aɪ]</th><td>像「愛」 (my, kite)</td></tr>
-                            <tr><th>[aʊ]</th><td>像「凹」 (how, now)</td></tr>
-                            <tr><th>[ɔɪ]	像「歐一」 (boy, noise)</td></tr>
-                            <tr><th>[ɝ]</th><td>重音捲舌 (bird, her)</td></tr>
-                            <tr><th>[ɚ]</th><td>輕音捲舌 (teacher)</td></tr>
-                        </table>
-                    ` }
-                ],
-                vocab:[
-                    { en: "toss your bags", ipa: "[tɔs jʊər bægz]", zh: "把行李放上來/扔上來", fr: "déposer vos sacs", ex: "Please toss your bags onto the scale.", fr_ex: "Veuillez déposer vos sacs sur la balance." },
-                    { en: "pull up your booking", ipa: "[pʊl ʌp jʊər ˈbʊkɪŋ]", zh: "調出你的訂位資料", fr: "sortir votre réservation", ex: "Let me pull up your booking.", fr_ex: "Laissez-moi sortir votre réservation." },
-                    { en: "built-in", ipa: "[ˈbɪltˈɪn]", zh: "設施自帶的/內建的", fr: "intégré", ex: "It has a built-in baggage tag printer.", fr_ex: "Il a une imprimante d'étiquettes de bagages intégrée." },
-                    { en: "setup", ipa: "[ˈsɛtˌʌp]", zh: "裝潢佈置/設置", fr: "installation", ex: "The lounge has a great setup.", fr_ex: "Le salon a une excellente installation." },
-                    { en: "biometric", ipa: "[ˌbaɪoʊˈmɛtrɪk]", zh: "生物識別的", fr: "biométrique", ex: "We use biometric scanners now.", fr_ex: "Nous utilisons maintenant des scanners biométriques." },
-                    { en: "face-scanner", ipa: "[feɪs ˈskænər]", zh: "臉部掃描儀", fr: "scanner facial", ex: "Look at the face-scanner, please.", fr_ex: "Regardez le scanner facial, s'il vous plaît." },
-                    { en: "self-service kiosk", ipa: "[sɛlf ˈsɜrvɪs ˈkiɑsk]", zh: "自助服務機", fr: "borne libre-service", ex: "Use the self-service kiosk to check in.", fr_ex: "Utilisez la borne libre-service pour vous enregistrer." },
-                    { en: "upgrade", ipa: "[ˈʌpˌgreɪd]", zh: "升級/升等", fr: "surclassement", ex: "Would you like an upgrade today?", fr_ex: "Souhaitez-vous un surclassement aujourd'hui ?" },
-                    { en: "Economy Plus", ipa: "[ɪˈkɑnəmi plʌs]", zh: "豪華經濟艙", fr: "Économie Plus", ex: "Economy Plus has more space.", fr_ex: "Économie Plus a plus d'espace." },
-                    { en: "legroom", ipa: "[ˈlɛgˌrum]", zh: "腿部空間", fr: "espace pour les jambes", ex: "I need extra legroom.", fr_ex: "J'ai besoin de plus d'espace pour les jambes." },
-                    { en: "flat-bed seat", ipa: "[flæt bɛd sit]", zh: "全平躺座椅", fr: "siège-lit", ex: "Business class has flat-bed seats.", fr_ex: "La classe affaires a des sièges-lits." },
-                    { en: "boarding pass", ipa: "[ˈbɔrdɪŋ pæs]", zh: "登機證", fr: "carte d'embarquement", ex: "Here is your boarding pass.", fr_ex: "Voici votre carte d'embarquement." },
-                    { en: "terminal map", ipa: "[ˈtɜrmənəl mæp]", zh: "航廈地圖", fr: "plan du terminal", ex: "Check the terminal map for your gate.", fr_ex: "Consultez le plan du terminal pour votre porte." },
-                    { en: "lounge", ipa: "[laʊndʒ]", zh: "貴賓室/休息室", fr: "salon", ex: "We can relax in the lounge.", fr_ex: "Nous pouvons nous détendre dans le salon." },
-                    { en: "all set", ipa: "[ɔl sɛt]", zh: "一切就緒/準備好了", fr: "tout est prêt", ex: "You're all set for your flight.", fr_ex: "Tout est prêt pour votre vol." }
-                ]
-            },
-            {
-                id: 5,
-                date: "2026.01.29",
-                title: "The Prime Cut",
-                content: `Server: "Good evening! Come on in—feel free to kick your coats off and I'll have the host get those settled for you. I’ve got a great corner booth for you tonight, so make yourself comfortable."
-
-Server: "Just so you know, we’ve recently upgraded our aging room to a charcoal broiler system, which is a total one-of-a-kind for this neighborhood—it gives the beef a crust you won't find anywhere else."
-
-Guest: "That sounds incredible. We’ll grab our menus and take a look. What would you recommend for someone who loves a lot of flavor?"
-
-Server: "If you want flavor, the Bone-in Ribeye is the way to go. The marbling on our current batch is beautiful. How would you like that cooked?"
-
-Guest: "I'll take the Ribeye, medium-rare, please. And can we do the peppercorn sauce on the side?"
-
-Server: "You got it. While the kitchen is brewing up that sauce and getting your setup ready, can I start you off with a pour-over cocktail or maybe a local craft beer?"`,
-                questions:[
-                    "Why do high-end restaurants use this phrase if they want to appear 'fancy'?",
-                    "If you were the chef, what is the one kitchen appliance you would upgrade to make your cooking better?",
-                    "Does a busy New York steakhouse feel tidy or relaxed to you? Why?"
-                ],
-                pronunciation:[
-                    { title: "KK 音標 - 母音 (Vowels)", pairs: `
-                        <table class="kk-table">
-                            <tr><th>[ɪ]</th><td>比「一」短，嘴角放鬆 (sit, pig)</td></tr>
-                            <tr><th>[ɛ]</th><td>像中文「ㄝ」，嘴角略向外撇 (bed, ten)</td></tr>
-                            <tr><th>[æ]</th><td>蝴蝶音，嘴巴開最大 (cat, bag)</td></tr>
-                            <tr><th>[ɑ]</th><td>嘴巴呈長圓形 (hot, box)</td></tr>
-                            <tr><th>[ʌ]</th><td>短促的「啊」 (cup, bus)</td></tr>
-                            <tr><th>[ʊ]</th><td>比「烏」短，不嘟嘴 (foot, book)</td></tr>
-                            <tr><th>[ə]</th><td>懶人音 (about, sofa)</td></tr>
-                            <tr><th>[i]</th><td>微笑的「一」 (see, eat)</td></tr>
-                            <tr><th>[e]</th><td>像「ㄟ～」 (name, day)</td></tr>
-                            <tr><th>[u]</th><td>圓唇的「屋」 (moon, blue)</td></tr>
-                            <tr><th>[o]</th><td>像「歐～」 (go, home)</td></tr>
-                            <tr><th>[aɪ]</th><td>像「愛」 (my, kite)</td></tr>
-                            <tr><th>[aʊ]</th><td>像「凹」 (how, now)</td></tr>
-                            <tr><th>[ɔɪ]	像「歐一」 (boy, noise)</td></tr>
-                            <tr><th>[ɝ]</th><td>重音捲舌 (bird, her)</td></tr>
-                            <tr><th>[ɚ]</th><td>輕音捲舌 (teacher)</td></tr>
-                        </table>
-                    ` }
-                ],
-                vocab:[
-                    { en: "kick your coats off", ipa: "[kɪk jʊər koʊts ɔf]", zh: "脫掉外套/放鬆", fr: "enlever vos manteaux", ex: "Feel free to kick your coats off.", fr_ex: "N'hésitez pas à enlever vos manteaux." },
-                    { en: "corner booth", ipa: "[ˈkɔrnər buθ]", zh: "角落雅座/包廂", fr: "banquette d'angle", ex: "I’ve got a great corner booth for you tonight.", fr_ex: "J'ai une excellente banquette d'angle pour vous ce soir." },
-                    { en: "aging room", ipa: "[ˈeɪdʒɪŋ rum]", zh: "熟成室", fr: "chambre de maturation", ex: "They have a dry aging room.", fr_ex: "Ils ont une chambre de maturation à sec." },
-                    { en: "charcoal broiler system", ipa: "[ˈtʃɑrˌkoʊl ˈbrɔɪlər ˈsɪstəm]", zh: "炭烤爐系統", fr: "système de gril au charbon de bois", ex: "We use a charcoal broiler system for the steaks.", fr_ex: "Nous utilisons un système de gril au charbon de bois pour les steaks." },
-                    { en: "crust", ipa: "[krʌst]", zh: "外殼/酥脆表皮", fr: "croûte", ex: "The steak has a perfect crust.", fr_ex: "Le steak a une croûte parfaite." },
-                    { en: "the Bone-in Ribeye", ipa: "[ðə boʊn ɪn ˈrɪbˌaɪ]", zh: "帶骨肋眼牛排", fr: "l'entrecôte sur l'os", ex: "The Bone-in Ribeye is the way to go.", fr_ex: "L'entrecôte sur l'os est le meilleur choix." },
-                    { en: "The marbling", ipa: "[ðə ˈmɑrblɪŋ]", zh: "油花(肉類)", fr: "le persillage", ex: "The marbling makes the meat tender.", fr_ex: "Le persillage rend la viande tendre." },
-                    { en: "Ribeye", ipa: "[ˈrɪbˌaɪ]", zh: "肋眼牛排", fr: "entrecôte", ex: "I'll take the Ribeye, please.", fr_ex: "Je prendrai l'entrecôte, s'il vous plaît." },
-                    { en: "medium-rare", ipa: "[ˈmidiəm rɛr]", zh: "三分熟", fr: "saignant", ex: "I'd like my steak medium-rare.", fr_ex: "Je voudrais mon steak saignant." },
-                    { en: "brewing up", ipa: "[ˈbruɪŋ ʌp]", zh: "釀造/調製(醬料)", fr: "préparer / concocter", ex: "The kitchen is brewing up a sauce.", fr_ex: "La cuisine concocte une sauce." },
-                    { en: "pour-over", ipa: "[pɔr ˈoʊvər]", zh: "手沖式(飲料)", fr: "versé à la main (café/cocktail)", ex: "Try our signature pour-over cocktail.", fr_ex: "Essayez notre cocktail signature versé à la main." },
-                    { en: "local craft beer", ipa: "[ˈloʊkəl kræft bɪr]", zh: "當地精釀啤酒", fr: "bière artisanale locale", ex: "Can I start you off with a local craft beer?", fr_ex: "Puis-je vous servir une bière artisanale locale pour commencer ?" }
-                ]
-            },
-            {
-                id: 6,
-                date: "2026.02.03",
-                title: "The Manhattan Commute",
-                content: `Driver: "Morning! Just toss your luggage in the trunk and hop in. Watch your head there."
-
-Katia: "Thanks. To the airport, please. I'm running a bit tight on time."
-
-Driver: "No worries, I'll get you there. I make it a point to keep the cabin spick and span. I’ve customized this ride with sound-deadening glass—it’s a distinctive edge when you’re stuck in this midtown gridlock, right?"
-
-Katia: "Definitely."
-
-Driver: "Exactly. While the navigation is calculating the best bypass around the tunnel construction, let’s verify your drop-off point on the screen. I’ve got a smart fridge stocked with chilled water if you're thirsty. It’s a refreshing change from the old yellow cabs."
-
-Katia: "For sure. Do you have a charger? My phone is almost dead."
-
-Driver: "Check the armrest. There's an integrated port right there. We should be pulling up to the terminal in about twenty."
-
-Katia: "Sounds good!"`,
-                questions:[
-                    "Are you a 'hop in and chat' or a 'hop in and sleep' kind of passenger?",
-                    "In your city, which areas are most famous for total 'gridlock'?",
-                    "What is one 'smart' feature or 'upgrade' you wish all taxis had?",
-                    "When you call an Uber, do you prefer a 'spotless' modern car or a vintage 'classic' car with more character?"
-                ],
-                pronunciation:[
-                    { title: "KK 音標 - 母音總複習 (Vowel Recap)", pairs: `
-                        <div class="kk-list">
-                            <strong>單母音 (Monophthongs) 10 個</strong><br>
-                            <span class="kk-symbol">[ɪ]</span> <span class="kk-symbol">[ɛ]</span> <span class="kk-symbol">[æ]</span> <span class="kk-symbol">[ɑ]</span> <span class="kk-symbol">[ʌ]</span> <span class="kk-symbol">[ʊ]</span> <span class="kk-symbol">[ə]</span><br>
-                            <span class="kk-symbol">[i]</span> <span class="kk-symbol">[u]</span> <span class="kk-symbol">[ɔ]</span><br><br>
-                            <strong>雙母音 (Diphthongs) 5 個</strong><br>
-                            <span class="kk-symbol">[e]</span> (對應 [eɪ])<br>
-                            <span class="kk-symbol">[o]</span> (對應 [oʊ])<br>
-                            <span class="kk-symbol">[aɪ]</span><br>
-                            <span class="kk-symbol">[au]</span> (對應 [aʊ])<br>
-                            <span class="kk-symbol">[ɔɪ]</span><br><br>
-                            <strong>捲舌母音 (R-colored) 2 個</strong><br>
-                            <span class="kk-symbol">[ɝ]</span> (重音節)<br>
-                            <span class="kk-symbol">[ɚ]</span> (非重音節)
-                        </div>
-                    ` }
-                ],
-                vocab:[
-                    { en: "hop in", ipa: "[hɑp ɪn]", zh: "上車吧！", fr: "monter", ex: "Just toss your bags in and hop in.", fr_ex: "Jetez simplement vos sacs et montez." },
-                    { en: "spick and span", ipa: "[spɪk ənd spæn]", zh: "一塵不染", fr: "propre comme un sou neuf", ex: "I keep the cabin spick and span.", fr_ex: "Je garde la cabine propre comme un sou neuf." },
-                    { en: "gridlock", ipa: "[ˈgrɪdˌlɑk]", zh: "交通大癱瘓/大塞車", fr: "embouteillage monstre", ex: "We are stuck in midtown gridlock.", fr_ex: "Nous sommes coincés dans un embouteillage monstre au centre-ville." },
-                    { en: "commute", ipa: "[kəˈmjut]", zh: "通勤", fr: "trajet", ex: "The Manhattan commute can be long.", fr_ex: "Le trajet vers Manhattan peut être long." },
-                    { en: "toss your luggage", ipa: "[tɔs jʊər ˈlʌgɪdʒ]", zh: "扔行李/放行李", fr: "déposer vos bagages", ex: "Just toss your luggage in the trunk.", fr_ex: "Déposez simplement vos bagages dans le coffre." },
-                    { en: "trunk", ipa: "[trʌŋk]", zh: "後車廂", fr: "coffre", ex: "The trunk is full.", fr_ex: "Le coffre est plein." },
-                    { en: "running a bit tight on time", ipa: "[ˈrʌnɪŋ ə bɪt taɪt ɑn taɪm]", zh: "時間有點趕", fr: "être un peu pressé", ex: "I'm running a bit tight on time.", fr_ex: "Je suis un peu pressé par le temps." },
-                    { en: "cabin", ipa: "[ˈkæbɪn]", zh: "車廂/座艙", fr: "habitacle", ex: "The car cabin is quiet.", fr_ex: "L'habitacle de la voiture est silencieux." },
-                    { en: "sound-deadening glass", ipa: "[saʊnd ˈdɛdənɪŋ glæs]", zh: "隔音玻璃", fr: "verre insonorisant", ex: "This car has sound-deadening glass.", fr_ex: "Cette voiture a un verre insonorisant." },
-                    { en: "distinctive edge", ipa: "[dɪˈstɪŋktɪv ɛdʒ]", zh: "獨特的優勢", fr: "avantage distinctif", ex: "Speed is our distinctive edge.", fr_ex: "La vitesse est notre avantage distinctif." },
-                    { en: "Definitely", ipa: "[ˈdɛfənətli]", zh: "肯定地/當然", fr: "absolument", ex: "I will definitely be there.", fr_ex: "Je serai absolument là." },
-                    { en: "Exactly", ipa: "[ɪgˈzæktli]", zh: "正是/沒錯", fr: "exactement", ex: "That is exactly what I meant.", fr_ex: "C'est exactement ce que je voulais dire." },
-                    { en: "navigation", ipa: "[ˌnævəˈgeɪʃən]", zh: "導航", fr: "navigation", ex: "The navigation is calculating the route.", fr_ex: "La navigation calcule l'itinéraire." },
-                    { en: "bypass", ipa: "[ˈbaɪˌpæs]", zh: "繞道/旁道", fr: "contournement", ex: "We need a bypass around the traffic.", fr_ex: "Nous avons besoin d'un contournement des embouteillages." },
-                    { en: "construction", ipa: "[kənˈstrʌkʃən]", zh: "施工/建設", fr: "travaux / construction", ex: "Avoid the tunnel construction.", fr_ex: "Évitez les travaux du tunnel." },
-                    { en: "verify", ipa: "[ˈvɛrəˌfaɪ]", zh: "確認/核實", fr: "vérifier", ex: "Let's verify your drop-off point.", fr_ex: "Vérifions votre point de dépose." },
-                    { en: "drop-off point", ipa: "[drɑp ɔf pɔɪnt]", zh: "下車點", fr: "point de dépose", ex: "Check the drop-off point on the screen.", fr_ex: "Vérifiez le point de dépose sur l'écran." },
-                    { en: "chilled water", ipa: "[tʃɪld ˈwɔtər]", zh: "冰水", fr: "eau fraîche", ex: "I have chilled water if you are thirsty.", fr_ex: "J'ai de l'eau fraîche si vous avez soif." },
-                    { en: "armrest", ipa: "[ˈɑrmˌrɛst]", zh: "扶手", fr: "accoudoir", ex: "Check the armrest for the charger.", fr_ex: "Vérifiez l'accoudoir pour le chargeur." },
-                    { en: "feature", ipa: "[ˈfitʃər]", zh: "功能/特色", fr: "fonctionnalité", ex: "What is one smart feature you wish taxis had?", fr_ex: "Quelle fonctionnalité intelligente souhaiteriez-vous que les taxis aient ?" },
-                    { en: "spotless", ipa: "[ˈspɑtləs]", zh: "一塵不染的", fr: "impeccable", ex: "Do you prefer a spotless modern car?", fr_ex: "Préférez-vous une voiture moderne impeccable ?" },
-                    { en: "pull up", ipa: "[pʊl ʌp]", zh: "停車/抵達", fr: "s'arrêter", ex: "We are pulling up to the terminal.", fr_ex: "Nous nous arrêtons au terminal." }
-                ]
-            },
-            {
-                id: 7,
-                date: "2026.02.10",
-                title: "The Deep Stretch - Thai Massage",
-                content: `Receptionist: "Sawadee! Welcome in. You can stow your shoes in the cubby and slip into these loose pajamas."
-                
-Katia: "Thanks. I’ve heard Thai massage is a bit more intense than a regular spa treatment."
-
-Receptionist: "It's definitely different! We’ve overhauled our studio to focus on traditional floor-mats. It’s a total breakthrough for flexibility because it involves deep stretching. We’ve even integrated herbal heat compresses into the session. While your practitioner is prepping the room, feel free to grab a seat and have some lemongrass tea."
-
-Katia: "I’m a bit stiff from sitting at a desk all day. Will it help?"
-
-Receptionist: "Absolutely. We’ve upgraded our techniques to include modern trigger-point therapy, which is a huge plus for office workers. Each mat has built-in padding for extra support. Once you're comfortable, we’ll get the ball rolling. It’s like 'lazy yoga'—very refreshing once you finish!"`,
-                questions:[
-                    "Do you prefer a massage where you just 'relax,' or do you like the 'deep stretch' of a Thai massage?",
-                    "If you could 'upgrade' your home, would you add a massage room or a 'smart gym'?",
-                    "After a long week of work, do you prefer to 'slip into' a quiet spa or 'hit the gym' to decompress?",
-                    "Do you think having a 'spotless' environment is the most important part of a 'top-tier' spa experience?"
-                ],
-                pronunciation:[
-                    { title: "KK 音標 - 子音 (爆破音)", pairs: `
-                        <table class="kk-table">
-                            <tr><th>[p]</th><td>雙唇閉緊後突然噴氣（無聲） (pig, cup)</td></tr>
-                            <tr><th>[b]</th><td>雙唇閉緊，聲帶振動（有聲） (bed, bag)</td></tr>
-                            <tr><th>[t]</th><td>舌尖抵住上牙齦後彈開（無聲） (ten, it)</td></tr>
-                            <tr><th>[d]</th><td>舌尖抵住上牙齦，聲帶振動（有聲） (day, bed)</td></tr>
-                            <tr><th>[k]</th><td>舌根抵住軟顎後突然噴氣（無聲） (kite, bake)</td></tr>
-                            <tr><th>[g]</th><td>舌根抵住軟顎，聲帶振動（有聲） (go, bag)</td></tr>
-                        </table>
-                    ` }
-                ],
-                vocab:[
-                    { en: "stow your gear", ipa: "[stoʊ jʊər gɪr]", zh: "收好你的東西", fr: "ranger vos affaires", ex: "Please stow your gear in the locker.", fr_ex: "Veuillez ranger vos affaires dans le casier." },
-                    { en: "cubby", ipa: "[ˈkʌbi]", zh: "小隔間/置物櫃", fr: "casier", ex: "Put your bag in the cubby.", fr_ex: "Mettez votre sac dans le casier." },
-                    { en: "slip into", ipa: "[slɪp ˈɪntu]", zh: "換上/迅速穿上", fr: "enfiler", ex: "Slip into these comfortable pajamas.", fr_ex: "Enfilez ce pyjama confortable." },
-                    { en: "loose", ipa: "[lus]", zh: "寬鬆的", fr: "ample", ex: "Wear loose clothing for the massage.", fr_ex: "Portez des vêtements amples pour le massage." },
-                    { en: "pajamas", ipa: "[pəˈdʒɑməz]", zh: "睡衣/寬鬆衣物", fr: "pyjama", ex: "The spa provides clean pajamas.", fr_ex: "Le spa fournit des pyjamas propres." },
-                    { en: "intense", ipa: "[ɪnˈtɛns]", zh: "強烈的/劇烈的", fr: "intense", ex: "Thai massage can be intense.", fr_ex: "Le massage thaïlandais peut être intense." },
-                    { en: "spa treatment", ipa: "[spɑ ˈtritmənt]", zh: "SPA療程", fr: "soin au spa", ex: "She booked a spa treatment.", fr_ex: "Elle a réservé un soin au spa." },
-                    { en: "overhaul", ipa: "[ˈoʊvərˌhɔl]", zh: "徹底檢修/改造", fr: "remanier / rénover", ex: "We overhauled the studio completely.", fr_ex: "Nous avons complètement rénové le studio." },
-                    { en: "studio", ipa: "[ˈstudiˌoʊ]", zh: "工作室/練習室", fr: "studio", ex: "The yoga studio is quiet.", fr_ex: "Le studio de yoga est calme." },
-                    { en: "focus on", ipa: "[ˈfoʊkəs ɑn]", zh: "專注於", fr: "se concentrer sur", ex: "We focus on traditional methods.", fr_ex: "Nous nous concentrons sur les méthodes traditionnelles." },
-                    { en: "traditional", ipa: "[trəˈdɪʃənəl]", zh: "傳統的", fr: "traditionnel", ex: "This is a traditional technique.", fr_ex: "C'est une technique traditionnelle." },
-                    { en: "floor-mats", ipa: "[flɔr mæts]", zh: "地墊", fr: "tapis de sol", ex: "We sit on comfortable floor-mats.", fr_ex: "Nous sommes assis sur des tapis de sol confortables." },
-                    { en: "breakthrough", ipa: "[ˈbreɪkˌθru]", zh: "突破", fr: "percée", ex: "It's a breakthrough for flexibility.", fr_ex: "C'est une percée pour la souplesse." },
-                    { en: "flexibility", ipa: "[ˌflɛksəˈbɪləti]", zh: "靈活性/柔軟度", fr: "souplesse", ex: "Yoga improves your flexibility.", fr_ex: "Le yoga améliore votre souplesse." },
-                    { en: "involve", ipa: "[ɪnˈvɑlv]", zh: "涉及/包含", fr: "impliquer", ex: "The treatment involves stretching.", fr_ex: "Le traitement implique des étirements." },
-                    { en: "deep stretching", ipa: "[dip ˈstrɛtʃɪŋ]", zh: "深層伸展", fr: "étirement profond", ex: "Deep stretching helps sore muscles.", fr_ex: "L'étirement profond aide les muscles endoloris." },
-                    { en: "integrate", ipa: "[ˈɪntəˌgreɪt]", zh: "整合/結合", fr: "intégrer", ex: "We integrated heat compresses.", fr_ex: "Nous avons intégré des compresses chaudes." },
-                    { en: "herbal", ipa: "[ˈɜrbəl]", zh: "草本的", fr: "aux herbes", ex: "Drink some herbal tea.", fr_ex: "Buvez une tisane aux herbes." },
-                    { en: "heat compress", ipa: "[hit ˈkɑmprɛs]", zh: "熱敷", fr: "compresse chaude", ex: "The heat compress feels good.", fr_ex: "La compresse chaude fait du bien." },
-                    { en: "session", ipa: "[ˈsɛʃən]", zh: "療程/會議/一段時間", fr: "séance", ex: "The session lasts one hour.", fr_ex: "La séance dure une heure." },
-                    { en: "practitioner", ipa: "[prækˈtɪʃənər]", zh: "從業者/師傅", fr: "praticien", ex: "Your practitioner is ready.", fr_ex: "Votre praticien est prêt." },
-                    { en: "prep", ipa: "[prɛp]", zh: "準備 (prepare)", fr: "préparer", ex: "She is prepping the room.", fr_ex: "Elle prépare la salle." },
-                    { en: "lemongrass tea", ipa: "[ˈlɛmənˌgræs ti]", zh: "檸檬草茶", fr: "thé à la citronnelle", ex: "I love lemongrass tea.", fr_ex: "J'adore le thé à la citronnelle." },
-                    { en: "stiff", ipa: "[stɪf]", zh: "僵硬的", fr: "raide", ex: "My neck is stiff from working.", fr_ex: "Mon cou est raide à cause du travail." },
-                    { en: "trigger-point therapy", ipa: "[ˈtrɪgər pɔɪnt ˈθɛrəpi]", zh: "激痛點療法", fr: "thérapie des points gâchettes", ex: "Trigger-point therapy relieves pain.", fr_ex: "La thérapie des points gâchettes soulage la douleur." },
-                    { en: "huge plus", ipa: "[hjudʒ plʌs]", zh: "巨大的優勢/加分項", fr: "un gros plus", ex: "That is a huge plus for me.", fr_ex: "C'est un gros plus pour moi." },
-                    { en: "padding", ipa: "[ˈpædɪŋ]", zh: "襯墊/填充物", fr: "rembourrage", ex: "The mat has extra padding.", fr_ex: "Le tapis a un rembourrage supplémentaire." },
-                    { en: "get the ball rolling", ipa: "[gɛt ðə bɔl ˈroʊlɪŋ]", zh: "開始行動", fr: "lancer les choses", ex: "Let's get the ball rolling.", fr_ex: "Lançons les choses." },
-                    { en: "refreshing", ipa: "[rɪˈfrɛʃɪŋ]", zh: "提神的/清爽的", fr: "rafraîchissant", ex: "The massage was very refreshing.", fr_ex: "Le massage était très rafraîchissant." },
-                    { en: "Sawadee", ipa: "[ˌsɑwɑˈdi]", zh: "薩瓦迪(泰語你好)", fr: "Sawadee (bonjour)", ex: "Sawadee! Welcome to our spa.", fr_ex: "Sawadee ! Bienvenue dans notre spa." }
-                ]
-            },
-            {
-                id: 8,
-                date: "2026.02.24",
-                title: "Trying Out the Reformer",
-                content: `Trainer: "Welcome to the studio! You can hop in and leave your shoes by the door. Everything here is spick and span so you can feel at ease."
-                
-Member: "Thanks! It looks very professional. What is that large machine with the springs?"
-
-Trainer: "That is the Pilates Reformer. We just revamped our studio with five of them. It has a sliding carriage, adjustable springs, and straps. It’s a huge plus for building core strength."
-
-Member: "It looks a bit complicated. Is it hard to use?"
-
-Trainer: "Not at all! It's very uncomplicated once you learn the basics. We also have Pilates balls, magic circles, and foam rollers on the mats. While I am prepping the equipment, you can do some light stretching. Let’s get the ball rolling!"`,
-                questions:[
-                    "Do you prefer 'Mat Pilates' or using the 'Reformer' machine?",
-                    "When you start class, do you 'get the ball rolling' with breathing or stretching?",
-                    "When you 'hop in' to a Pilates class, do you prefer a 'fast-paced' vibe or a 'slow' stretch?",
-                    "Do you think the 'Reformer' looks like a 'high-tech' machine or just a bed with 'springs'?"
-                ],
-                pronunciation:[
-                    { title: "KK 音標 - 子音 (摩擦音)", pairs: `
-                        <table class="kk-table">
-                            <tr><th>[f]</th><td>上齒輕咬下唇後噴氣（無聲） (foot, off)</td></tr>
-                            <tr><th>[v]</th><td>上齒輕咬下唇，聲帶振動（有聲） (vase, five)</td></tr>
-                            <tr><th>[s]</th><td>舌尖靠近上牙齦，發出嘶嘶聲（無聲） (sit, bus)</td></tr>
-                            <tr><th>[z]</th><td>舌尖靠近上牙齦，聲帶振動（有聲） (zoo, noise)</td></tr>
-                            <tr><th>[ʃ]</th><td>嘴唇略噘起，發出「噓」聲（無聲） (she, fish)</td></tr>
-                            <tr><th>[ʒ]</th><td>嘴唇略噘起，聲帶振動（有聲） (pleasure, vision)</td></tr>
-                            <tr><th>[θ]</th><td>舌尖放在上下齒之間吹氣（無聲） (think, math)</td></tr>
-                            <tr><th>[ð]</th><td>舌尖放在上下齒之間，聲帶振動（有聲） (this, mother)</td></tr>
-                            <tr><th>[h]</th><td>像哈氣一樣（無聲） (hot, how)</td></tr>
-                        </table>
-                    ` }
-                ],
-                vocab:[
-                    { en: "carriage", ipa: "[ˈkærɪdʒ]", zh: "滑動床板", fr: "chariot (partie mobile)", ex: "The carriage glides smoothly.", fr_ex: "Le chariot glisse doucement." },
-                    { en: "spick and span", ipa: "[spɪk ənd spæn]", zh: "一塵不染", fr: "propre comme un sou neuf", ex: "The room is spick and span.", fr_ex: "La pièce est propre comme un sou neuf." },
-                    { en: "revamp", ipa: "[riˈvæmp]", zh: "翻新/改進", fr: "rénover", ex: "We revamped the studio.", fr_ex: "Nous avons rénové le studio." },
-                    { en: "prepping", ipa: "[prɛpɪŋ]", zh: "準備 (prep的進行式)", fr: "préparer", ex: "I am prepping dinner.", fr_ex: "Je prépare le dîner." },
-                    { en: "studio", ipa: "[ˈstudiˌoʊ]", zh: "工作室/教室", fr: "studio", ex: "Meet me at the yoga studio.", fr_ex: "Retrouve-moi au studio de yoga." },
-                    { en: "hop in", ipa: "[hɑp ɪn]", zh: "進來/跳進來", fr: "monter / entrer", ex: "Hop in the car!", fr_ex: "Monte dans la voiture !" },
-                    { en: "feel at ease", ipa: "[fil æt iz]", zh: "感到自在/放鬆", fr: "se sentir à l'aise", ex: "Make sure guests feel at ease.", fr_ex: "Assurez-vous que les invités se sentent à l'aise." },
-                    { en: "professional", ipa: "[prəˈfɛʃənəl]", zh: "專業的", fr: "professionnel", ex: "She is very professional.", fr_ex: "Elle est très professionnelle." },
-                    { en: "spring", ipa: "[sprɪŋ]", zh: "彈簧", fr: "ressort", ex: "The machine has strong springs.", fr_ex: "La machine a des ressorts solides." },
-                    { en: "sliding", ipa: "[ˈslaɪdɪŋ]", zh: "滑動的", fr: "coulissant", ex: "Be careful on the sliding seat.", fr_ex: "Faites attention au siège coulissant." },
-                    { en: "adjustable", ipa: "[əˈdʒʌstəbəl]", zh: "可調整的", fr: "réglable", ex: "The straps are adjustable.", fr_ex: "Les sangles sont réglables." },
-                    { en: "strap", ipa: "[stræp]", zh: "帶子/皮帶", fr: "sangle", ex: "Hold onto the straps.", fr_ex: "Tenez les sangles." },
-                    { en: "huge plus", ipa: "[hjudʒ plʌs]", zh: "巨大的優勢", fr: "un gros plus", ex: "Experience is a huge plus.", fr_ex: "L'expérience est un gros plus." },
-                    { en: "core strength", ipa: "[kɔr strɛŋkθ]", zh: "核心肌群力量", fr: "force du tronc", ex: "Pilates builds core strength.", fr_ex: "Le Pilates renforce le tronc." },
-                    { en: "complicated", ipa: "[ˈkɑmpləˌkeɪtəd]", zh: "複雜的", fr: "compliqué", ex: "It looks complicated.", fr_ex: "Ça a l'air compliqué." },
-                    { en: "uncomplicated", ipa: "[ˌʌnˈkɑmpləˌkeɪtɪd]", zh: "不複雜的/簡單的", fr: "simple / non compliqué", ex: "The rules are uncomplicated.", fr_ex: "Les règles sont simples." },
-                    { en: "basics", ipa: "[ˈbeɪsɪks]", zh: "基礎", fr: "bases", ex: "Learn the basics first.", fr_ex: "Apprenez d'abord les bases." },
-                    { en: "Pilates ball", ipa: "[pɪˈlɑtiz bɔl]", zh: "皮拉提斯球", fr: "ballon de Pilates", ex: "Use the Pilates ball for balance.", fr_ex: "Utilisez le ballon de Pilates pour l'équilibre." },
-                    { en: "magic circle", ipa: "[ˈmædʒɪk ˈsɜrkəl]", zh: "健身環/魔力圈", fr: "cercle magique", ex: "Squeeze the magic circle.", fr_ex: "Serrez le cercle magique." },
-                    { en: "foam roller", ipa: "[foʊm ˈroʊlər]", zh: "泡沫滾筒", fr: "rouleau en mousse", ex: "Roll your back on the foam roller.", fr_ex: "Roulez votre dos sur le rouleau en mousse." },
-                    { en: "mat", ipa: "[mæt]", zh: "墊子", fr: "tapis", ex: "Put your mat on the floor.", fr_ex: "Mettez votre tapis sur le sol." },
-                    { en: "equipment", ipa: "[ɪˈkwɪpmənt]", zh: "設備/器材", fr: "équipement", ex: "The equipment is new.", fr_ex: "L'équipement est neuf." },
-                    { en: "light stretching", ipa: "[laɪt ˈstrɛtʃɪŋ]", zh: "輕度伸展", fr: "étirements légers", ex: "Do some light stretching first.", fr_ex: "Faites quelques étirements légers d'abord." },
-                    { en: "get the ball rolling", ipa: "[gɛt ðə bɔl ˈroʊlɪŋ]", zh: "開始進行", fr: "lancer les choses", ex: "Let's get the ball rolling.", fr_ex: "Lançons les choses." },
-                    { en: "at ease", ipa: "[æt iz]", zh: "自在/不拘束", fr: "à l'aise", ex: "I feel at ease here.", fr_ex: "Je me sens à l'aise ici." },
-                    { en: "welcome", ipa: "[ˈwɛlkəm]", zh: "歡迎", fr: "bienvenue", ex: "Welcome to our class.", fr_ex: "Bienvenue à notre cours." },
-                    { en: "leave", ipa: "[liv]", zh: "留下/脫下(鞋)", fr: "laisser", ex: "Leave your shoes here.", fr_ex: "Laissez vos chaussures ici." },
-                    { en: "door", ipa: "[dɔr]", zh: "門", fr: "porte", ex: "The door is open.", fr_ex: "La porte est ouverte." },
-                    { en: "build", ipa: "[bɪld]", zh: "建立/增強", fr: "construire / renforcer", ex: "It helps build muscles.", fr_ex: "Cela aide à renforcer les muscles." },
-                    { en: "machine", ipa: "[məˈʃin]", zh: "機器", fr: "machine", ex: "How does this machine work?", fr_ex: "Comment fonctionne cette machine ?" },
-                    { en: "Reformer", ipa: "[rɪˈfɔrmər]", zh: "核心床(皮拉提斯)", fr: "Reformer", ex: "This is the Pilates Reformer.", fr_ex: "C'est le Reformer Pilates." }
-                ]
-            },
-            {
-                id: 9,
-                date: "2026.03.03",
-                title: "The 'Everyday Look' Vibe",
-                content: `Have you noticed how athleisure has basically become the official uniform of the U.S.? It’s that perfect sweet spot where your gym gear meets your "going out for coffee" clothes. Since you’ve been hitting the reformer, you’ve probably seen the look everywhere—it’s all about looking put-together without looking like you’re trying too hard.
-
-In the States, we don’t really talk about "fashion" in a formal way for daily life. Instead, we talk about the fit. Is it oversized and comfy, or more of a slim fit? If an outfit looks great, we might say it’s on point. And if it’s just a casual day, we’re definitely keeping it low-key.
-
-The goal for most people is building a capsule wardrobe—basically, a bunch of solid basics you can mix and match so you don’t have to think twice in the morning. Maybe you throw a denim jacket over your leggings to "elevate" the look, or you go for a monochrome (all one color) vibe because it’s easy and chic.
-
-The best outfit is the one that makes you feel like yourself. After all, if you’re feelin’ your look, your confidence does the rest of the talking!`,
-                questions:[
-                    "American fashion is currently obsessed with oversized fits—like big hoodies or baggy blazers. Do you personally like that look, or do you prefer clothes that are more form-fitting and tailored?",
-                    "If you had to build a capsule wardrobe with only five items of clothing, what would they be? How would you mix and match them for a busy day?",
-                    "When it comes to clothes, are you someone who likes to find a bargain, or do you prefer to save up for something a bit spendy but high-quality? Why do you think some people prefer the minimalist approach?"
-                ],
-                pronunciation:[
-                    { title: "KK 音標 - 破擦音 (Affricates)", pairs: `
-                        <table class="kk-table">
-                            <tr><th>[tʃ]</th><td>像中文「去」的氣音（無聲） (chair, each)</td></tr>
-                            <tr><th>[dʒ]</th><td>像中文「具」，聲帶振動（有聲） (joy, age)</td></tr>
-                        </table>` },
-                    { title: "KK 音標 - 鼻音、流音與半母音", pairs: `
-                        <table class="kk-table">
-                            <tr><th>[m]</th><td>雙唇閉緊，氣流由鼻腔出 (my, moon)</td></tr>
-                            <tr><th>[n]</th><td>舌尖抵住上牙齦，氣流由鼻腔出 (name, ten)</td></tr>
-                            <tr><th>[ŋ]</th><td>舌根抵住軟顎（像「昂」尾音） (sing, ping)</td></tr>
-                            <tr><th>[l]</th><td>舌尖抵住上牙齦，氣流從兩側出 (like, blue)</td></tr>
-                            <tr><th>[r]</th><td>舌尖向後捲不碰觸上顎 (red, bird)</td></tr>
-                            <tr><th>[w]</th><td>嘴唇收圓，像中文「烏」 (win, with)</td></tr>
-                            <tr><th>[j]</th><td>舌面靠近硬顎，像中文「也」 (yes, you)</td></tr>
-                        </table>
-                    ` }
-                ],
-                vocab:[
-                    { en: "athleisure", ipa: "[æθˈliʒər]", zh: "運動休閒風", fr: "athleisure", ex: "I love wearing athleisure on weekends.", fr_ex: "J'adore porter de l'athleisure le week-end." },
-                    { en: "official uniform", ipa: "[əˈfɪʃəl ˈjunəˌfɔrm]", zh: "正式制服", fr: "uniforme officiel", ex: "Athleisure is the official uniform.", fr_ex: "L'athleisure est l'uniforme officiel." },
-                    { en: "sweet spot", ipa: "[swit spɑt]", zh: "最佳平衡點", fr: "point idéal", ex: "It's the sweet spot between comfort and style.", fr_ex: "C'est le point idéal entre confort et style." },
-                    { en: "gym gear", ipa: "[dʒɪm gɪr]", zh: "健身裝備", fr: "tenue de sport", ex: "I wear my gym gear everywhere.", fr_ex: "Je porte ma tenue de sport partout." },
-                    { en: "hitting the reformer", ipa: "[ˈhɪtɪŋ ðə rɪˈfɔrmər]", zh: "去練核心床(皮拉提斯)", fr: "faire du reformer", ex: "Since you’ve been hitting the reformer, you look strong.", fr_ex: "Puisque tu fais du reformer, tu as l'air fort." },
-                    { en: "put-together", ipa: "[pʊt təˈgɛðər]", zh: "精心打扮的/整潔俐落的", fr: "soigné", ex: "She always looks so put-together.", fr_ex: "Elle a toujours l'air si soignée." },
-                    { en: "fit", ipa: "[fɪt]", zh: "合身度;版型", fr: "coupe", ex: "The fit of these jeans is perfect.", fr_ex: "La coupe de ce jean est parfaite." },
-                    { en: "oversized", ipa: "[ˈoʊvərˌsaɪzd]", zh: "超大號的", fr: "surdimensionné", ex: "Oversized sweaters are very popular.", fr_ex: "Les pulls surdimensionnés sont très populaires." },
-                    { en: "comfy", ipa: "[ˈkʌmfi]", zh: "舒適的", fr: "confortable (confort)", ex: "This chair is so comfy.", fr_ex: "Cette chaise est si confortable." },
-                    { en: "slim fit", ipa: "[slɪm fɪt]", zh: "修身版型", fr: "coupe ajustée", ex: "I prefer a slim fit shirt.", fr_ex: "Je préfère une chemise coupe ajustée." },
-                    { en: "on point", ipa: "[ɑn pɔɪnt]", zh: "完美的/正點", fr: "au top / parfait", ex: "Your outfit is on point today.", fr_ex: "Ta tenue est au top aujourd'hui." },
-                    { en: "low-key", ipa: "[loʊ ki]", zh: "低調的/隨性的", fr: "discret / décontracté", ex: "We’re keeping it low-key today.", fr_ex: "Nous restons discrets aujourd'hui." },
-                    { en: "capsule wardrobe", ipa: "[ˈkæpsəl ˈwɔrdroʊb]", zh: "膠囊衣櫥", fr: "garde-robe capsule", ex: "I am building a capsule wardrobe.", fr_ex: "Je constitue une garde-robe capsule." },
-                    { en: "bunch of solid basics", ipa: "[bʌntʃ ʌv ˈsɑlɪd ˈbeɪsɪks]", zh: "一堆實用的基本款", fr: "tas de basiques solides", ex: "You need a bunch of solid basics.", fr_ex: "Tu as besoin d'un tas de basiques solides." },
-                    { en: "mix and match", ipa: "[mɪks ənd mætʃ]", zh: "混搭", fr: "mélanger et assortir", ex: "It's fun to mix and match patterns.", fr_ex: "C'est amusant de mélanger et assortir les motifs." },
-                    { en: "denim jacket", ipa: "[ˈdɛnəm ˈdʒækɪt]", zh: "牛仔外套", fr: "veste en jean", ex: "A denim jacket goes with everything.", fr_ex: "Une veste en jean va avec tout." },
-                    { en: "elevate", ipa: "[ˈɛləˌveɪt]", zh: "提升(質感)", fr: "rehausser", ex: "Accessories can elevate a look.", fr_ex: "Les accessoires peuvent rehausser un look." },
-                    { en: "monochrome", ipa: "[ˈmɑnəˌkroʊm]", zh: "單色的/同色系的", fr: "monochrome", ex: "She wore a chic monochrome outfit.", fr_ex: "Elle portait une tenue monochrome chic." },
-                    { en: "chic", ipa: "[ʃik]", zh: "時髦的", fr: "chic", ex: "That dress is very chic.", fr_ex: "Cette robe est très chic." },
-                    { en: "obsessed", ipa: "[əbˈsɛst]", zh: "著迷的", fr: "obsédé / fan", ex: "I am obsessed with this new brand.", fr_ex: "Je suis fan de cette nouvelle marque." },
-                    { en: "tailored", ipa: "[ˈteɪlərd]", zh: "量身訂做的/剪裁合身的", fr: "sur mesure / ajusté", ex: "He bought a tailored suit.", fr_ex: "Il a acheté un costume sur mesure." },
-                    { en: "bargain", ipa: "[ˈbɑrgən]", zh: "便宜貨/划算品", fr: "bonne affaire", ex: "I found a great bargain at the store.", fr_ex: "J'ai trouvé une bonne affaire au magasin." },
-                    { en: "minimalist", ipa: "[ˈmɪnəməlɪst]", zh: "極簡主義者", fr: "minimaliste", ex: "She has a minimalist style.", fr_ex: "Elle a un style minimaliste." },
-                    { en: "vibing", ipa: "[ˈvaɪbɪŋ]", zh: "享受氛圍/放鬆", fr: "se sentir bien", ex: "I’m just vibing in this hoodie today.", fr_ex: "Je me sens juste bien dans ce sweat à capuche aujourd'hui." },
-                    { en: "flattering", ipa: "[ˈflætərɪŋ]", zh: "修飾身形的/好看的", fr: "flatteur", ex: "That color is so flattering on you!", fr_ex: "Cette couleur est si flatteuse pour vous !" },
-                    { en: "grab", ipa: "[græb]", zh: "拿/買", fr: "prendre / acheter", ex: "I need to grab some new basics.", fr_ex: "J'ai besoin d'acheter de nouveaux basiques." },
-                    { en: "spendy", ipa: "[ˈspɛndi]", zh: "昂貴的(口語)", fr: "cher / coûteux", ex: "It’s a bit spendy, but the quality is amazing.", fr_ex: "C'est un peu cher, mais la qualité est incroyable." },
-                    { en: "hoodie", ipa: "[ˈhʊdi]", zh: "連帽衫", fr: "sweat à capuche", ex: "I'm wearing a warm hoodie.", fr_ex: "Je porte un sweat à capuche chaud." },
-                    { en: "blazer", ipa: "[ˈbleɪzər]", zh: "西裝外套", fr: "blazer", ex: "A blazer looks professional.", fr_ex: "Un blazer fait professionnel." },
-                    { en: "confidence", ipa: "[ˈkɑnfədəns]", zh: "自信", fr: "confiance", ex: "Confidence is the best accessory.", fr_ex: "La confiance est le meilleur accessoire." }
-                ]
-            },
-            {
-                id: 10,
-                date: "2026.03.10",
-                title: "The Sephora Lesson: Learning from the Pros",
-                content: `The coolest part about Sephora isn’t just the products; it’s the staff. The employees are called "Beauty Advisors," and they are trained to actually teach you how to apply the makeup.
-
-If you are struggling with a "cat-eye" or don't know where to put your bronzer, you can ask them for a quick demo. They will often do one side of your face and then let you try the other side to make sure you have the technique down. They show you how to blend your foundation so there are no harsh lines and how to set your concealer so it doesn't crease.
-
-You can even book a longer Full-Face Consultation. This is perfect if you have a special event, like a Valentine's Day dinner or a wedding. Instead of just buying a lipstick, you’re buying the knowledge of how to wear it. It’s like a private tutoring session, but for your face! Walking out with a new look and a few professional tips and tricks makes the "spendy" prices feel much more worth it.`,
-                questions:[
-                    "Have you ever had a pro show you a new technique at the store, or do you find it a bit overwhelming to have someone else doing your makeup?",
-                    "Do you look for makeup that stays put during a workout, or do you prefer to keep it low-key and go with a bare face to the gym?",
-                    "If you see a product that’s really spendy, do you usually grab a sample first, or are you the type of shopper who just swatches it on your hand and buys it immediately?"
-                ],
-                pronunciation:[
-                    { title: "KK 音標 - 子音總複習 (Consonant Recap)", pairs: `
-                        <table class="kk-table">
-                            <tr><th>[f]</th><td>foot, off</td></tr>
-                            <tr><th>[v]</th><td>vase, five</td></tr>
-                            <tr><th>[s]</th><td>sit, bus</td></tr>
-                            <tr><th>[z]</th><td>zoo, noise</td></tr>
-                            <tr><th>[ʃ]</th><td>she, fish</td></tr>
-                            <tr><th>[ʒ]</th><td>pleasure, vision</td></tr>
-                            <tr><th>[θ]</th><td>think, math</td></tr>
-                            <tr><th>[ð]</th><td>this, mother</td></tr>
-                            <tr><th>[h]</th><td>hot, how</td></tr>
-                            <tr><th>[tʃ]</th><td>chair, each</td></tr>
-                            <tr><th>[dʒ]</th><td>joy, age</td></tr>
-                            <tr><th>[m]</th><td>my, moon</td></tr>
-                            <tr><th>[n]</th><td>name, ten</td></tr>
-                            <tr><th>[ŋ]</th><td>sing, ping</td></tr>
-                            <tr><th>[l]</th><td>like, blue</td></tr>
-                            <tr><th>[r]</th><td>red, bird</td></tr>
-                            <tr><th>[w]</th><td>win, with</td></tr>
-                            <tr><th>[j]</th><td>yes, you</td></tr>
-                        </table>
-                    ` }
-                ],
-                vocab:[
-                    { en: "Beauty Advisor", ipa: "[ˈbjuti ædˈvaɪzər]", zh: "美容顧問", fr: "conseiller beauté", ex: "Ask a Beauty Advisor for help.", fr_ex: "Demandez de l'aide à un conseiller beauté." },
-                    { en: "apply", ipa: "[əˈplaɪ]", zh: "塗抹；應用", fr: "appliquer", ex: "Learn how to apply makeup.", fr_ex: "Apprenez à appliquer le maquillage." },
-                    { en: "struggle", ipa: "[ˈstrʌgəl]", zh: "掙扎；感到困難", fr: "avoir du mal", ex: "I struggle with eyeliner.", fr_ex: "J'ai du mal avec l'eye-liner." },
-                    { en: "cat-eye", ipa: "[kæt aɪ]", zh: "貓眼妝", fr: "œil de chat", ex: "A cat-eye look is classic.", fr_ex: "Un look œil de chat est classique." },
-                    { en: "bronzer", ipa: "[ˈbrɑnzər]", zh: "古銅粉；修容餅", fr: "poudre bronzante", ex: "Put bronzer on your cheeks.", fr_ex: "Mettez de la poudre bronzante sur vos joues." },
-                    { en: "demo", ipa: "[ˈdɛmoʊ]", zh: "示範", fr: "démo (démonstration)", ex: "Can I get a quick demo?", fr_ex: "Puis-je avoir une démo rapide ?" },
-                    { en: "technique", ipa: "[tɛkˈnik]", zh: "技巧", fr: "technique", ex: "Master the technique.", fr_ex: "Maîtrisez la technique." },
-                    { en: "blend", ipa: "[blɛnd]", zh: "暈染；混合", fr: "estomper", ex: "Blend your foundation well.", fr_ex: "Estompez bien votre fond de teint." },
-                    { en: "foundation", ipa: "[faʊnˈdeɪʃən]", zh: "粉底", fr: "fond de teint", ex: "Choose the right foundation.", fr_ex: "Choisissez le bon fond de teint." },
-                    { en: "harsh lines", ipa: "[hɑrʃ laɪnz]", zh: "生硬的線條", fr: "lignes dures", ex: "Avoid harsh lines.", fr_ex: "Évitez les lignes dures." },
-                    { en: "set", ipa: "[sɛt]", zh: "定妝", fr: "fixer", ex: "Set your makeup with powder.", fr_ex: "Fixez votre maquillage avec de la poudre." },
-                    { en: "concealer", ipa: "[kənˈsilər]", zh: "遮瑕膏", fr: "anti-cernes", ex: "Use concealer under your eyes.", fr_ex: "Utilisez un anti-cernes sous vos yeux." },
-                    { en: "crease", ipa: "[kris]", zh: "卡粉；產生皺摺", fr: "filer (dans les ridules)", ex: "My concealer tends to crease.", fr_ex: "Mon anti-cernes a tendance à filer." },
-                    { en: "consultation", ipa: "[ˌkɑnsəlˈteɪʃən]", zh: "諮詢", fr: "consultation", ex: "Book a consultation online.", fr_ex: "Réservez une consultation en ligne." },
-                    { en: "tutoring", ipa: "[ˈtutərɪŋ]", zh: "輔導；教學", fr: "tutorat", ex: "It's like a tutoring session.", fr_ex: "C'est comme une séance de tutorat." },
-                    { en: "tips and tricks", ipa: "[tɪps ənd trɪks]", zh: "撇步；訣竅", fr: "trucs et astuces", ex: "I learned some tips and tricks.", fr_ex: "J'ai appris quelques trucs et astuces." },
-                    { en: "spendy", ipa: "[ˈspɛndi]", zh: "昂貴的 (口語)", fr: "coûteux (cher)", ex: "Sephora can be spendy.", fr_ex: "Sephora peut être coûteux." },
-                    { en: "worth it", ipa: "[wɜrθ ɪt]", zh: "值得的", fr: "valoir le coup", ex: "The result is worth it.", fr_ex: "Le résultat en vaut la peine." },
-                    { en: "shade match", ipa: "[ʃeɪd mætʃ]", zh: "試色；色號匹配", fr: "test de teinte", ex: "Can I get a shade match?", fr_ex: "Puis-je faire un test de teinte ?" },
-                    { en: "natural finish", ipa: "[ˈnætʃərəl ˈfɪnɪʃ]", zh: "自然妝感", fr: "fini naturel", ex: "I prefer a natural finish.", fr_ex: "Je préfère un fini naturel." },
-                    { en: "stay put", ipa: "[steɪ pʊt]", zh: "持久；不脫妝", fr: "tenir (ne pas bouger)", ex: "This lipstick stays put all day.", fr_ex: "Ce rouge à lèvres tient toute la journée." },
-                    { en: "browsing", ipa: "[ˈbraʊzɪŋ]", zh: "隨便看看；瀏覽", fr: "regarder (flâner)", ex: "I'm just browsing, thanks.", fr_ex: "Je regarde juste, merci." },
-                    { en: "pro", ipa: "[proʊ]", zh: "專業人士", fr: "pro", ex: "Learn from the pros.", fr_ex: "Apprenez des pros." },
-                    { en: "overwhelming", ipa: "[ˌoʊvərˈwɛlmɪŋ]", zh: "令人不知所措的", fr: "accablant", ex: "The choices are overwhelming.", fr_ex: "Les choix sont accablants." },
-                    { en: "low-key", ipa: "[loʊ ki]", zh: "低調的；隨性的", fr: "discret", ex: "Keep your makeup low-key.", fr_ex: "Gardez votre maquillage discret." },
-                    { en: "bare face", ipa: "[bɛr feɪs]", zh: "素顏", fr: "visage nu", ex: "I go to the gym with a bare face.", fr_ex: "Je vais à la salle de sport le visage nu." },
-                    { en: "swatch", ipa: "[swɑtʃ]", zh: "試色 (在手上)", fr: "swatcher (tester)", ex: "Swatch the color on your hand.", fr_ex: "Swatche la couleur sur ta main." },
-                    { en: "sample", ipa: "[ˈsæmpəl]", zh: "樣品；試用包", fr: "échantillon", ex: "Ask for a free sample.", fr_ex: "Demandez un échantillon gratuit." },
-                    { en: "product", ipa: "[ˈprɑdəkt]", zh: "產品", fr: "produit", ex: "This product is popular.", fr_ex: "Ce produit est populaire." },
-                    { en: "look", ipa: "[lʊk]", zh: "造型；妝容", fr: "look", ex: "I love your new look.", fr_ex: "J'adore ton nouveau look." }
-                ]
-            },
-            {
-                id: 11,
-                date: "2026.03.17",
-                title: "The One-Sided Chat",
-                content: `"So, how’s your summer been?" Dr. Miller asked.\n\n"Guh—fne," I managed to gargle. My mouth was propped open with a plastic wedge, and a tiny suction straw was slurping away at my cheek.\n\n"That’s great," he replied, as if I’d just given him a full life update. He picked up a metallic hook that looked like something from a pirate movie. "Now, hold still. Just checking for a little bit of plaque."\n\n"Are you flossing?" he asked. His tone was casual, but I knew it was a trap.\n\n"Uhh—eery day," I lied. The dental hygienist, Sarah, raised an eyebrow. She knew the truth. My gums were currently snitching on me.\n\n"Well, keep it up," Dr. Miller said, finally pulling the tools out. "You're all set. No cavities this time."\n\nI sat up, my jaw aching and my tongue feeling like it had been through a car wash. "Thanks, Doc. See you in six months."\n\nI practically sprinted to the front desk. There’s no better feeling in the world than the cold air hitting your teeth as you walk out of a dental office, knowing you’re safe for another half-year.`,
-                questions:[
-                    "How do you feel while sitting in the waiting room?",
-                    "How often do you go to the dentist? Do you think it is important?",
-                    "Do you feel scared when the visit was over?"
-                ],
-                vocab:[
-                    { en: "one-sided", ipa: "[ˌwʌnˈsaɪdɪd]", zh: "單方面的", fr: "unilatéral", ex: "A one-sided conversation is awkward.", fr_ex: "Une conversation unilatérale est gênante." },
-                    { en: "chat", ipa: "[tʃæt]", zh: "閒聊/聊天", fr: "discussion / bavardage", ex: "We had a nice chat.", fr_ex: "Nous avons eu une belle discussion." },
-                    { en: "dentist", ipa: "[ˈdɛntɪst]", zh: "牙醫", fr: "dentiste", ex: "I need to visit the dentist.", fr_ex: "Je dois aller chez le dentiste." },
-                    { en: "manage to", ipa: "[ˈmænɪdʒ tu]", zh: "設法做到/勉強做到", fr: "réussir à", ex: "I managed to finish the work.", fr_ex: "J'ai réussi à finir le travail." },
-                    { en: "gargle", ipa: "[ˈgɑrgəl]", zh: "發出漱口聲/含糊不清地說", fr: "gargouiller", ex: "I managed to gargle an answer.", fr_ex: "J'ai réussi à gargouiller une réponse." },
-                    { en: "prop open", ipa: "[prɑp ˈoʊpən]", zh: "撐開/支住", fr: "maintenir ouvert", ex: "My mouth was propped open.", fr_ex: "Ma bouche était maintenue ouverte." },
-                    { en: "plastic wedge", ipa: "[ˈplæstɪk wɛdʒ]", zh: "塑膠楔子/開口器", fr: "cale en plastique", ex: "The dentist used a plastic wedge.", fr_ex: "Le dentiste a utilisé une cale en plastique." },
-                    { en: "suction straw", ipa: "[ˈsʌkʃən strɔ]", zh: "吸管(牙醫用)", fr: "paille d'aspiration", ex: "The suction straw is loud.", fr_ex: "La paille d'aspiration est bruyante." },
-                    { en: "slurp", ipa: "[slɜrp]", zh: "發出嘖嘖的吸水聲", fr: "aspirer bruyamment", ex: "The machine was slurping water.", fr_ex: "La machine aspirait l'eau bruyamment." },
-                    { en: "cheek", ipa: "[tʃik]", zh: "臉頰", fr: "joue", ex: "The straw was against my cheek.", fr_ex: "La paille était contre ma joue." },
-                    { en: "update", ipa: "[ˈʌpˌdeɪt]", zh: "更新/近況", fr: "mise à jour", ex: "Give me a life update.", fr_ex: "Donnez-moi une mise à jour sur votre vie." },
-                    { en: "metallic", ipa: "[məˈtælɪk]", zh: "金屬的", fr: "métallique", ex: "He held a metallic tool.", fr_ex: "Il tenait un outil métallique." },
-                    { en: "hook", ipa: "[hʊk]", zh: "鉤子", fr: "crochet", ex: "The dentist used a small hook.", fr_ex: "Le dentiste a utilisé un petit crochet." },
-                    { en: "pirate", ipa: "[ˈpaɪrət]", zh: "海盜", fr: "pirate", ex: "It looked like a pirate hook.", fr_ex: "Cela ressemblait à un crochet de pirate." },
-                    { en: "hold still", ipa: "[hoʊld stɪl]", zh: "保持不動", fr: "ne pas bouger", ex: "Please hold still for a second.", fr_ex: "S'il vous plaît, ne bougez pas une seconde." },
-                    { en: "plaque", ipa: "[plæk]", zh: "牙菌斑", fr: "plaque dentaire", ex: "He is checking for plaque.", fr_ex: "Il vérifie s'il y a de la plaque dentaire." },
-                    { en: "floss", ipa: "[flɔs]", zh: "用牙線潔牙", fr: "utiliser du fil dentaire", ex: "You should floss every day.", fr_ex: "Vous devriez utiliser du fil dentaire tous les jours." },
-                    { en: "casual", ipa: "[ˈkæʒuəl]", zh: "隨意的/漫不經心的", fr: "décontracté", ex: "His tone was very casual.", fr_ex: "Son ton était très décontracté." },
-                    { en: "trap", ipa: "[træp]", zh: "陷阱", fr: "piège", ex: "The question was a trap.", fr_ex: "La question était un piège." },
-                    { en: "dental hygienist", ipa: "[ˈdɛntəl haɪˈdʒɛnɪst]", zh: "洗牙師/牙齒衛生員", fr: "hygiéniste dentaire", ex: "The dental hygienist cleaned my teeth.", fr_ex: "L'hygiéniste dentaire a nettoyé mes dents." },
-                    { en: "raise an eyebrow", ipa: "[reɪz ən ˈaɪˌbraʊ]", zh: "挑眉/表示懷疑", fr: "lever un sourcil", ex: "She raised an eyebrow at my lie.", fr_ex: "Elle a levé un sourcil face à mon mensonge." },
-                    { en: "gum", ipa: "[gʌm]", zh: "牙齦", fr: "gencive", ex: "My gums were bleeding a bit.", fr_ex: "Mes gencives saignaient un peu." },
-                    { en: "snitch on", ipa: "[snɪtʃ ɑn]", zh: "告密/出賣", fr: "dénoncer / cafter sur", ex: "My gums were snitching on me.", fr_ex: "Mes gencives me dénonçaient." },
-                    { en: "tool", ipa: "[tul]", zh: "工具", fr: "outil", ex: "He pulled the tools out.", fr_ex: "Il a retiré les outils." },
-                    { en: "cavity", ipa: "[ˈkævəti]", zh: "蛀牙/齲齒", fr: "carie", ex: "Good news, no cavities!", fr_ex: "Bonne nouvelle, pas de caries !" },
-                    { en: "jaw", ipa: "[dʒɔ]", zh: "下巴/顎", fr: "mâchoire", ex: "My jaw was aching.", fr_ex: "Ma mâchoire me faisait mal." },
-                    { en: "ache", ipa: "[eɪk]", zh: "疼痛", fr: "faire mal", ex: "My teeth ache after the visit.", fr_ex: "Mes dents font mal après la visite." },
-                    { en: "sprint", ipa: "[sprɪnt]", zh: "衝刺/飛奔", fr: "courir / sprinter", ex: "I sprinted to the front desk.", fr_ex: "J'ai couru à la réception." },
-                    { en: "front desk", ipa: "[frʌnt dɛsk]", zh: "櫃台", fr: "réception", ex: "Pay at the front desk.", fr_ex: "Payez à la réception." },
-                    { en: "safe", ipa: "[seɪf]", zh: "安全的", fr: "en sécurité", ex: "I am safe for another half-year.", fr_ex: "Je suis en sécurité pour encore une demi-année." }
-                ]
-            },
-            {
-                id: 12,
-                date: "2026.04.02",
-                title: "Chasing the Northern Lights: My Iceland Trip",
-                content: `If you are looking for the ultimate "cool" vacation, Iceland is the place to be. It is a small island in the North, but it has a very big personality. People call it the land of "Fire and Ice" because you can see a frozen glacier and a steaming volcano on the same day!
-
-My favorite part of the lifestyle there is the Blue Lagoon. It is a giant, milky-blue outdoor spa. Even when the weather is freezing, the water is like a warm bath. It is the perfect spot for relaxing and taking a deep breath of fresh air. It’s great for your health and makes your skin feel amazing.
-
-At night, everyone looks at the sky to find the Northern Lights. When the green and purple lights start to dance, it is a breathless moment. You feel so small under the huge, dark sky.
-
-The best way to explore is to hit the paths along the coast. You can see tiny puffins and beautiful waterfalls. The vibe in Iceland is very calm and quiet. If you need to hit the "reset" button on your life, a trip to the North is exactly what you need. It is a bucket-list dream come true!`,
-                questions:[
-                    "Iceland is very cold, but the Blue Lagoon is very warm. Do you prefer swimming in hot water when it is cold outside, or do you prefer the beach in the summer?",
-                    "The article says Iceland is a 'bucket list' trip. What is one country on your bucket list? Why do you want to go there?",
-                    "If you had to choose, would you rather hike on a frozen glacier or walk near a smoking volcano?"
-                ],
-                pronunciation:[
-                    { title: "KK 音標 - 母音 (Vowels)", pairs: `
-                        <table class="kk-table">
-                            <tr><th>[ɪ]</th><td>比「一」短，嘴角放鬆 (sit, pig)</td></tr>
-                            <tr><th>[ɛ]</th><td>像中文「ㄝ」，嘴角略向外撇 (bed, ten)</td></tr>
-                            <tr><th>[æ]</th><td>蝴蝶音，嘴巴開最大，舌尖抵下齒背 (cat, bag)</td></tr>
-                            <tr><th>[ɑ]</th><td>像看醫生說「啊」，嘴巴呈長圓形 (hot, box)</td></tr>
-                            <tr><th>[ʌ]</th><td>短促的「啊」，像被揍肚子發出的聲音 (cup, bus)</td></tr>
-                            <tr><th>[ʊ]</th><td>比「烏」短，嘴唇放鬆不嘟起 (foot, book)</td></tr>
-                            <tr><th>[ə]</th><td>懶人音，最放鬆的聲音 (about, sofa)</td></tr>
-                            <tr><th>[i]</th><td>嘴巴拉長像微笑的「一」 (see, eat)</td></tr>
-                            <tr><th>[e]</th><td>像「ㄟ～」，結尾帶點 [ɪ] (name, day)</td></tr>
-                            <tr><th>[u]</th><td>圓唇的「屋」 (moon, blue)</td></tr>
-                            <tr><th>[o]</th><td>像「歐～」，結尾嘴唇收圓 (go, home)</td></tr>
-                            <tr><th>[aɪ]</th><td>像中文「愛」 (my, kite)</td></tr>
-                            <tr><th>[aʊ]</th><td>像中文「凹」 (how, now)</td></tr>
-                            <tr><th>[ɔɪ]</th><td>像「歐一」連讀 (boy, noise)</td></tr>
-                            <tr><th>[ɝ]</th><td>重音節的捲舌音 (bird, her)</td></tr>
-                            <tr><th>[ɚ]</th><td>非重音節的捲舌音（輕聲） (teacher, mother)</td></tr>
-                        </table>
-                    ` }
-                ],
-                vocab:[
-                    { en: "chase", ipa: "[tʃeɪs]", zh: "追逐", fr: "chasser", ex: "We are chasing the Northern Lights.", fr_ex: "Nous chassons les aurores boréales." },
-                    { en: "Northern Lights", ipa: "[ˈnɔrðərn laɪts]", zh: "北極光", fr: "aurores boréales", ex: "The Northern Lights are beautiful.", fr_ex: "Les aurores boréales sont magnifiques." },
-                    { en: "ultimate", ipa: "[ˈʌltəmət]", zh: "終極的", fr: "ultime", ex: "This is the ultimate vacation.", fr_ex: "C'est les vacances ultimes." },
-                    { en: "vacation", ipa: "[veɪˈkeɪʃən]", zh: "假期", fr: "vacances", ex: "I am planning a summer vacation.", fr_ex: "Je planifie des vacances d'été." },
-                    { en: "the place to be", ipa: "[ðə pleɪs tu bi]", zh: "值得一去的地方", fr: "l'endroit où il faut être", ex: "Iceland is the place to be.", fr_ex: "L'Islande est l'endroit où il faut être." },
-                    { en: "island", ipa: "[ˈaɪlənd]", zh: "島嶼", fr: "île", ex: "Iceland is a small island.", fr_ex: "L'Islande est une petite île." },
-                    { en: "personality", ipa: "[ˌpɜrsəˈnæləti]", zh: "個性/特色", fr: "personnalité", ex: "It has a very big personality.", fr_ex: "Elle a une très grande personnalité." },
-                    { en: "frozen", ipa: "[ˈfroʊzən]", zh: "結冰的", fr: "gelé", ex: "We walked on a frozen glacier.", fr_ex: "Nous avons marché sur un glacier gelé." },
-                    { en: "glacier", ipa: "[ˈgleɪʃər]", zh: "冰川", fr: "glacier", ex: "The glacier is melting slowly.", fr_ex: "Le glacier fond lentement." },
-                    { en: "steaming", ipa: "[ˈstimɪŋ]", zh: "冒熱氣的", fr: "fumant", ex: "Look at that steaming volcano.", fr_ex: "Regardez ce volcan fumant." },
-                    { en: "volcano", ipa: "[vɑlˈkeɪnoʊ]", zh: "火山", fr: "volcan", ex: "The volcano erupted recently.", fr_ex: "Le volcan est entré en éruption récemment." },
-                    { en: "lifestyle", ipa: "[ˈlaɪfˌstaɪl]", zh: "生活方式", fr: "mode de vie", ex: "The relaxed lifestyle is great.", fr_ex: "Le mode de vie détendu est génial." },
-                    { en: "lagoon", ipa: "[ləˈgun]", zh: "潟湖", fr: "lagon", ex: "We swam in the Blue Lagoon.", fr_ex: "Nous avons nagé dans le Lagon Bleu." },
-                    { en: "giant", ipa: "[ˈdʒaɪənt]", zh: "巨大的", fr: "géant", ex: "It is a giant outdoor spa.", fr_ex: "C'est un spa extérieur géant." },
-                    { en: "milky-blue", ipa: "[ˈmɪlki blu]", zh: "奶藍色的", fr: "bleu laiteux", ex: "The water is milky-blue.", fr_ex: "L'eau est bleu laiteux." },
-                    { en: "outdoor", ipa: "[ˈaʊtˌdɔr]", zh: "戶外的", fr: "en plein air", ex: "I enjoy outdoor activities.", fr_ex: "J'apprécie les activités en plein air." },
-                    { en: "freezing", ipa: "[ˈfrizɪŋ]", zh: "極冷的", fr: "glacial", ex: "The weather outside is freezing.", fr_ex: "Le temps dehors est glacial." },
-                    { en: "warm bath", ipa: "[wɔrm bæθ]", zh: "溫水浴", fr: "bain chaud", ex: "It feels like a warm bath.", fr_ex: "Cela ressemble à un bain chaud." },
-                    { en: "perfect spot", ipa: "[ˈpɜrfɪkt spɑt]", zh: "完美地點", fr: "endroit parfait", ex: "This is the perfect spot for resting.", fr_ex: "C'est l'endroit parfait pour se reposer." },
-                    { en: "relaxing", ipa: "[rɪˈlæksɪŋ]", zh: "放鬆的", fr: "relaxant", ex: "The spa is very relaxing.", fr_ex: "Le spa est très relaxant." },
-                    { en: "deep breath", ipa: "[dip brɛθ]", zh: "深呼吸", fr: "grande inspiration", ex: "Take a deep breath of fresh air.", fr_ex: "Prenez une grande inspiration d'air frais." },
-                    { en: "health", ipa: "[hɛlθ]", zh: "健康", fr: "santé", ex: "It is great for your health.", fr_ex: "C'est excellent pour votre santé." },
-                    { en: "amazing", ipa: "[əˈmeɪzɪŋ]", zh: "令人驚嘆的", fr: "incroyable", ex: "Your skin will feel amazing.", fr_ex: "Votre peau sera incroyable." },
-                    { en: "purple", ipa: "[ˈpɜrpəl]", zh: "紫色的", fr: "violet", ex: "Look at the purple lights in the sky.", fr_ex: "Regardez les lumières violettes dans le ciel." },
-                    { en: "breathless", ipa: "[ˈbrɛθləs]", zh: "令人屏息的", fr: "à couper le souffle", ex: "It was a breathless moment.", fr_ex: "C'était un moment à couper le souffle." },
-                    { en: "huge", ipa: "[hjudʒ]", zh: "巨大的", fr: "immense", ex: "The dark sky is huge.", fr_ex: "Le ciel sombre est immense." },
-                    { en: "explore", ipa: "[ɪkˈsplɔr]", zh: "探索", fr: "explorer", ex: "We want to explore the island.", fr_ex: "Nous voulons explorer l'île." },
-                    { en: "path", ipa: "[pæθ]", zh: "小徑", fr: "sentier", ex: "Hit the paths along the coast.", fr_ex: "Prenez les sentiers le long de la côte." },
-                    { en: "coast", ipa: "[koʊst]", zh: "海岸", fr: "côte", ex: "We drove along the coast.", fr_ex: "Nous avons conduit le long de la côte." },
-                    { en: "puffin", ipa: "[ˈpʌfɪn]", zh: "海鸚", fr: "macareux", ex: "You can see tiny puffins there.", fr_ex: "Vous pouvez y voir de minuscules macareux." },
-                    { en: "waterfall", ipa: "[ˈwɔtərˌfɔl]", zh: "瀑布", fr: "cascade", ex: "The beautiful waterfalls are amazing.", fr_ex: "La cascade est si belle." },
-                    { en: "calm", ipa: "[kɑm]", zh: "平靜的", fr: "calme", ex: "The vibe here is very calm.", fr_ex: "L'ambiance ici est très calme." },
-                    { en: "bucket-list", ipa: "[ˈbʌkɪt lɪst]", zh: "願望清單", fr: "liste de choses à faire", ex: "This trip is a bucket-list dream.", fr_ex: "Ce voyage est un rêve de la liste de choses à faire." }
-                ]
-            },
-            {
-                id: 13,
-                date: "2026.04.07",
-                title: "Living Like a Local in BKK",
-                content: `When you land in Bangkok, you will feel the heat and the energy right away! To have the best "lifestyle" experience, you should try a Tuk-Tuk. These are small, three-wheeled taxis that zoom through the streets. It is a breathless ride, but it is the fastest way to see the city.
-
-One of the best things to do is visit a "Soi" (a small side street). This is where you find the best hidden cafes and street food. If you are thirsty, look for a stall selling fresh coconut water or Thai milk tea. It is healthy and very refreshing!
-
-When you go to a market, remember to be polite. Thai people are very thankful and use the word "Sawasdee" to say hello. If the weather is too hot, go to a big mall like Siam Paragon to cool down. Whether you are exploring a quiet temple or a busy market, BKK is a place where you can find both peace and excitement. You will come home with nothing but happy memories!`,
-                questions:[
-                    "1. The 'Soi' Adventure (Hidden Gems) - Do you like to follow a map and go to the famous tourist spots, or do you prefer to wander down a random path to find a hidden cafe?",
-                    "2. When you imagine your trip there, what are you most excited to see, smell, or hear?",
-                    "3. What are the top 3 dishes on your bucket list to eat?"
-                ],
-                pronunciation:[
-                    { title: "KK 音標 - 子音 (Consonants)", pairs: `
-                        <table class="kk-table">
-                            <tr><th>[p]</th><td>雙唇閉緊後突然噴氣（無聲） (pig, cup)</td></tr>
-                            <tr><th>[b]</th><td>雙唇閉緊，聲帶振動（有聲） (bed, bag)</td></tr>
-                            <tr><th>[t]</th><td>舌尖抵住上牙齦後彈開（無聲） (ten, it)</td></tr>
-                            <tr><th>[d]</th><td>舌尖抵住上牙齦，聲帶振動（有聲） (day, bed)</td></tr>
-                            <tr><th>[k]</th><td>舌根抵住軟顎後突然噴氣（無聲） (kite, bake)</td></tr>
-                            <tr><th>[g]</th><td>舌根抵住軟顎，聲帶振動（有聲） (go, bag)</td></tr>
-                            <tr><th>[f]</th><td>上齒輕咬下唇後噴氣（無聲） (foot, off)</td></tr>
-                            <tr><th>[v]</th><td>上齒輕咬下唇，聲帶振動（有聲） (vase, five)</td></tr>
-                            <tr><th>[s]</th><td>舌尖靠近上牙齦，發出嘶嘶聲（無聲） (sit, bus)</td></tr>
-                            <tr><th>[z]</th><td>舌尖靠近上牙齦，聲帶振動（有聲） (zoo, noise)</td></tr>
-                            <tr><th>[ʃ]</th><td>嘴唇略噘起，發出「噓」聲（無聲） (she, fish)</td></tr>
-                            <tr><th>[ʒ]</th><td>嘴唇略噘起，聲帶振動（有聲） (pleasure, vision)</td></tr>
-                            <tr><th>[θ]</th><td>舌尖放在上下齒之間吹氣（無聲） (think, math)</td></tr>
-                            <tr><th>[ð]</th><td>舌尖放在上下齒之間，聲帶振動（有聲） (this, mother)</td></tr>
-                            <tr><th>[h]</th><td>像哈氣一樣（無聲） (hot, how)</td></tr>
-                        </table>
-                    ` }
-                ],
-                vocab:[
-                    { en: "local", ipa: "[ˈloʊkəl]", zh: "當地人/當地的", fr: "local", ex: "Live like a local in BKK.", fr_ex: "Vivez comme un local à BKK." },
-                    { en: "land", ipa: "[lænd]", zh: "降落/抵達", fr: "atterrir", ex: "When you land in Bangkok...", fr_ex: "Quand vous atterrissez à Bangkok..." },
-                    { en: "heat", ipa: "[hit]", zh: "炎熱/高溫", fr: "chaleur", ex: "You will feel the heat.", fr_ex: "Vous sentirez la chaleur." },
-                    { en: "energy", ipa: "[ˈɛnərdʒi]", zh: "活力/能量", fr: "énergie", ex: "The city has so much energy.", fr_ex: "La ville a tellement d'énergie." },
-                    { en: "right away", ipa: "[raɪt əˈweɪ]", zh: "立刻/馬上", fr: "tout de suite", ex: "You will feel it right away.", fr_ex: "Vous le sentirez tout de suite." },
-                    { en: "lifestyle", ipa: "[ˈlaɪfˌstaɪl]", zh: "生活方式", fr: "mode de vie", ex: "Enjoy the local lifestyle.", fr_ex: "Profitez du mode de vie local." },
-                    { en: "experience", ipa: "[ɪkˈspɪriəns]", zh: "體驗/經驗", fr: "expérience", ex: "It is the best lifestyle experience.", fr_ex: "C'est la meilleure expérience de style de vie." },
-                    { en: "Tuk-Tuk", ipa: "[ˈtʊk ˈtʊk]", zh: "嘟嘟車", fr: "tuk-tuk", ex: "You should try a Tuk-Tuk.", fr_ex: "Vous devriez essayer un Tuk-Tuk." },
-                    { en: "three-wheeled", ipa: "[θri wild]", zh: "三輪的", fr: "à trois roues", ex: "These are small, three-wheeled taxis.", fr_ex: "Ce sont de petits taxis à trois roues." },
-                    { en: "taxi", ipa: "[ˈtæksi]", zh: "計程車", fr: "taxi", ex: "We took a taxi to the hotel.", fr_ex: "Nous avons pris un taxi pour l'hôtel." },
-                    { en: "zoom", ipa: "[zum]", zh: "快速移動/呼嘯而過", fr: "filer (à toute vitesse)", ex: "They zoom through the streets.", fr_ex: "Ils filent à travers les rues." },
-                    { en: "breathless", ipa: "[ˈbrɛθləs]", zh: "令人屏息的/刺激的", fr: "à couper le souffle", ex: "It is a breathless ride.", fr_ex: "C'est un trajet à couper le souffle." },
-                    { en: "ride", ipa: "[raɪd]", zh: "乘坐/車程", fr: "trajet / balade", ex: "Enjoy the breathless ride.", fr_ex: "Profitez de cette balade à couper le souffle." },
-                    { en: "Soi", ipa: "[sɔɪ]", zh: "泰國的小巷", fr: "ruelle (soi)", ex: "Visit a Soi to find hidden cafes.", fr_ex: "Visitez un Soi pour trouver des cafés cachés." },
-                    { en: "side street", ipa: "[saɪd strit]", zh: "小巷/側街", fr: "rue adjacente", ex: "A Soi is a small side street.", fr_ex: "Un Soi est une petite rue adjacente." },
-                    { en: "hidden", ipa: "[ˈhɪdən]", zh: "隱藏的", fr: "caché", ex: "You can find hidden cafes.", fr_ex: "Vous pouvez trouver des cafés cachés." },
-                    { en: "street food", ipa: "[strit fud]", zh: "街頭小吃", fr: "cuisine de rue", ex: "Bangkok has the best street food.", fr_ex: "Bangkok a la meilleure cuisine de rue." },
-                    { en: "thirsty", ipa: "[ˈθɜrsti]", zh: "口渴的", fr: "assoiffé", ex: "If you are thirsty, buy a drink.", fr_ex: "Si vous avez soif, achetez une boisson." },
-                    { en: "stall", ipa: "[stɔl]", zh: "攤位", fr: "stand", ex: "Look for a stall selling water.", fr_ex: "Cherchez un stand vendant de l'eau." },
-                    { en: "coconut water", ipa: "[ˈkoʊkəˌnʌt ˈwɔtər]", zh: "椰子水", fr: "eau de coco", ex: "Fresh coconut water is sweet.", fr_ex: "L'eau de coco fraîche est douce." },
-                    { en: "Thai milk tea", ipa: "[taɪ mɪlk ti]", zh: "泰式奶茶", fr: "thé au lait thaï", ex: "I love cold Thai milk tea.", fr_ex: "J'adore le thé au lait thaï froid." },
-                    { en: "healthy", ipa: "[ˈhɛlθi]", zh: "健康的", fr: "sain", ex: "Coconut water is healthy.", fr_ex: "L'eau de coco est saine." },
-                    { en: "refreshing", ipa: "[rɪˈfrɛʃɪŋ]", zh: "清涼的/提神的", fr: "rafraîchissant", ex: "The drink is very refreshing.", fr_ex: "La boisson est très rafraîchissante." },
-                    { en: "polite", ipa: "[pəˈlaɪt]", zh: "有禮貌的", fr: "poli", ex: "Remember to be polite at the market.", fr_ex: "N'oubliez pas d'être poli au marché." },
-                    { en: "thankful", ipa: "[ˈθæŋkfəl]", zh: "感恩的/感謝的", fr: "reconnaissant", ex: "Thai people are very thankful.", fr_ex: "Les Thaïlandais sont très reconnaissants." },
-                    { en: "cool down", ipa: "[kul daʊn]", zh: "降溫/涼快一下", fr: "se rafraîchir", ex: "Go to a mall to cool down.", fr_ex: "Allez dans un centre commercial pour vous rafraîchir." },
-                    { en: "explore", ipa: "[ɪkˈsplɔr]", zh: "探索", fr: "explorer", ex: "I like to explore quiet temples.", fr_ex: "J'aime explorer des temples calmes." },
-                    { en: "temple", ipa: "[ˈtɛmpəl]", zh: "寺廟", fr: "temple", ex: "There is a quiet temple nearby.", fr_ex: "Il y a un temple calme à proximité." },
-                    { en: "peace", ipa: "[pis]", zh: "平靜/和平", fr: "paix", ex: "You can find peace in the temple.", fr_ex: "Vous pouvez trouver la paix dans le temple." },
-                    { en: "excitement", ipa: "[ɪkˈsaɪtmənt]", zh: "刺激/興奮", fr: "excitation", ex: "The busy market brings excitement.", fr_ex: "Le marché animé apporte de l'excitation." },
-                    { en: "memory", ipa: "[ˈmɛməri]", zh: "回憶", fr: "souvenir", ex: "You will have happy memories.", fr_ex: "Vous aurez de joyeux souvenirs." }
-                ]
-            },
-            {
-                id: 14,
-                date: "2026.04.14",
-                title: "The Powder Day - Snowboard Coaching",
-                content: `Coach: "Hey Katia! Ready to hit the slopes? You can stow your gear in the locker and slip into your boots—make sure they’re nice and snug."
-
-Katia: "Morning! I’m stoked, but also a bit nervous. I’ve heard the fresh powder here is amazing, but a bit tricky for beginners."
-
-Coach: "It’s the best! We’ve actually shifted our focus today to 'floaty' balance. It’s a total breakthrough for your edge control because the snow is so forgiving. While I’m prepping the lift passes, why don't you do some quick stretching?"
-
-Katia: "Sounds good. I’m a bit worried about catching an edge and having a massive wipe out. Any tips?"
-
-Coach: "Totally. We’ve upgraded our drills to focus on your lead foot pressure. It’s a huge plus for staying upright. Once you’re feeling the flow, we’ll get the ball rolling with some basic carving. It’s like 'surfing on clouds'—very refreshing once you finish!"`,
-                questions:[
-                    "Are you feeling stoked about the snow, or are you more worried about having a wipe out?",
-                    "Do you think your lead foot will be your left (Regular) or your right (Goofy)?",
-                    "After a few hours of carving, would you rather 'slip into' a hot bowl of ramen or a steaming onsen?",
-                    "Do you think 'mountain etiquette' (being polite to others) is the most important part of a 'top-tier' ski resort experience?"
-                ],
-                pronunciation:[
-                    { title: "KK 音標 - 子音 (Consonants 18個)", pairs: `
-                        <table class="kk-table">
-                            <tr><th>[f]</th><td>上齒輕咬下唇後噴氣（無聲） (foot, off)</td></tr>
-                            <tr><th>[v]</th><td>上齒輕咬下唇，聲帶振動（有聲） (vase, five)</td></tr>
-                            <tr><th>[s]</th><td>舌尖靠近上牙齦，發出嘶嘶聲（無聲） (sit, bus)</td></tr>
-                            <tr><th>[z]</th><td>舌尖靠近上牙齦，聲帶振動（有聲） (zoo, noise)</td></tr>
-                            <tr><th>[ʃ]</th><td>嘴唇略噘起，發出「噓」聲（無聲） (she, fish)</td></tr>
-                            <tr><th>[ʒ]</th><td>嘴唇略噘起，聲帶振動（有聲） (pleasure, vision)</td></tr>
-                            <tr><th>[θ]</th><td>舌尖放在上下齒之間吹氣（無聲） (think, math)</td></tr>
-                            <tr><th>[ð]</th><td>舌尖放在上下齒之間，聲帶振動（有聲） (this, mother)</td></tr>
-                            <tr><th>[h]</th><td>像哈氣一樣（無聲） (hot, how)</td></tr>
-                            <tr><th>[tʃ]</th><td>像中文「去」的氣音（無聲） (chair, each)</td></tr>
-                            <tr><th>[dʒ]</th><td>像中文「具」，聲帶振動（有聲） (joy, age)</td></tr>
-                            <tr><th>[m]</th><td>雙唇閉緊，氣流由鼻腔出 (my, moon)</td></tr>
-                            <tr><th>[n]</th><td>舌尖抵住上牙齦，氣流由鼻腔出 (name, ten)</td></tr>
-                            <tr><th>[ŋ]</th><td>舌根抵住軟顎 (sing, ping)</td></tr>
-                            <tr><th>[l]</th><td>舌尖抵住上牙齦，氣流從兩側出 (like, blue)</td></tr>
-                            <tr><th>[r]</th><td>舌尖向後捲不碰觸上顎 (red, bird)</td></tr>
-                            <tr><th>[w]</th><td>嘴唇收圓，像中文「烏」 (win, with)</td></tr>
-                            <tr><th>[j]</th><td>舌面靠近硬顎，像中文「也」 (yes, you)</td></tr>
-                        </table>
-                    ` }
-                ],
-                vocab:[
-                    { en: "stoked", ipa: "[stoʊkt]", zh: "非常興奮的", fr: "super excité", ex: "I'm stoked for the trip.", fr_ex: "Je suis super excité pour le voyage." },
-                    { en: "fresh powder", ipa: "[frɛʃ ˈpaʊdər]", zh: "新鮮粉雪", fr: "poudreuse fraîche", ex: "The fresh powder is amazing.", fr_ex: "La poudreuse fraîche est incroyable." },
-                    { en: "catch an edge", ipa: "[kætʃ ən ɛdʒ]", zh: "卡邊", fr: "faire une faute de carre", ex: "Be careful not to catch an edge.", fr_ex: "Fais attention à ne pas faire une faute de carre." },
-                    { en: "wipe out", ipa: "[waɪp aʊt]", zh: "大摔跤", fr: "une lourde chute", ex: "I had a massive wipe out.", fr_ex: "J'ai fait une chute énorme." },
-                    { en: "lead foot", ipa: "[lid fʊt]", zh: "前腳", fr: "pied avant", ex: "Put pressure on your lead foot.", fr_ex: "Mets de la pression sur ton pied avant." },
-                    { en: "carving", ipa: "[ˈkɑrvɪŋ]", zh: "切雪/刻滑", fr: "carving / virages coupés", ex: "We will learn basic carving.", fr_ex: "Nous allons apprendre le carving de base." },
-                    { en: "hit the slopes", ipa: "[hɪt ðə sloʊps]", zh: "去滑雪", fr: "aller sur les pistes", ex: "Ready to hit the slopes?", fr_ex: "Prêt à aller sur les pistes ?" },
-                    { en: "stow your gear", ipa: "[stoʊ jʊər gɪr]", zh: "收好裝備", fr: "ranger ton équipement", ex: "Stow your gear in the locker.", fr_ex: "Range ton équipement dans le casier." },
-                    { en: "locker", ipa: "[ˈlɑkər]", zh: "置物櫃", fr: "casier", ex: "I left my bag in the locker.", fr_ex: "J'ai laissé mon sac dans le casier." },
-                    { en: "slip into", ipa: "[slɪp ˈɪntu]", zh: "穿上(衣服或鞋子)", fr: "enfiler", ex: "Slip into your boots.", fr_ex: "Enfile tes bottes." },
-                    { en: "boots", ipa: "[buts]", zh: "靴子(雪靴)", fr: "bottes", ex: "These boots are heavy.", fr_ex: "Ces bottes sont lourdes." },
-                    { en: "snug", ipa: "[snʌg]", zh: "緊貼的/舒適的", fr: "bien ajusté", ex: "Make sure they are snug.", fr_ex: "Assure-toi qu'elles sont bien ajustées." },
-                    { en: "nervous", ipa: "[ˈnɜrvəs]", zh: "緊張的", fr: "nerveux", ex: "I am a bit nervous.", fr_ex: "Je suis un peu nerveux." },
-                    { en: "amazing", ipa: "[əˈmeɪzɪŋ]", zh: "驚人的/極好的", fr: "incroyable", ex: "The view is amazing.", fr_ex: "La vue est incroyable." },
-                    { en: "tricky", ipa: "[ˈtrɪki]", zh: "棘手的/有挑戰的", fr: "délicat", ex: "This trick is a bit tricky.", fr_ex: "Cette figure est un peu délicate." },
-                    { en: "beginner", ipa: "[bɪˈgɪnər]", zh: "初學者", fr: "débutant", ex: "It is hard for beginners.", fr_ex: "C'est difficile pour les débutants." },
-                    { en: "shifted", ipa: "[ˈʃɪftɪd]", zh: "轉移/改變", fr: "déplacé", ex: "We shifted our focus.", fr_ex: "Nous avons changé notre objectif." },
-                    { en: "focus", ipa: "[ˈfoʊkəs]", zh: "焦點/專注", fr: "concentration", ex: "Keep your focus.", fr_ex: "Garde ta concentration." },
-                    { en: "floaty", ipa: "[ˈfloʊti]", zh: "漂浮感的", fr: "flottant", ex: "It has a floaty feeling.", fr_ex: "Ça a une sensation flottante." },
-                    { en: "balance", ipa: "[ˈbæləns]", zh: "平衡", fr: "équilibre", ex: "Keep your balance.", fr_ex: "Garde ton équilibre." },
-                    { en: "breakthrough", ipa: "[ˈbreɪkˌθru]", zh: "突破", fr: "percée", ex: "It's a total breakthrough.", fr_ex: "C'est une percée totale." },
-                    { en: "edge control", ipa: "[ɛdʒ kənˈtroʊl]", zh: "鋼邊控制", fr: "contrôle des carres", ex: "Edge control is important.", fr_ex: "Le contrôle des carres est important." },
-                    { en: "forgiving", ipa: "[fərˈgɪvɪŋ]", zh: "寬容的/容錯率高的", fr: "indulgent", ex: "The soft snow is forgiving.", fr_ex: "La neige douce est indulgente." },
-                    { en: "prepping", ipa: "[ˈprɛpɪŋ]", zh: "準備", fr: "préparer", ex: "I am prepping the passes.", fr_ex: "Je prépare les forfaits." },
-                    { en: "lift pass", ipa: "[lɪft pæs]", zh: "纜車票", fr: "forfait de ski", ex: "Don't lose your lift pass.", fr_ex: "Ne perds pas ton forfait de ski." },
-                    { en: "quick stretching", ipa: "[kwɪk ˈstrɛtʃɪŋ]", zh: "快速伸展", fr: "étirements rapides", ex: "Do some quick stretching.", fr_ex: "Fais quelques étirements rapides." },
-                    { en: "worried", ipa: "[ˈwɜrid]", zh: "擔心的", fr: "inquiet", ex: "I am worried about falling.", fr_ex: "Je suis inquiet de tomber." },
-                    { en: "massive", ipa: "[ˈmæsɪv]", zh: "巨大的", fr: "massif", ex: "That was a massive jump.", fr_ex: "C'était un saut énorme." },
-                    { en: "tips", ipa: "[tɪps]", zh: "訣竅/提示", fr: "conseils", ex: "Do you have any tips?", fr_ex: "As-tu des conseils ?" },
-                    { en: "totally", ipa: "[ˈtoʊtəli]", zh: "完全地/沒問題", fr: "carrément", ex: "Totally, I can help.", fr_ex: "Carrément, je peux aider." },
-                    { en: "upgraded", ipa: "[ˈʌpˌgreɪdɪd]", zh: "升級", fr: "amélioré", ex: "We upgraded our drills.", fr_ex: "Nous avons amélioré nos exercices." },
-                    { en: "drills", ipa: "[drɪlz]", zh: "訓練/練習", fr: "exercices", ex: "These drills are helpful.", fr_ex: "Ces exercices sont utiles." },
-                    { en: "pressure", ipa: "[ˈprɛʃər]", zh: "壓力", fr: "pression", ex: "Apply pressure to your toe.", fr_ex: "Applique une pression sur ton orteil." },
-                    { en: "huge plus", ipa: "[hjudʒ plʌs]", zh: "大加分", fr: "énorme atout", ex: "It's a huge plus for you.", fr_ex: "C'est un énorme atout pour toi." },
-                    { en: "upright", ipa: "[ˈʌpˌraɪt]", zh: "直立的/不跌倒", fr: "debout", ex: "Stay upright on the board.", fr_ex: "Reste debout sur la planche." },
-                    { en: "feeling the flow", ipa: "[ˈfilɪŋ ðə floʊ]", zh: "感受節奏/順暢感", fr: "ressentir le rythme", ex: "Are you feeling the flow?", fr_ex: "Ressens-tu le rythme ?" },
-                    { en: "get the ball rolling", ipa: "[gɛt ðə bɔl ˈroʊlɪŋ]", zh: "開始進行", fr: "lancer les choses", ex: "Let's get the ball rolling.", fr_ex: "Lançons les choses." },
-                    { en: "basic", ipa: "[ˈbeɪsɪk]", zh: "基礎的", fr: "de base", ex: "We will learn basic moves.", fr_ex: "Nous apprendrons des mouvements de base." },
-                    { en: "surfing on clouds", ipa: "[ˈsɜrfɪŋ ɑn klaʊdz]", zh: "在雲端衝浪", fr: "surfer sur des nuages", ex: "It feels like surfing on clouds.", fr_ex: "C'est comme surfer sur des nuages." },
-                    { en: "refreshing", ipa: "[rɪˈfrɛʃɪŋ]", zh: "令人神清氣爽的", fr: "rafraîchissant", ex: "The cold air is refreshing.", fr_ex: "L'air froid est rafraîchissant." }
+                pronunciation: [{
+                    title: "KK 音標 - 母音 (Vowels)",
+                    pairs: `<table class="kk-table">
+                        <tr><th>[ɪ]</th><td>sit, pig</td></tr>
+                        <tr><th>[ɛ]</th><td>bed, ten</td></tr>
+                        <tr><th>[æ]</th><td>cat, bag</td></tr>
+                        <tr><th>[ɑ]</th><td>hot, box</td></tr>
+                        <tr><th>[ʌ]</th><td>cup, bus</td></tr>
+                        <tr><th>[ʊ]</th><td>foot, book</td></tr>
+                        <tr><th>[ə]</th><td>about, sofa</td></tr>
+                        <tr><th>[i]</th><td>see, eat</td></tr>
+                        <tr><th>[e]</th><td>name, day</td></tr>
+                        <tr><th>[u]</th><td>moon, blue</td></tr>
+                        <tr><th>[o]</th><td>go, home</td></tr>
+                        <tr><th>[aɪ]</th><td>my, kite</td></tr>
+                        <tr><th>[aʊ]</th><td>how, now</td></tr>
+                        <tr><th>[ɔɪ]</th><td>boy, noise</td></tr>
+                        <tr><th>[ɝ]</th><td>bird, her</td></tr>
+                        <tr><th>[ɚ]</th><td>teacher</td></tr>
+                    </table>`
+                }],
+                vocab: [
+                    { en: "navigating", ipa: "[ˈnævəˌgeɪtɪŋ]", zh: "導航/穿梭", fr: "naviguer", ex: "Navigating NYC is hard.", fr_ex: "Naviguer dans NYC est difficile." },
+                    { en: "Subway", ipa: "[ˈsʌbˌweɪ]", zh: "地鐵", fr: "métro", ex: "The subway is fast.", fr_ex: "Le métro est rapide." },
+                    { en: "rite of passage", ipa: "[raɪt]", zh: "成年禮/必經過程", fr: "rite de passage", ex: "The subway is a rite of passage.", fr_ex: "Le métro est un rite de passage." },
+                    { en: "experience", ipa: "[ɪkˈspɪriəns]", zh: "體驗", fr: "expérience", ex: "Experience the energy.", fr_ex: "Découvrez l'énergie." },
+                    { en: "energy", ipa: "[ˈɛnərdʒi]", zh: "能量/活力", fr: "énergie", ex: "Feel the city's energy.", fr_ex: "Ressentez l'énergie de la ville." },
+                    { en: "maze", ipa: "[meɪz]", zh: "迷宮", fr: "labyrinthe", ex: "The station is a maze.", fr_ex: "La station est un labyrinthe." },
+                    { en: "entrance", ipa: "[ˈɛntrəns]", zh: "入口", fr: "entrée", ex: "Check the entrance.", fr_ex: "Vérifiez l'entrée." },
+                    { en: "Uptown", ipa: "[ˈʌpˌtaʊn]", zh: "往北/上城", fr: "vers le nord", ex: "I'm going Uptown.", fr_ex: "Je vais vers le nord." },
+                    { en: "Downtown", ipa: "[ˈdaʊnˌtaʊn]", zh: "往南/下城", fr: "vers le sud", ex: "The train goes Downtown.", fr_ex: "Le train va vers le sud." },
+                    { en: "MetroCard", ipa: "[ˈmɛtroʊ kɑrd]", zh: "地鐵卡", fr: "carte de métro", ex: "Refill your MetroCard.", fr_ex: "Rechargez votre MetroCard." },
+                    { en: "tap to pay", ipa: "[tæp]", zh: "感應支付", fr: "paiement sans contact", ex: "You can tap to pay.", fr_ex: "Vous pouvez payer sans contact." },
+                    { en: "turnstile", ipa: "[ˈtɜrnˌstaɪl]", zh: "旋轉閘門", fr: "tourniquet", ex: "Go through the turnstile.", fr_ex: "Passez par le tourniquet." },
+                    { en: "refill", ipa: "[ˌriˈfɪl]", zh: "儲值/續杯", fr: "recharger", ex: "Refill the card.", fr_ex: "Rechargez la carte." },
+                    { en: "vending machine", ipa: "[ˈvɛndɪŋ]", zh: "販賣機", fr: "distributeur", ex: "Use the vending machine.", fr_ex: "Utilisez le distributeur." },
+                    { en: "platform", ipa: "[ˈplætˌfɔrm]", zh: "月台", fr: "quai", ex: "Wait on the platform.", fr_ex: "Attendez sur le quai." },
+                    { en: "track", ipa: "[træk]", zh: "軌道", fr: "voie", ex: "Check the track number.", fr_ex: "Vérifiez le numéro de voie." },
+                    { en: "board", ipa: "[bɔrd]", zh: "登機/上車", fr: "monter à bord", ex: "Board the train now.", fr_ex: "Montez dans le train maintenant." },
+                    { en: "express train", ipa: "[ɪkˈsprɛs]", zh: "特快車", fr: "train express", ex: "This is an express train.", fr_ex: "C'est un train express." },
+                    { en: "skip", ipa: "[skɪp]", zh: "跳過", fr: "sauter", ex: "Don't skip my stop.", fr_ex: "Ne ratez pas mon arrêt." },
+                    { en: "local train", ipa: "[ˈloʊkəl]", zh: "普通車(每站停)", fr: "train omnibus", ex: "The local train stops here.", fr_ex: "Le train omnibus s'arrête ici." },
+                    { en: "commuter", ipa: "[kəˈmjutər]", zh: "通勤者", fr: "navetteur", ex: "The commuter is reading.", fr_ex: "Le navetteur lit." },
+                    { en: "lifestyle", ipa: "[ˈlaɪfˌstaɪl]", zh: "生活方式", fr: "mode de vie", ex: "Subway is a lifestyle.", fr_ex: "Le métro est un mode de vie." },
+                    { en: "hub", ipa: "[hʌb]", zh: "樞紐/中心", fr: "plaque tournante", ex: "It is a lifestyle hub.", fr_ex: "C'est un centre de vie." },
+                    { en: "performer", ipa: "[pərˈfɔrmər]", zh: "表演者", fr: "artiste", ex: "I see a performer.", fr_ex: "Je vois un artiste." },
+                    { en: "conductor", ipa: "[kənˈdʌktər]", zh: "車長/指揮", fr: "conducteur", ex: "Listen to the conductor.", fr_ex: "Écoutez le conducteur." },
+                    { en: "announcement", ipa: "[əˈnaʊnsmənt]", zh: "公告/廣播", fr: "annonce", ex: "Hear the announcement.", fr_ex: "Entendez l'annonce." },
+                    { en: "muffled", ipa: "[ˈmʌfəld]", zh: "模糊/聽不清楚", fr: "étouffé", ex: "The sound is muffled.", fr_ex: "Le son est étouffé." },
+                    { en: "transfer", ipa: "[trænsˈfɜr]", zh: "轉乘", fr: "correspondance", ex: "Transfer to the 7 train.", fr_ex: "Prenez la correspondance pour le train 7." },
+                    { en: "overhead", ipa: "[ˈoʊvərˌhɛd]", zh: "頭頂上的", fr: "au-dessus", ex: "Check overhead signs.", fr_ex: "Vérifiez les panneaux au-dessus." },
+                    { en: "sign", ipa: "[saɪn]", zh: "標誌", fr: "panneau", ex: "Follow the signs.", fr_ex: "Suivez les panneaux." },
+                    { en: "hustle", ipa: "[ˈhʌsəl]", zh: "忙碌/趕路", fr: "agitation", ex: "I love the hustle.", fr_ex: "J'aime l'agitation." },
+                    { en: "pace", ipa: "[peɪs]", zh: "步調", fr: "allure", ex: "A slow pace.", fr_ex: "Une allure lente." },
+                    { en: "stuck", ipa: "[stʌk]", zh: "卡住/困住", fr: "coincé", ex: "I am stuck in traffic.", fr_ex: "Je suis coincé dans le trafic." },
+                    { en: "people-watch", ipa: "[ˈpipəl]", zh: "觀察路人", fr: "observer les gens", ex: "I love to people-watch.", fr_ex: "J'aime observer les gens." },
+                    { en: "route", ipa: "[rut]", zh: "路線", fr: "itinéraire", ex: "What is the fastest route?", fr_ex: "Quel est l'itinéraire le plus rapide ?" },
+                    { en: "fast", ipa: "[fæst]", zh: "快的", fr: "rapide", ex: "The train is fast.", fr_ex: "Le train est rapide." },
+                    { en: "loud", ipa: "[laʊd]", zh: "大聲的", fr: "bruyant", ex: "It is very loud.", fr_ex: "C'est très bruyant." },
+                    { en: "stop", ipa: "[stɑp]", zh: "車站/停止", fr: "arrêt", ex: "Next stop is here.", fr_ex: "Le prochain arrêt est ici." },
+                    { en: "follow", ipa: "[ˈfɑloʊ]", zh: "跟隨", fr: "suivre", ex: "Follow the map.", fr_ex: "Suivez la carte." },
+                    { en: "fastest", ipa: "[ˈfæstəst]", zh: "最快的", fr: "le plus rapide", ex: "The fastest way home.", fr_ex: "Le chemin le plus rapide pour rentrer." }
                 ]
             }
         ];
 
-        /* --- 系統邏輯 --- */
         let currentLesson = null;
-
-        // 1. 初始化
         function initApp() {
-            const listContainer = document.getElementById('lessonContainer');
-            listContainer.innerHTML = ''; 
-            lessons.forEach((lesson, index) => {
-                listContainer.innerHTML += `
-                    <div class="card lesson-card" onclick="selectLesson(${index})">
-                        <span class="date-tag">${lesson.date}</span>
-                        <div style="font-size:1.3rem; font-weight:bold; color:var(--color-primary-red); margin: 5px 0;">${lesson.title}</div>
-                        <div class="lesson-meta">${lesson.vocab.length} Words</div>
-                    </div>
-                `;
+            const container = document.getElementById('lessonContainer');
+            container.innerHTML = '';
+            lessons.forEach((l, idx) => {
+                container.innerHTML += `<div class="card lesson-card" onclick="selectLesson(${idx})"><span class="date-tag">${l.date}</span><div style="font-size:1.2rem; font-weight:bold; color:var(--color-primary-red);">${l.title}</div><div class="lesson-meta">${l.vocab.length} Words</div></div>`;
             });
         }
 
-        // 2. 選擇課程
-        function selectLesson(index) {
-            currentLesson = lessons[index];
+        function selectLesson(idx) {
+            currentLesson = lessons[idx];
             document.getElementById('dashDate').innerText = currentLesson.date;
             document.getElementById('dashTitle').innerText = currentLesson.title;
-            document.getElementById('dashCount').innerText = `${currentLesson.vocab.length} Key Vocabulary Words`;
-
+            document.getElementById('dashCount').innerText = `${currentLesson.vocab.length} Words`;
             document.getElementById('artDate').innerText = currentLesson.date;
             document.getElementById('artTitle').innerText = currentLesson.title;
             document.getElementById('artContent').innerHTML = currentLesson.content.replace(/\n\n/g, '<br><br>');
             
-            // 處理發音技巧區塊 (Pronunciation Tips)
             const pronContainer = document.getElementById('artPronunciation');
             pronContainer.innerHTML = '';
-            if (currentLesson.pronunciation && currentLesson.pronunciation.length > 0) {
-                let html = '<div class="pronunciation-box"><div class="pronunciation-title">🗣️ Pronunciation Tips</div>';
+            if (currentLesson.pronunciation) {
                 currentLesson.pronunciation.forEach(p => {
-                    // 如果 pairs 內容包含 HTML 標籤 (如 table/div)，直接渲染
-                    if (p.pairs.includes('<table') || p.pairs.includes('<div')) {
-                        html += `
-                            <div class="pronunciation-item" style="border:none;">
-                                ${p.pairs}
-                            </div>`;
-                    } else {
-                        html += `
-                            <div class="pronunciation-item">
-                                <div><strong>${p.title}</strong></div>
-                                <div style="color:#555; margin-top:4px;">${p.pairs}</div>
-                            </div>`;
-                    }
+                    pronContainer.innerHTML += `<div class="pronunciation-box"><div class="pronunciation-title">🗣️ ${p.title}</div>${p.pairs}</div>`;
                 });
-                html += '</div>';
-                pronContainer.innerHTML = html;
             }
+
+            const vContainer = document.getElementById('vocabList');
+            vContainer.innerHTML = '';
+            currentLesson.vocab.forEach(item => {
+                vContainer.innerHTML += `<div class="vocab-item"><div class="vocab-header"><span class="vocab-en" onclick="speak('${item.en}', 'en-US')">${item.en} <span class="vocab-ipa">${item.ipa || ''}</span> <span class="speaker-icon">🔊</span></span><span class="vocab-zh">${item.zh}</span></div><div class="vocab-ex" onclick="speak('${item.ex}', 'en-US')">Ex: ${item.ex}</div></div>`;
+            });
+
+            const vFrContainer = document.getElementById('vocabListFr');
+            vFrContainer.innerHTML = '';
+            currentLesson.vocab.forEach(item => {
+                vFrContainer.innerHTML += `<div class="vocab-item"><div class="vocab-header"><span class="vocab-en" onclick="speak('${item.en}', 'en-US')">${item.en}</span></div><div class="vocab-fr-row" onclick="speak('${item.fr}', 'fr-FR')">🇫🇷 ${item.fr} <span class="speaker-icon">🔊</span></div>${item.fr_ex ? `<div class="vocab-ex-fr" onclick="speak('${item.fr_ex}', 'fr-FR')">Ex: ${item.fr_ex}</div>` : ''}</div>`;
+            });
 
             const qContainer = document.getElementById('artQuestions');
             qContainer.innerHTML = '';
@@ -1471,65 +350,14 @@ Coach: "Totally. We’ve upgraded our drills to focus on your lead foot pressure
                 qContainer.innerHTML += `<div style="margin-bottom:10px; padding-left:10px; border-left:3px solid var(--color-burnt-orange); color:#555;">${q}</div>`;
             });
 
-            // 渲染一般單字表 (En-Zh)
-            const vContainer = document.getElementById('vocabList');
-            vContainer.innerHTML = '';
-            currentLesson.vocab.forEach(item => {
-                const cleanEn = item.en.replace(/'/g, "\\'");
-                const cleanEx = item.ex.replace(/'/g, "\\'");
-                
-                vContainer.innerHTML += `
-                    <div class="vocab-item">
-                        <div class="vocab-header">
-                            <span class="vocab-en" onclick="speak('${cleanEn}', 'en-US')">
-                                ${item.en}
-                                <span class="vocab-ipa">${item.ipa || ''}</span>
-                                <span class="speaker-icon">🔊</span>
-                            </span>
-                            <span class="vocab-zh">${item.zh}</span>
-                        </div>
-                        <div class="vocab-ex" onclick="speak('${cleanEx}', 'en-US')">Ex: ${item.ex}</div>
-                    </div>
-                `;
-            });
-
-            // 渲染法文單字表 (En-Fr)
-            const vFrContainer = document.getElementById('vocabListFr');
-            vFrContainer.innerHTML = '';
-            currentLesson.vocab.forEach(item => {
-                const cleanEn = item.en.replace(/'/g, "\\'");
-                const cleanFr = item.fr.replace(/'/g, "\\'");
-                const cleanFrEx = item.fr_ex ? item.fr_ex.replace(/'/g, "\\'") : "";
-                
-                vFrContainer.innerHTML += `
-                    <div class="vocab-item">
-                        <div class="vocab-header">
-                            <span class="vocab-en" onclick="speak('${cleanEn}', 'en-US')">
-                                ${item.en} 
-                                <span class="speaker-icon">🔊</span>
-                            </span>
-                        </div>
-                        <div class="vocab-fr-row" onclick="speak('${cleanFr}', 'fr-FR')">
-                            🇫🇷 ${item.fr}
-                            <span class="speaker-icon" style="background-color: #fee; margin-left: 10px;">🔊</span>
-                        </div>
-                        ${cleanFrEx ? `<div class="vocab-ex-fr" onclick="speak('${cleanFrEx}', 'fr-FR')">Ex: ${item.fr_ex}</div>` : ''}
-                    </div>
-                `;
-            });
-
             showPage('p-dashboard');
         }
 
-        /* --- 頁面導航 --- */
-        function showPage(pageId) {
-            // 每次切換頁面都停止聲音
-            stopAudio();
-            
-            document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            window.scrollTo(0, 0); 
-            if(pageId === 'p-dashboard') resetQuizUI();
+        function showPage(id) {
+            window.speechSynthesis.cancel();
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            window.scrollTo(0,0);
         }
 
         function goToLessonList() { showPage('p-lesson-list'); }
@@ -1543,126 +371,42 @@ Coach: "Totally. We’ve upgraded our drills to focus on your lead foot pressure
         const QUESTIONS_PER_ROUND = 10;
 
         function startQuiz(mode) {
-            currentQuizMode = mode;
-            quizScore = 0;
-            quizQuestionCount = 0;
-            
-            let title = '';
-            if(mode === 'en-zh') title = '請翻譯成中文';
-            else if(mode === 'zh-en') title = 'Translate to English';
-            else if(mode === 'en-fr') title = 'Traduisez en Français (翻譯成法文)';
-            
-            document.getElementById('quizType').innerText = title;
-            
-            const hintEl = document.getElementById('quiz-hint-text');
-            if (mode === 'en-zh' || mode === 'en-fr') {
-                hintEl.innerText = "💡 點擊單字可聽發音";
-                hintEl.style.display = 'block';
-            } else {
-                hintEl.style.display = 'none';
-            }
-
-            showPage('p-quiz');
-            updateQuizHeader();
-            nextQuestion();
+            currentQuizMode = mode; quizScore = 0; quizQuestionCount = 0;
+            showPage('p-quiz'); nextQuestion();
         }
 
         function updateQuizHeader() {
             document.getElementById('quiz-progress').innerText = `Q: ${quizQuestionCount + 1}/${QUESTIONS_PER_ROUND}`;
-            document.getElementById('quiz-score-display').innerText = `Score: ${quizScore}`;
-        }
-
-        function speakCurrentQuizWord() {
-            if ((currentQuizMode === 'en-zh' || currentQuizMode === 'en-fr') && currentTargetWord) {
-                speak(currentTargetWord.en, 'en-US');
-            }
         }
 
         function nextQuestion() {
-            if (quizQuestionCount >= QUESTIONS_PER_ROUND) {
-                showResult();
-                return;
-            }
-
-            resetQuizUI();
+            if (quizQuestionCount >= QUESTIONS_PER_ROUND) { showResult(); return; }
+            document.getElementById('q-input').value = ''; document.getElementById('q-feedback').innerText = '';
+            document.getElementById('btn-next').style.display = 'none'; document.getElementById('btn-submit').style.display = 'block';
             updateQuizHeader();
-
-            const randomIndex = Math.floor(Math.random() * currentLesson.vocab.length);
-            currentTargetWord = currentLesson.vocab[randomIndex];
-            
-            if (currentQuizMode === 'en-zh' || currentQuizMode === 'en-fr') {
-                document.getElementById('q-word').innerText = currentTargetWord.en;
-            } else {
-                document.getElementById('q-word').innerText = currentTargetWord.zh;
-            }
+            currentTargetWord = currentLesson.vocab[Math.floor(Math.random() * currentLesson.vocab.length)];
+            document.getElementById('q-word').innerText = (currentQuizMode === 'zh-en') ? currentTargetWord.zh : currentTargetWord.en;
         }
 
         function checkAnswer() {
-            const inputVal = document.getElementById('q-input').value.trim().toLowerCase();
-            const feedbackEl = document.getElementById('q-feedback');
-            const nextBtn = document.getElementById('btn-next');
-            const submitBtn = document.getElementById('btn-submit');
-            
-            let isCorrect = false;
-            let correctAnswer = '';
+            const val = document.getElementById('q-input').value.trim().toLowerCase();
+            let correct = false;
+            let ans = "";
+            if (currentQuizMode === 'en-zh') { ans = currentTargetWord.zh; if (ans.includes(val) && val.length > 0) correct = true; }
+            else if (currentQuizMode === 'zh-en') { ans = currentTargetWord.en; if (val === ans.toLowerCase()) correct = true; }
+            else { ans = currentTargetWord.fr; if (val === ans.toLowerCase()) correct = true; }
 
-            if (currentQuizMode === 'en-zh') {
-                correctAnswer = currentTargetWord.zh;
-                if ((correctAnswer.includes(inputVal) && inputVal.length > 1) || inputVal === correctAnswer) {
-                    isCorrect = true;
-                }
-            } else if (currentQuizMode === 'zh-en') {
-                correctAnswer = currentTargetWord.en;
-                if (inputVal === correctAnswer.toLowerCase()) {
-                    isCorrect = true;
-                }
-            } else if (currentQuizMode === 'en-fr') {
-                correctAnswer = currentTargetWord.fr;
-                if (inputVal === correctAnswer.toLowerCase()) {
-                    isCorrect = true;
-                }
-            }
-
-            if (isCorrect) {
-                feedbackEl.innerText = "🎉 Correct! 答對了！";
-                feedbackEl.className = "feedback correct";
-                quizScore++;
-            } else {
-                feedbackEl.innerText = `❌ 答案是: ${correctAnswer}`;
-                feedbackEl.className = "feedback wrong";
-            }
-            
-            if (!isCorrect) {
-                if (currentQuizMode === 'zh-en') speak(currentTargetWord.en, 'en-US');
-                if (currentQuizMode === 'en-fr') speak(currentTargetWord.fr, 'fr-FR');
-            }
-            
-            submitBtn.style.display = 'none';
-            nextBtn.style.display = "block";
-            
+            const f = document.getElementById('q-feedback');
+            if (correct) { f.innerText = "🎉 Correct!"; f.className = "feedback correct"; quizScore++; }
+            else { f.innerText = `❌ Ans: ${ans}`; f.className = "feedback wrong"; }
+            document.getElementById('btn-submit').style.display = 'none'; document.getElementById('btn-next').style.display = 'block';
             quizQuestionCount++;
         }
 
         function showResult() {
-            const finalScore = Math.round((quizScore / QUESTIONS_PER_ROUND) * 100);
-            document.getElementById('final-score').innerText = finalScore;
-            document.getElementById('final-detail').innerText = `You got ${quizScore} out of ${QUESTIONS_PER_ROUND} correct.`;
-            
-            let msg = "";
-            if(finalScore === 100) msg = "Perfect! 💯";
-            else if(finalScore >= 80) msg = "Excellent! 🌟";
-            else if(finalScore >= 60) msg = "Good Job! 👍";
-            else msg = "Keep Practicing! 💪";
-            
-            document.getElementById('final-msg').innerText = msg;
+            document.getElementById('final-score').innerText = Math.round((quizScore/QUESTIONS_PER_ROUND)*100);
+            document.getElementById('final-msg').innerText = `You got ${quizScore}/${QUESTIONS_PER_ROUND} correct!`;
             showPage('p-result');
-        }
-
-        function resetQuizUI() {
-            document.getElementById('q-input').value = '';
-            document.getElementById('q-feedback').innerText = '';
-            document.getElementById('btn-next').style.display = 'none';
-            document.getElementById('btn-submit').style.display = 'block';
         }
 
         initApp();
