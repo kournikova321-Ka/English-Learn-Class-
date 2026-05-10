@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Marc's Learning App</title>
+    <style>
+        :root {
+            --color-primary-red: #7D2027;
+            --color-chic-blue: #5FA8C2;
+            --color-burnt-orange: #CF5527;
+            --color-deep-brown: #673C34;
+            --color-cream: #FAE3B1;
+            --color-bg: #FDFBF6;
+            --color-card-bg: #FFFFFF;
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-deep-brown);
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--color-primary-red);
+            color: #FFFFFF;
+            padding: 20px; text-align: center;
+            font-size: 1.4rem; font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(125, 32, 39, 0.3);
+            cursor: pointer; z-index: 10;
+        }
+
+        .container {
+            padding: 20px; flex: 1;
+            max-width: 600px; margin: 0 auto; width: 100%;
+        }
+
+        .card {
+            background: var(--color-card-bg);
+            padding: 24px; border-radius: var(--radius);
+            box-shadow: 0 4px 15px rgba(103, 60, 52, 0.08);
+            margin-bottom: 20px; line-height: 1.8;
+            border: 1px solid rgba(0,0,0,0.03);
+            transition: transform 0.2s;
+        }
+        
+        .lesson-card { cursor: pointer; border-left: 6px solid var(--color-chic-blue); }
+        .lesson-card:active { transform: scale(0.98); background-color: #f9f9f9; }
+
+        .page { display: none; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn {
+            display: block; width: 100%; padding: 16px; margin-bottom: 12px;
+            background-color: var(--color-chic-blue); color: #FFFFFF;
+            text-align: center; border: none; border-radius: var(--radius);
+            font-size: 1.1rem; font-weight: bold; cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+        .btn:active { transform: scale(0.98); }
+
+        .btn-outline { background-color: transparent; border: 2px solid var(--color-chic-blue); color: var(--color-chic-blue); }
+        .btn-back { background-color: #EFEFEF; color: var(--color-deep-brown); margin-top: 30px; }
+        
+        .btn-audio {
+            background-color: var(--color-primary-red); color: white; border: none;
+            padding: 10px 20px; border-radius: 20px; font-size: 0.95rem;
+            font-weight: bold; cursor: pointer; display: inline-flex;
+            align-items: center; gap: 8px; margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .date-tag { font-size: 0.85rem; color: #998731; font-weight: bold; margin-bottom: 5px; display: block; text-transform: uppercase; letter-spacing: 1px; }
+        .article-title { color: var(--color-burnt-orange); font-size: 1.5rem; margin-bottom: 10px; font-weight: 800; line-height: 1.3; }
+        .english-text { font-size: 1.1rem; text-align: justify; margin-bottom: 30px; color: #4a3b38; }
+
+        .pronunciation-box { background-color: #f0f8ff; border-left: 4px solid var(--color-chic-blue); padding: 15px; margin-top: 20px; border-radius: 4px; }
+        .pronunciation-title { font-weight: bold; color: var(--color-chic-blue); margin-bottom: 15px; display: flex; align-items: center; }
+        
+        .kk-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        .kk-table th, .kk-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        .kk-table th { background-color: #e6f7ff; color: var(--color-chic-blue); width: 40px; text-align: center; }
+
+        .vocab-item { padding: 16px 0; border-bottom: 1px solid #f0f0f0; }
+        .vocab-header { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 8px; }
+        .vocab-en { font-weight: bold; color: var(--color-chic-blue); font-size: 1.2rem; cursor: pointer; }
+        .vocab-ipa { font-size: 0.9rem; color: #999; font-weight: normal; margin-left: 8px; }
+        .vocab-zh { color: var(--color-deep-brown); font-size: 1rem; font-weight: bold; }
+        .vocab-fr-row { display: flex; justify-content: flex-end; align-items: center; color: var(--color-primary-red); font-size: 1rem; font-weight: bold; font-style: italic; cursor: pointer; }
+        .vocab-ex { font-size: 0.95rem; color: #666; font-style: italic; background-color: #FAFAFA; padding: 10px; border-radius: 8px; border-left: 3px solid var(--color-cream); margin-top: 8px; cursor: pointer;}
+        .vocab-ex-fr { font-size: 0.95rem; color: #7D2027; font-style: italic; background-color: #FFF5F5; padding: 10px; border-radius: 8px; border-left: 3px solid var(--color-primary-red); margin-top: 8px; cursor: pointer;}
+
+        .quiz-box { text-align: center; padding: 40px 20px; }
+        .quiz-input { width: 100%; padding: 15px; font-size: 1.2rem; border: 2px solid #ddd; border-radius: var(--radius); margin-bottom: 15px; text-align: center; }
+        .feedback { margin-top: 15px; font-weight: bold; min-height: 1.5em; }
+        .feedback.correct { color: var(--color-chic-blue); }
+        .feedback.wrong { color: var(--color-burnt-orange); }
+
+        .result-score { font-size: 4rem; font-weight: 800; color: var(--color-chic-blue); margin: 20px 0; }
+        .speaker-icon { font-size: 0.9rem; margin-left: 8px; background-color: #eee; width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #555; }
+        .lesson-meta { font-size: 0.9rem; color: #888; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+    <header onclick="goToLessonList()">ENGLISH CLASS ☕</header>
+
+    <div class="container">
+        <div id="p-lesson-list" class="page active"><div id="lessonContainer"></div></div>
+
+        <div id="p-dashboard" class="page">
+            <div class="card" style="text-align: center; background-color: var(--color-cream);">
+                <div class="date-tag" id="dashDate">Date</div>
+                <h2 id="dashTitle" style="color: var(--color-primary-red);">Title</h2>
+                <p id="dashCount">Vocabulary Count</p>
+            </div>
+            <button class="btn" onclick="showPage('p-article')">1. 📖 閱讀文章 (Article)</button>
+            <button class="btn" onclick="showPage('p-vocab')">2. 📝 單字表 (英-中)</button>
+            <button class="btn" style="background-color: var(--color-primary-red);" onclick="showPage('p-vocab-fr')">3. 🇫🇷 法文單字表 (英-法)</button>
+            <button class="btn btn-outline" onclick="startQuiz('en-zh')">4. 🧠 測驗：英翻中</button>
+            <button class="btn btn-outline" onclick="startQuiz('zh-en')">5. 🗣️ 測驗：中翻英</button>
+            <button class="btn btn-outline" onclick="startQuiz('en-fr')">6. 🇫🇷 測驗：英翻法</button>
+            <button class="btn btn-back" onclick="goToLessonList()">← 回課程列表</button>
+        </div>
+
+        <div id="p-article" class="page">
+            <div class="card">
+                <span class="date-tag" id="artDate"></span>
+                <div class="article-title" id="artTitle" onclick="speak(this.innerText, 'en-US')"></div>
+                <button id="btn-audio-toggle" class="btn-audio" onclick="toggleArticleAudio()"><span>🔊 播放文章朗讀</span></button>
+                <div class="english-text" id="artContent"></div>
+                <div id="artPronunciation"></div>
+                <div id="artQuestions" style="margin-top:20px; border-top:1px dashed #ddd; padding-top:20px;"></div>
+            </div>
+            <button class="btn btn-back" onclick="backToDashboard()">回課程選單</button>
+        </div>
+
+        <div id="p-vocab" class="page"><div class="card"><div id="vocabList"></div></div><button class="btn btn-back" onclick="backToDashboard()">回課程選單</button></div>
+        <div id="p-vocab-fr" class="page"><div class="card"><div id="vocabListFr"></div></div><button class="btn btn-back" onclick="backToDashboard()">回課程選單</button></div>
+
+        <div id="p-quiz" class="page">
+            <div class="card quiz-box">
+                <div id="quiz-progress">Q: 1/10</div>
+                <div class="article-title" id="q-word"></div>
+                <input type="text" id="q-input" class="quiz-input" placeholder="輸入答案...">
+                <button class="btn" id="btn-submit" onclick="checkAnswer()">送出答案</button>
+                <div id="q-feedback" class="feedback"></div>
+                <button class="btn btn-outline" style="display:none;" id="btn-next" onclick="nextQuestion()">下一題</button>
+            </div>
+            <button class="btn btn-back" onclick="backToDashboard()">放棄測驗</button>
+        </div>
+
+        <div id="p-result" class="page">
+            <div class="card" style="text-align:center;">
+                <div class="result-score" id="final-score">0</div>
+                <div id="final-msg"></div>
+                <button class="btn" onclick="backToDashboard()">完成</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function speak(text, lang = 'en-US', onEndCallback) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = lang; utterance.rate = 0.9;
+            if (onEndCallback) utterance.onend = onEndCallback;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function toggleArticleAudio() {
+            const btn = document.getElementById('btn-audio-toggle');
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+                btn.innerHTML = '<span>🔊 播放文章朗讀</span>';
+            } else {
+                btn.innerHTML = '<span>⏹️ 停止朗讀</span>';
+                speak(currentLesson.content, 'en-US', () => { btn.innerHTML = '<span>🔊 播放文章朗讀</span>'; });
+            }
+        }
+
+        const lessons = [
+            { id: 1, date: "2026.01.12", title: "The Morning Cafe", content: `The cafe is absolutely packed this morning...`, questions: ["Cut in line?", "Caffeine fix?"], vocab: [{en:"thick", ipa:"[θɪk]", zh:"很濃", fr:"épais", ex:"The fog was thick.", fr_ex:"Le brouillard était épais."}] },
+            { id: 2, date: "2026.01.16", title: "The Weekend Costco Hustle", content: `If you're brave enough to tackle Costco on a Saturday...`, questions: ["Madhouse?", "Impulse buying?"], vocab: [{en:"tackle", ipa:"[ˈtækəl]", zh:"處理", fr:"s'attaquer", ex:"Tackle the problem.", fr_ex:"S'attaquer au problème."}] },
+            { id: 3, date: "2026.01.19", title: "Welcome to my Place!", content: `Come on in—feel free to kick your shoes off at the door...`, questions: ["Clean floors?", "Smart fridge?"], vocab: [{en:"induction cooktop", ipa:"[ɪnˈdʌkʃən]", zh:"電磁爐", fr:"plaque à induction", ex:"I use the induction cooktop.", fr_ex:"J'utilise la plaque à induction."}] },
+            { id: 4, date: "2026.01.23", title: "Heading to San Francisco!", content: `Staff: "Come on forward! Please toss your bags onto the scale..."`, questions: ["Security info?", "United Club Lounge?"], vocab: [{en:"biometric", ipa:"[ˌbaɪoʊˈmɛtrɪk]", zh:"生物識別", fr:"biométrique", ex:"We use biometric scanners.", fr_ex:"Nous utilisons des scanners biométriques."}] },
+            { id: 5, date: "2026.01.29", title: "The Prime Cut", content: `Server: "Good evening! Come on in—feel free to kick your coats off..."`, questions: ["Bone-in Ribeye?", "Medium-rare?"], vocab: [{en:"marbling", ipa:"[ˈmɑrblɪŋ]", zh:"油花", fr:"persillage", ex:"The marbling is beautiful.", fr_ex:"Le persillage est magnifique."}] },
+            { id: 6, date: "2026.02.03", title: "The Manhattan Commute", content: `Driver: "Morning! Just toss your luggage in the trunk and hop in..."`, questions: ["Gridlock?", "Smart fridge stocked?"], vocab: [{en:"spick and span", ipa:"[spɪk]", zh:"一塵不染", fr:"propre comme un sou neuf", ex:"The cabin is spick and span.", fr_ex:"La cabine est impeccable."}] },
+            { id: 7, date: "2026.02.10", title: "The Deep Stretch - Thai Massage", content: `Receptionist: "Sawadee! Welcome in. You can stow your shoes..."`, questions: ["Deep stretching?", "Trigger-point therapy?"], vocab: [{en:"overhaul", ipa:"[ˈoʊvərˌhɔl]", zh:"改造", fr:"remanier", ex:"We overhauled the studio.", fr_ex:"Nous avons remanié le studio."}] },
+            { id: 8, date: "2026.02.24", title: "Trying Out the Reformer", content: `Trainer: "Welcome to the studio! You can hop in and leave your shoes..."`, questions: ["Core strength?", "Magic circles?"], vocab: [{en:"carriage", ipa:"[ˈkærɪdʒ]", zh:"滑動床板", fr:"chariot", ex:"The carriage glides smoothly.", fr_ex:"Le chariot glisse doucement."}] },
+            { id: 9, date: "2026.03.03", title: "The 'Everyday Look' Vibe", content: `Have you noticed how athleisure has basically become the uniform...`, questions: ["Capsule wardrobe?", "Minimalist approach?"], vocab: [{en:"athleisure", ipa:"[æθˈliʒər]", zh:"運動休閒風", fr:"athleisure", ex:"I love athleisure.", fr_ex:"J'adore l'athleisure."}] },
+            { id: 10, date: "2026.03.10", title: "The Sephora Lesson", content: `The coolest part about Sephora isn't just the products; it's the staff...`, questions: ["Beauty Advisors?", "Tutoring session?"], vocab: [{en:"concealer", ipa:"[kənˈsilər]", zh:"遮瑕膏", fr:"anti-cernes", ex:"Use concealer under eyes.", fr_ex:"Utilisez un anti-cernes sous les yeux."}] },
+            { id: 11, date: "2026.03.17", title: "The One-Sided Chat", content: `"So, how's your summer been?" Dr. Miller asked...`, questions: ["Dental hygienist?", "No cavities?"], vocab: [{en:"floss", ipa:"[flɔs]", zh:"牙線", fr:"fil dentaire", ex:"You should floss daily.", fr_ex:"Vous devriez utiliser du fil dentaire quotidiennement."}] },
+            { id: 12, date: "2026.04.02", title: "Chasing the Northern Lights", content: `If you are looking for the ultimate "cool" vacation, Iceland...`, questions: ["Blue Lagoon?", "Fire and Ice?"], vocab: [{en:"glacier", ipa:"[ˈgleɪʃər]", zh:"冰川", fr:"glacier", ex:"The glacier is huge.", fr_ex:"Le glacier est immense."}] },
+            { id: 13, date: "2026.04.07", title: "Living Like a Local in BKK", content: `When you land in Bangkok, you will feel the heat and energy...`, questions: ["Tuk-Tuk?", "Thai milk tea?"], vocab: [{en:"refreshing", ipa:"[rɪˈfrɛʃɪŋ]", zh:"清爽", fr:"rafraîchissant", ex:"The drink is refreshing.", fr_ex:"La boisson est rafraîchissante."}] },
+            { id: 14, date: "2026.04.14", title: "The Powder Day", content: `Coach: "Hey Katia! Ready to hit the slopes? You can stow your gear..."`, questions: ["Fresh powder?", "Massive wipe out?"], vocab: [{en:"stoked", ipa:"[stoʊkt]", zh:"興奮", fr:"excité", ex:"I am stoked for snow.", fr_ex:"Je suis excité pour la neige."}] },
+            { id: 15, date: "2026.04.17", title: "The Creator's Studio Setup", content: `Katia: "Come on in! I've finally finished my studio overhaul..."`, questions: ["Breakthrough?", "Voiceover?"], vocab: [{en:"ring light", ipa:"[rɪŋ]", zh:"環形燈", fr:"lampe annulaire", ex:"I use a ring light.", fr_ex:"J'utilise une lampe annulaire."}] },
+            {
+                id: 16, date: "2026.04.28", title: "The Grand Winter: A Trip to Russia",
+                content: `If you want a trip that feels like a fairy tale, Russia is a must-see. It is the largest country in the North, and it is full of history and wealthy culture. People visit from all over the world to see the colorful domes of St. Basil's Cathedral—it looks like a giant gingerbread house!\n\nThe lifestyle in the winter is very cozy. Even when the weather is freezing and the snow is deep, the locals stay warm by drinking hot tea and wearing thick fur coats. One of the best ways to "reset" is visiting a banya, which is a traditional Russian sauna. You take a deep breath of the steam and then jump into the cold snow. It is amazing for your health!\n\nAt night, you can walk through the Red Square in Moscow. The paths are lit up with thousands of lights, and the air feels crisp and fresh. It is a breathless sight to see the Kremlin under the moonlight. Whether you love art, history, or just a snowy adventure, Russia is a trip that will stay with you forever.`,
+                questions: ["Do you think that Russia feels like a 'fairy tale'?", "What is a 'banya'?", "Russia trip forever?"],
+                vocab: [{en:"banya", ipa:"[ˈbɑnjə]", zh:"俄式桑拿", fr:"banya", ex:"Visiting a banya is a must.", fr_ex:"Visiter un banya est incontournable."}]
+            },
+            {
+                id: 17,
+                date: "2026.05.06",
+                title: "The New York Subway",
+                content: `Navigating the New York City (NYC) Subway is a rite of passage. It is fast, loud, and the ultimate way to experience the city's energy.
+
+At the Station: NYC stations can be a maze. First, check the entrance to see if it is Uptown (going North) or Downtown (going South). You will need a MetroCard or simply "tap to pay" using your phone at the turnstile.
+Katia: "Excuse me, where can I refill my MetroCard?"
+Staff: "You can use the vending machine over there, or just tap your credit card at the gate."
+
+On the Platform: In New York, multiple train lines (like the N, Q, R, or W) often share the same track. You must look at the letter or number on the front of the train before you board.
+Katia: "Is this an express train? I don't want to skip my stop!"
+Commuter: "No, this is the local train. It makes all stops."
+
+During the Ride: The subway is a "lifestyle" hub. You might see performers or people reading. Listen closely to the conductor's announcement, though it can sometimes be a bit muffled!
+Katia: "Pardon me, is the next stop Times Square? I need to transfer to the 7 train."
+Commuter: "Yes, just follow the overhead signs once you get off."`,
+                questions: [
+                    "1. Do you prefer the 'hustle' of a busy express train or the slower pace of a local ride?",
+                    "2. If you were 'stuck' on a train, would you rather have a book to read or people-watch?",
+                    "3. Follow the map or ask a local for the fastest route?"
+                ],
+                pronunciation: [{
+                    title: "KK 音標 - 母音 (Vowels)",
+                    pairs: `<table class="kk-table">
+                        <tr><th>[ɪ]</th><td>sit, pig</td></tr>
+                        <tr><th>[ɛ]</th><td>bed, ten</td></tr>
+                        <tr><th>[æ]</th><td>cat, bag</td></tr>
+                        <tr><th>[ɑ]</th><td>hot, box</td></tr>
+                        <tr><th>[ʌ]</th><td>cup, bus</td></tr>
+                        <tr><th>[ʊ]</th><td>foot, book</td></tr>
+                        <tr><th>[ə]</th><td>about, sofa</td></tr>
+                        <tr><th>[i]</th><td>see, eat</td></tr>
+                        <tr><th>[e]</th><td>name, day</td></tr>
+                        <tr><th>[u]</th><td>moon, blue</td></tr>
+                        <tr><th>[o]</th><td>go, home</td></tr>
+                        <tr><th>[aɪ]</th><td>my, kite</td></tr>
+                        <tr><th>[aʊ]</th><td>how, now</td></tr>
+                        <tr><th>[ɔɪ]</th><td>boy, noise</td></tr>
+                        <tr><th>[ɝ]</th><td>bird, her</td></tr>
+                        <tr><th>[ɚ]</th><td>teacher</td></tr>
+                    </table>`
+                }],
+                vocab: [
+                    { en: "navigating", ipa: "[ˈnævəˌgeɪtɪŋ]", zh: "導航/穿梭", fr: "naviguer", ex: "Navigating NYC is hard.", fr_ex: "Naviguer dans NYC est difficile." },
+                    { en: "subway", ipa: "[ˈsʌbˌweɪ]", zh: "地鐵", fr: "métro", ex: "The subway is fast.", fr_ex: "Le métro est rapide." },
+                    { en: "rite of passage", ipa: "[raɪt]", zh: "成年禮/必經過程", fr: "rite de passage", ex: "The subway is a rite of passage.", fr_ex: "Le métro est un rite de passage." },
+                    { en: "experience", ipa: "[ɪkˈspɪriəns]", zh: "體驗", fr: "expérience", ex: "Experience the energy.", fr_ex: "Découvrez l'énergie." },
+                    { en: "energy", ipa: "[ˈɛnərdʒi]", zh: "能量/活力", fr: "énergie", ex: "Feel the city's energy.", fr_ex: "Ressentez l'énergie de la ville." },
+                    { en: "maze", ipa: "[meɪz]", zh: "迷宮", fr: "labyrinthe", ex: "The station is a maze.", fr_ex: "La station est un labyrinthe." },
+                    { en: "entrance", ipa: "[ˈɛntrəns]", zh: "入口", fr: "entrée", ex: "Check the entrance.", fr_ex: "Vérifiez l'entrée." },
+                    { en: "uptown", ipa: "[ˈʌpˌtaʊn]", zh: "往北/上城", fr: "vers le nord", ex: "I'm going Uptown.", fr_ex: "Je vais vers le nord." },
+                    { en: "downtown", ipa: "[ˈdaʊnˌtaʊn]", zh: "往南/下城", fr: "vers le sud", ex: "The train goes Downtown.", fr_ex: "Le train va vers le sud." },
+                    { en: "MetroCard", ipa: "[ˈmɛtroʊ kɑrd]", zh: "地鐵卡", fr: "carte de métro", ex: "Refill your MetroCard.", fr_ex: "Rechargez votre MetroCard." },
+                    { en: "tap to pay", ipa: "[tæp]", zh: "感應支付", fr: "paiement sans contact", ex: "You can tap to pay.", fr_ex: "Vous pouvez payer sans contact." },
+                    { en: "turnstile", ipa: "[ˈtɜrnˌstaɪl]", zh: "旋轉閘門", fr: "tourniquet", ex: "Go through the turnstile.", fr_ex: "Passez par le tourniquet." },
+                    { en: "refill", ipa: "[ˌriˈfɪl]", zh: "儲值/續杯", fr: "recharger", ex: "Refill the card.", fr_ex: "Rechargez la carte." },
+                    { en: "vending machine", ipa: "[ˈvɛndɪŋ]", zh: "販賣機", fr: "distributeur automatique", ex: "Use the vending machine.", fr_ex: "Utilisez le distributeur automatique." },
+                    { en: "platform", ipa: "[ˈplætˌfɔrm]", zh: "月台", fr: "quai", ex: "Wait on the platform.", fr_ex: "Attendez sur le quai." },
+                    { en: "track", ipa: "[træk]", zh: "軌道", fr: "voie", ex: "Check the track number.", fr_ex: "Vérifiez le numéro de voie." },
+                    { en: "board", ipa: "[bɔrd]", zh: "登機/上車", fr: "monter à bord", ex: "Board the train now.", fr_ex: "Montez dans le train maintenant." },
+                    { en: "express train", ipa: "[ɪkˈsprɛs]", zh: "特快車", fr: "train express", ex: "This is an express train.", fr_ex: "C'est un train express." },
+                    { en: "skip", ipa: "[skɪp]", zh: "跳過", fr: "sauter", ex: "Don't skip my stop.", fr_ex: "Ne ratez pas mon arrêt." },
+                    { en: "local train", ipa: "[ˈloʊkəl]", zh: "普通車(每站停)", fr: "train omnibus", ex: "The local train stops here.", fr_ex: "Le train omnibus s'arrête ici." },
+                    { en: "commuter", ipa: "[kəˈmjutər]", zh: "通勤者", fr: "navetteur", ex: "The commuter is reading.", fr_ex: "Le navetteur lit." },
+                    { en: "lifestyle", ipa: "[ˈlaɪfˌstaɪl]", zh: "生活方式", fr: "mode de vie", ex: "Subway is a lifestyle.", fr_ex: "Le métro est un mode de vie." },
+                    { en: "hub", ipa: "[hʌb]", zh: "樞紐/中心", fr: "plaque tournante", ex: "It is a lifestyle hub.", fr_ex: "C'est un centre de vie." },
+                    { en: "performer", ipa: "[pərˈfɔrmər]", zh: "表演者", fr: "artiste", ex: "I see a performer.", fr_ex: "Je vois un artiste." },
+                    { en: "conductor", ipa: "[kənˈdʌktər]", zh: "車長/指揮", fr: "conducteur", ex: "Listen to the conductor.", fr_ex: "Écoutez le conducteur." },
+                    { en: "announcement", ipa: "[əˈnaʊnsmənt]", zh: "公告/廣播", fr: "annonce", ex: "Hear the announcement.", fr_ex: "Entendez l'annonce." },
+                    { en: "muffled", ipa: "[ˈmʌfəld]", zh: "模糊/聽不清楚", fr: "étouffé", ex: "The sound is muffled.", fr_ex: "Le son est étouffé." },
+                    { en: "transfer", ipa: "[trænsˈfɜr]", zh: "轉乘", fr: "correspondance", ex: "Transfer to the 7 train.", fr_ex: "Prenez la correspondance pour le train 7." },
+                    { en: "overhead", ipa: "[ˈoʊvərˌhɛd]", zh: "頭頂上的", fr: "au-dessus", ex: "Check overhead signs.", fr_ex: "Vérifiez les panneaux au-dessus." },
+                    { en: "sign", ipa: "[saɪn]", zh: "標誌", fr: "panneau", ex: "Follow the signs.", fr_ex: "Suivez les panneaux." },
+                    { en: "hustle", ipa: "[ˈhʌsəl]", zh: "忙碌/趕路", fr: "agitation", ex: "I love the hustle.", fr_ex: "J'aime l'agitation." },
+                    { en: "pace", ipa: "[peɪs]", zh: "步調", fr: "allure", ex: "A slow pace.", fr_ex: "Une allure lente." },
+                    { en: "stuck", ipa: "[stʌk]", zh: "卡住/困住", fr: "coincé", ex: "I am stuck in traffic.", fr_ex: "Je suis coincé dans le trafic." },
+                    { en: "people-watch", ipa: "[ˈpipəl wɑtʃ]", zh: "觀察路人", fr: "observer les gens", ex: "I love to people-watch.", fr_ex: "J'aime observer les gens." },
+                    { en: "route", ipa: "[rut]", zh: "路線", fr: "itinéraire", ex: "What is the fastest route?", fr_ex: "Quel est l'itinéraire le plus rapide?" },
+                    { en: "fast", ipa: "[fæst]", zh: "快的", fr: "rapide", ex: "The train is fast.", fr_ex: "Le train est rapide." },
+                    { en: "loud", ipa: "[laʊd]", zh: "大聲的", fr: "bruyant", ex: "It is very loud.", fr_ex: "C'est très bruyant." },
+                    { en: "stop", ipa: "[stɑp]", zh: "車站/停止", fr: "arrêt", ex: "Next stop is here.", fr_ex: "Le prochain arrêt est ici." },
+                    { en: "follow", ipa: "[ˈfɑloʊ]", zh: "跟隨", fr: "suivre", ex: "Follow the map.", fr_ex: "Suivez la carte." },
+                    { en: "fastest", ipa: "[ˈfæstəst]", zh: "最快的", fr: "le plus rapide", ex: "The fastest way home.", fr_ex: "Le chemin le plus rapide pour rentrer." }
+                ]
+            },
+            {
+                id: 18,
+                date: "2026.05.20",
+                title: "Sky High",
+                content: `Stepping onto an international flight is the official start of your adventure. Whether you are flying to New York or Sapporo, knowing how to communicate with the cabin crew makes the journey much more comfortable.
+
+Boarding and Settling In
+As you enter the aircraft, a flight attendant will greet you and check your boarding pass. Once you find your row, it's time to stow your carry-on in the overhead bin.
+Katia: "Excuse me, could you help me put this bag in the overhead bin? It's a bit heavy."
+Flight Attendant: "Certainly! Also, please make sure your seatbelt is fastened for takeoff."
+
+In-Flight Service
+During the flight, the crew will offer drinks and meals. This is a great time for "lifestyle" small talk.
+Flight Attendant: "Would you like chicken or pasta for your in-flight meal?"
+Katia: "I'll have the chicken, please. Also, could I have a cup of water? I'm feeling a bit dehydrated."
+
+Arrival Prep
+Before landing, you may need to fill out a customs declaration form.
+Katia: "Pardon me, do you have a pen I could borrow? I need to fill out this form before we touch down."
+
+Whether you are watching a movie or resting, the airplane is a place where you can find both relaxation and anticipation!`,
+                questions: [
+                    "1. Do you prefer a \"window seat\" to see the view, or an \"aisle seat\" so it's easier to get up and stretch?",
+                    "2. When the pilot announces \"turbulence,\" do you stay \"calm\" or do you feel a bit nervous?",
+                    "3. Do you think the \"lifestyle\" of a flight attendant seems exciting, or does it look like too much \"hard work\"?"
+                ],
+                pronunciation: [{
+                    title: "KK 音標 - 子音 (Consonants)",
+                    pairs: `<table class="kk-table">
+                        <tr><th>[p]</th><td>雙唇閉緊後突然噴氣（無聲）— pig, cup</td></tr>
+                        <tr><th>[b]</th><td>雙唇閉緊，聲帶振動（有聲）— bed, bag</td></tr>
+                        <tr><th>[t]</th><td>舌尖抵住上牙齦後彈開（無聲）— ten, it</td></tr>
+                        <tr><th>[d]</th><td>舌尖抵住上牙齦，聲帶振動（有聲）— day, bed</td></tr>
+                        <tr><th>[k]</th><td>舌根抵住軟顎後突然噴氣（無聲）— kite, bake</td></tr>
+                        <tr><th>[g]</th><td>舌根抵住軟顎，聲帶振動（有聲）— go, bag</td></tr>
+                        <tr><th>[f]</th><td>上齒輕咬下唇後噴氣（無聲）— foot, off</td></tr>
+                        <tr><th>[v]</th><td>上齒輕咬下唇，聲帶振動（有聲）— vase, five</td></tr>
+                        <tr><th>[s]</th><td>舌尖靠近上牙齦，發出嘶嘶聲（無聲）— sit, bus</td></tr>
+                        <tr><th>[z]</th><td>舌尖靠近上牙齦，聲帶振動（有聲）— zoo, noise</td></tr>
+                        <tr><th>[ʃ]</th><td>嘴唇略噘起，發出「噓」聲（無聲）— she, fish</td></tr>
+                        <tr><th>[ʒ]</th><td>嘴唇略噘起，聲帶振動（有聲）— pleasure, vision</td></tr>
+                        <tr><th>[θ]</th><td>舌尖放在上下齒之間吹氣（無聲）— think, math</td></tr>
+                        <tr><th>[ð]</th><td>舌尖放在上下齒之間，聲帶振動（有聲）— this, mother</td></tr>
+                        <tr><th>[h]</th><td>像哈氣一樣（無聲）— hot, how</td></tr>
+                    </table>`
+                }],
+                vocab: [
+                    { en: "international flight", ipa: "[ˌɪntərˈnæʃənl]", zh: "國際航班", fr: "vol international", ex: "I booked an international flight.", fr_ex: "J'ai réservé un vol international." },
+                    { en: "adventure", ipa: "[ədˈvɛntʃər]", zh: "冒險/旅程", fr: "aventure", ex: "This trip is an adventure.", fr_ex: "Ce voyage est une aventure." },
+                    { en: "cabin crew", ipa: "[ˈkæbɪn kru]", zh: "空服人員", fr: "équipage de cabine", ex: "The cabin crew is very kind.", fr_ex: "L'équipage de cabine est très gentil." },
+                    { en: "journey", ipa: "[ˈdʒɜrni]", zh: "旅程", fr: "voyage", ex: "The journey takes 12 hours.", fr_ex: "Le voyage dure 12 heures." },
+                    { en: "comfortable", ipa: "[ˈkʌmftərbəl]", zh: "舒適的", fr: "confortable", ex: "The seat is comfortable.", fr_ex: "Le siège est confortable." },
+                    { en: "aircraft", ipa: "[ˈɛrˌkræft]", zh: "飛機/航空器", fr: "aéronef", ex: "The aircraft is huge.", fr_ex: "L'aéronef est immense." },
+                    { en: "flight attendant", ipa: "[flaɪt əˈtɛndənt]", zh: "空服員", fr: "agent de bord", ex: "Ask the flight attendant.", fr_ex: "Demandez à l'agent de bord." },
+                    { en: "boarding pass", ipa: "[ˈbɔrdɪŋ pæs]", zh: "登機證", fr: "carte d'embarquement", ex: "Show your boarding pass.", fr_ex: "Montrez votre carte d'embarquement." },
+                    { en: "row", ipa: "[roʊ]", zh: "排/列", fr: "rangée", ex: "I am in row 24.", fr_ex: "Je suis dans la rangée 24." },
+                    { en: "stow", ipa: "[stoʊ]", zh: "收放/存放", fr: "ranger", ex: "Stow your bag above.", fr_ex: "Rangez votre sac au-dessus." },
+                    { en: "carry-on", ipa: "[ˈkæri ɑn]", zh: "手提行李", fr: "bagage à main", ex: "One carry-on is allowed.", fr_ex: "Un bagage à main est autorisé." },
+                    { en: "overhead bin", ipa: "[ˈoʊvərˌhɛd bɪn]", zh: "頭頂行李置物櫃", fr: "compartiment supérieur", ex: "Put it in the overhead bin.", fr_ex: "Mettez-le dans le compartiment supérieur." },
+                    { en: "seatbelt", ipa: "[ˈsitˌbɛlt]", zh: "安全帶", fr: "ceinture de sécurité", ex: "Fasten your seatbelt.", fr_ex: "Attachez votre ceinture de sécurité." },
+                    { en: "fasten", ipa: "[ˈfæsən]", zh: "繫緊/扣上", fr: "attacher", ex: "Fasten the buckle tightly.", fr_ex: "Attachez la boucle fermement." },
+                    { en: "takeoff", ipa: "[ˈteɪkˌɔf]", zh: "起飛", fr: "décollage", ex: "Takeoff is in five minutes.", fr_ex: "Le décollage est dans cinq minutes." },
+                    { en: "in-flight meal", ipa: "[ɪn flaɪt mil]", zh: "機上餐點", fr: "repas en vol", ex: "The in-flight meal was tasty.", fr_ex: "Le repas en vol était délicieux." },
+                    { en: "small talk", ipa: "[smɔl tɔk]", zh: "閒聊", fr: "bavardage", ex: "We had some small talk.", fr_ex: "Nous avons bavardé un peu." },
+                    { en: "dehydrated", ipa: "[diˈhaɪˌdreɪtɪd]", zh: "脫水的", fr: "déshydraté", ex: "I feel dehydrated after the flight.", fr_ex: "Je me sens déshydraté après le vol." },
+                    { en: "landing", ipa: "[ˈlændɪŋ]", zh: "降落", fr: "atterrissage", ex: "The landing was smooth.", fr_ex: "L'atterrissage était en douceur." },
+                    { en: "customs declaration", ipa: "[ˈkʌstəmz ˌdɛkləˈreɪʃən]", zh: "海關申報", fr: "déclaration en douane", ex: "Fill out the customs declaration.", fr_ex: "Remplissez la déclaration en douane." },
+                    { en: "touch down", ipa: "[tʌtʃ daʊn]", zh: "降落/著陸", fr: "atterrir", ex: "We will touch down soon.", fr_ex: "Nous allons bientôt atterrir." },
+                    { en: "relaxation", ipa: "[ˌrilækˈseɪʃən]", zh: "放鬆", fr: "détente", ex: "Flying brings relaxation.", fr_ex: "Voler apporte de la détente." },
+                    { en: "anticipation", ipa: "[ænˌtɪsɪˈpeɪʃən]", zh: "期待", fr: "anticipation", ex: "There is so much anticipation.", fr_ex: "Il y a tellement d'anticipation." },
+                    { en: "window seat", ipa: "[ˈwɪndoʊ sit]", zh: "靠窗座位", fr: "siège côté fenêtre", ex: "I love the window seat.", fr_ex: "J'adore le siège côté fenêtre." },
+                    { en: "aisle seat", ipa: "[aɪl sit]", zh: "靠走道座位", fr: "siège côté couloir", ex: "I prefer an aisle seat.", fr_ex: "Je préfère un siège côté couloir." },
+                    { en: "stretch", ipa: "[strɛtʃ]", zh: "伸展/舒展", fr: "s'étirer", ex: "Get up and stretch your legs.", fr_ex: "Levez-vous et étirez vos jambes." },
+                    { en: "pilot", ipa: "[ˈpaɪlət]", zh: "飛行員", fr: "pilote", ex: "The pilot is very experienced.", fr_ex: "Le pilote est très expérimenté." },
+                    { en: "turbulence", ipa: "[ˈtɜrbjələns]", zh: "亂流", fr: "turbulences", ex: "There is some turbulence ahead.", fr_ex: "Il y a des turbulences devant nous." },
+                    { en: "calm", ipa: "[kɑm]", zh: "鎮定的/平靜的", fr: "calme", ex: "Stay calm during turbulence.", fr_ex: "Restez calme pendant les turbulences." },
+                    { en: "nervous", ipa: "[ˈnɜrvəs]", zh: "緊張的", fr: "nerveux", ex: "I feel nervous on planes.", fr_ex: "Je me sens nerveux en avion." },
+                    { en: "greet", ipa: "[grit]", zh: "迎接/打招呼", fr: "accueillir", ex: "They greet you at the door.", fr_ex: "Ils vous accueillent à la porte." },
+                    { en: "offer", ipa: "[ˈɔfər]", zh: "提供", fr: "offrir", ex: "They offer snacks and drinks.", fr_ex: "Ils offrent des collations et des boissons." },
+                    { en: "borrow", ipa: "[ˈbɑroʊ]", zh: "借用", fr: "emprunter", ex: "Can I borrow your pen?", fr_ex: "Puis-je emprunter votre stylo?" },
+                    { en: "fill out", ipa: "[fɪl aʊt]", zh: "填寫(表格)", fr: "remplir", ex: "Fill out the arrival form.", fr_ex: "Remplissez le formulaire d'arrivée." },
+                    { en: "boarding", ipa: "[ˈbɔrdɪŋ]", zh: "登機", fr: "embarquement", ex: "Boarding starts at gate 12.", fr_ex: "L'embarquement commence à la porte 12." },
+                    { en: "settling in", ipa: "[ˈsɛtlɪŋ ɪn]", zh: "安頓下來", fr: "s'installer", ex: "I am settling in my seat.", fr_ex: "Je m'installe dans mon siège." },
+                    { en: "arrival", ipa: "[əˈraɪvəl]", zh: "抵達", fr: "arrivée", ex: "Our arrival time is 8 PM.", fr_ex: "Notre heure d'arrivée est 20h." },
+                    { en: "crew", ipa: "[kru]", zh: "機組人員", fr: "équipage", ex: "The crew is professional.", fr_ex: "L'équipage est professionnel." },
+                    { en: "certainly", ipa: "[ˈsɜrtnli]", zh: "當然/沒問題", fr: "bien sûr", ex: "Certainly, let me help you.", fr_ex: "Bien sûr, laissez-moi vous aider." },
+                    { en: "pardon me", ipa: "[ˈpɑrdən mi]", zh: "打擾一下/不好意思", fr: "excusez-moi", ex: "Pardon me, where is my seat?", fr_ex: "Excusez-moi, où est mon siège?" }
+                ]
+            }
+        ];
+
+        let currentLesson = null;
+        function initApp() {
+            const container = document.getElementById('lessonContainer');
+            container.innerHTML = '';
+            lessons.forEach((l, idx) => {
+                container.innerHTML += `<div class="card lesson-card" onclick="selectLesson(${idx})"><span class="date-tag">${l.date}</span><div style="font-size:1.2rem; font-weight:bold; color:var(--color-primary-red);">${l.title}</div><div class="lesson-meta">${l.vocab.length} Words</div></div>`;
+            });
+        }
+
+        function selectLesson(idx) {
+            currentLesson = lessons[idx];
+            document.getElementById('dashDate').innerText = currentLesson.date;
+            document.getElementById('dashTitle').innerText = currentLesson.title;
+            document.getElementById('dashCount').innerText = `${currentLesson.vocab.length} Words`;
+            document.getElementById('artDate').innerText = currentLesson.date;
+            document.getElementById('artTitle').innerText = currentLesson.title;
+            document.getElementById('artContent').innerHTML = currentLesson.content.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+            
+            const pronContainer = document.getElementById('artPronunciation');
+            pronContainer.innerHTML = '';
+            if (currentLesson.pronunciation) {
+                currentLesson.pronunciation.forEach(p => {
+                    pronContainer.innerHTML += `<div class="pronunciation-box"><div class="pronunciation-title">🗣️ ${p.title}</div>${p.pairs}</div>`;
+                });
+            }
+
+            const vContainer = document.getElementById('vocabList');
+            vContainer.innerHTML = '';
+            currentLesson.vocab.forEach(item => {
+                vContainer.innerHTML += `<div class="vocab-item"><div class="vocab-header"><span class="vocab-en" onclick="speak('${item.en}', 'en-US')">${item.en} <span class="vocab-ipa">${item.ipa || ''}</span> <span class="speaker-icon">🔊</span></span><span class="vocab-zh">${item.zh}</span></div><div class="vocab-ex" onclick="speak('${item.ex}', 'en-US')">Ex: ${item.ex}</div></div>`;
+            });
+
+            const vFrContainer = document.getElementById('vocabListFr');
+            vFrContainer.innerHTML = '';
+            currentLesson.vocab.forEach(item => {
+                vFrContainer.innerHTML += `<div class="vocab-item"><div class="vocab-header"><span class="vocab-en" onclick="speak('${item.en}', 'en-US')">${item.en}</span></div><div class="vocab-fr-row" onclick="speak('${item.fr}', 'fr-FR')">🇫🇷 ${item.fr} <span class="speaker-icon">🔊</span></div>${item.fr_ex ? `<div class="vocab-ex-fr" onclick="speak('${item.fr_ex}', 'fr-FR')">Ex: ${item.fr_ex}</div>` : ''}</div>`;
+            });
+
+            const qContainer = document.getElementById('artQuestions');
+            qContainer.innerHTML = '';
+            currentLesson.questions.forEach(q => {
+                qContainer.innerHTML += `<div style="margin-bottom:10px; padding-left:10px; border-left:3px solid var(--color-burnt-orange); color:#555;">${q}</div>`;
+            });
+
+            showPage('p-dashboard');
+        }
+
+        function showPage(id) {
+            window.speechSynthesis.cancel();
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        function goToLessonList() { showPage('p-lesson-list'); }
+        function backToDashboard() { showPage('p-dashboard'); }
+
+        let currentQuizMode = ''; 
+        let currentTargetWord = null;
+        let quizScore = 0;
+        let quizQuestionCount = 0;
+        const QUESTIONS_PER_ROUND = 10;
+
+        function startQuiz(mode) {
+            currentQuizMode = mode; quizScore = 0; quizQuestionCount = 0;
+            showPage('p-quiz'); nextQuestion();
+        }
+
+        function updateQuizHeader() {
+            document.getElementById('quiz-progress').innerText = `Q: ${quizQuestionCount + 1}/${QUESTIONS_PER_ROUND}`;
+        }
+
+        function nextQuestion() {
+            if (quizQuestionCount >= QUESTIONS_PER_ROUND) { showResult(); return; }
+            document.getElementById('q-input').value = ''; document.getElementById('q-feedback').innerText = '';
+            document.getElementById('btn-next').style.display = 'none'; document.getElementById('btn-submit').style.display = 'block';
+            updateQuizHeader();
+            currentTargetWord = currentLesson.vocab[Math.floor(Math.random() * currentLesson.vocab.length)];
+            document.getElementById('q-word').innerText = (currentQuizMode === 'zh-en') ? currentTargetWord.zh : currentTargetWord.en;
+        }
+
+        function checkAnswer() {
+            const val = document.getElementById('q-input').value.trim().toLowerCase();
+            let correct = false;
+            let ans = "";
+            if (currentQuizMode === 'en-zh') { ans = currentTargetWord.zh; if (ans.includes(val) && val.length > 0) correct = true; }
+            else if (currentQuizMode === 'zh-en') { ans = currentTargetWord.en; if (val === ans.toLowerCase()) correct = true; }
+            else { ans = currentTargetWord.fr; if (val === ans.toLowerCase()) correct = true; }
+
+            const f = document.getElementById('q-feedback');
+            if (correct) { f.innerText = "🎉 Correct!"; f.className = "feedback correct"; quizScore++; }
+            else { f.innerText = `❌ Ans: ${ans}`; f.className = "feedback wrong"; }
+            document.getElementById('btn-submit').style.display = 'none'; document.getElementById('btn-next').style.display = 'block';
+            quizQuestionCount++;
+        }
+
+        function showResult() {
+            document.getElementById('final-score').innerText = Math.round((quizScore/QUESTIONS_PER_ROUND)*100);
+            document.getElementById('final-msg').innerText = `You got ${quizScore}/${QUESTIONS_PER_ROUND} correct!`;
+            showPage('p-result');
+        }
+
+        initApp();
+    </script>
+</body>
+</html>
